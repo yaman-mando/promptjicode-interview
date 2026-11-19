@@ -19,13 +19,17 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'theme-color', content: '#120c09' },
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'apple-touch-icon', href: '/logo.png' },
+      ],
     },
   },
 
   i18n: {
     strategy: 'prefix_except_default',
     defaultLocale: 'ar',
+    baseUrl: 'https://interview.promptjicode.com',
     locales: [
       { code: 'ar', language: 'ar', name: 'العربية', dir: 'rtl', file: 'ar.json' },
       { code: 'en', language: 'en', name: 'English', dir: 'ltr', file: 'en.json' },
@@ -46,6 +50,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/api/**': { headers: { 'X-Robots-Tag': 'noindex' } },
     '/admin/**': { headers: { 'X-Robots-Tag': 'noindex' } },
     '/*/admin/**': { headers: { 'X-Robots-Tag': 'noindex' } },
   },
