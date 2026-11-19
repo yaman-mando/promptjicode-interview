@@ -20,7 +20,7 @@ export interface Question {
   level: Level
   topic: Topic
   /** Language of the code block, for the label above it. */
-  codeLang?: 'js' | 'jsx' | 'css' | 'html'
+  codeLang?: 'js' | 'jsx' | 'ts' | 'vue' | 'css' | 'html'
   code?: string
   /** Language-neutral options (code, numbers). Overridden by text[locale].options when present. */
   options?: string[]
