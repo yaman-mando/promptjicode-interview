@@ -1,5 +1,5 @@
 import type { Question } from '#shared/types/quiz'
-import { output } from './helpers'
+import { choice, output } from './helpers'
 
 const level = 'junior' as const
 
@@ -425,6 +425,258 @@ switch (day) {
       ar: 'for...in يمرّ على مفاتيح الكائن، وهي دائمًا نصوص ("0" و"1") حتى في المصفوفات. للمرور على القيم استخدم for...of.',
       en: 'for...in loops over object keys, which are always strings ("0" and "1"), even for arrays. Use for...of to loop over the values.',
       tr: 'for...in nesne anahtarlarında döner ve anahtarlar dizilerde bile her zaman metindir ("0" ve "1"). Değerlerde dönmek için for...of kullanın.',
+    },
+  }),
+
+  // ── More JavaScript ──
+  output({
+    id: 'j-push-returns', level, topic: 'javascript',
+    code: `const result = [1, 2].push(3);
+console.log(result);`,
+    options: ['[1, 2, 3]', '3', 'undefined', '1'],
+    answer: 1,
+    why: {
+      ar: 'push يعدّل المصفوفة ويعيد طولها الجديد، لا المصفوفة نفسها. خطأ شائع: const list = arr.push(x) ثم معاملة list كمصفوفة.',
+      en: 'push changes the array and returns its new length, not the array. A common bug: const list = arr.push(x) and then treating list as an array.',
+      tr: 'push diziyi değiştirir ve dizinin kendisini değil yeni uzunluğunu döndürür. Sık hata: const list = arr.push(x) yazıp list’i dizi gibi kullanmak.',
+    },
+  }),
+  output({
+    id: 'j-modulo-negative', level, topic: 'javascript',
+    code: `console.log(7 % 3, -7 % 3);`,
+    options: ['1 -1', '1 2', '1 1', '2 -1'],
+    answer: 0,
+    why: {
+      ar: 'العامل % في JavaScript هو "الباقي" ويأخذ إشارة الطرف الأيسر، فيعطي -1 مع الأرقام السالبة. إذا أردت نتيجة موجبة دائمًا: ((n % m) + m) % m.',
+      en: 'In JavaScript % is the remainder and takes the sign of the left side, so it gives -1 for negatives. For an always-positive result use ((n % m) + m) % m.',
+      tr: 'JavaScript’te % kalan operatörüdür ve sol tarafın işaretini alır; negatiflerde -1 verir. Her zaman pozitif sonuç için ((n % m) + m) % m kullanın.',
+    },
+  }),
+
+  // ── HTML ──
+  choice({
+    id: 'j-html-alt', level, topic: 'html',
+    code: `<img src="divider.png" alt="">`, codeLang: 'html',
+    prompt: {
+      ar: 'صورة زخرفية فقط (خط فاصل). لماذا alt فارغ هنا هو الصحيح؟',
+      en: 'This image is purely decorative (a divider). Why is an empty alt correct here?',
+      tr: 'Bu görsel tamamen süs amaçlı (bir ayırıcı). Burada boş alt neden doğrudur?',
+    },
+    options: {
+      ar: ['لأن قارئ الشاشة سيتجاهلها بدل أن يقرأ اسم الملف', 'لأن alt غير مهم للصور', 'لأنه يسرّع تحميل الصورة', 'لأنه يخفي الصورة عن الـ SEO فقط'],
+      en: ['Screen readers skip it instead of reading the file name', 'Because alt does not matter for images', 'It makes the image load faster', 'It only hides the image from SEO'],
+      tr: ['Ekran okuyucular dosya adını okumak yerine onu atlar', 'Çünkü alt görseller için önemsizdir', 'Görselin daha hızlı yüklenmesini sağlar', 'Yalnızca SEO’dan gizler'],
+    },
+    answer: 0,
+    why: {
+      ar: 'alt="" تعني "هذه الصورة لا تحمل معلومة". بدون alt أصلًا قد يقرأ قارئ الشاشة اسم الملف. أما الصور التي تحمل معنى فيجب أن يصف alt محتواها.',
+      en: 'alt="" means "this image carries no information". With no alt at all, a screen reader may read out the file name. Images that carry meaning need an alt that describes them.',
+      tr: 'alt="", "bu görsel bilgi taşımıyor" demektir. Hiç alt yoksa ekran okuyucu dosya adını okuyabilir. Anlam taşıyan görsellerde alt içeriği tarif etmelidir.',
+    },
+  }),
+  choice({
+    id: 'j-html-label', level, topic: 'html',
+    code: `<label for="email">Email</label>
+<input id="email" type="email">`, codeLang: 'html',
+    prompt: {
+      ar: 'ما فائدة ربط الـ label بالـ input عبر for وid؟',
+      en: 'What does linking the label to the input with for and id give you?',
+      tr: 'label’ı input’a for ve id ile bağlamak ne sağlar?',
+    },
+    options: {
+      ar: ['الضغط على النص يركّز الحقل، وقارئ الشاشة يقرأ اسم الحقل', 'يغيّر لون الحقل', 'يتحقق من صحة الإيميل', 'لا فائدة، هو للتنسيق فقط'],
+      en: ['Clicking the text focuses the field, and screen readers announce its name', 'It changes the field’s color', 'It validates the email', 'Nothing, it is just for styling'],
+      tr: ['Metne tıklamak alanı odaklar ve ekran okuyucular alanın adını söyler', 'Alanın rengini değiştirir', 'E-postayı doğrular', 'Hiçbir şey, yalnızca stil içindir'],
+    },
+    answer: 0,
+    why: {
+      ar: 'الـ label المرتبط يكبّر مساحة النقر (مهم على الموبايل) ويعطي الحقل اسمًا مسموعًا. الـ placeholder ليس بديلًا عنه لأنه يختفي عند الكتابة.',
+      en: 'A linked label makes the click target bigger (important on mobile) and gives the field an accessible name. A placeholder is not a replacement because it disappears while typing.',
+      tr: 'Bağlı bir label tıklama alanını büyütür (mobilde önemli) ve alana erişilebilir bir ad verir. placeholder onun yerine geçmez çünkü yazarken kaybolur.',
+    },
+  }),
+  choice({
+    id: 'j-html-main', level, topic: 'html',
+    prompt: {
+      ar: 'أي وسم مخصّص للمحتوى الرئيسي الفريد في الصفحة؟',
+      en: 'Which tag is meant for the page’s unique main content?',
+      tr: 'Sayfanın benzersiz ana içeriği için hangi etiket kullanılır?',
+    },
+    options: ['<main>', '<section>', '<div id="main">', '<article>'],
+    answer: 0,
+    why: {
+      ar: '<main> يظهر مرة واحدة في الصفحة ويحدد محتواها الأساسي، فيستطيع مستخدمو قارئ الشاشة القفز إليه مباشرة. <section> و<article> لتقسيم المحتوى داخله.',
+      en: '<main> appears once per page and marks its core content, so screen reader users can jump straight to it. <section> and <article> divide the content inside it.',
+      tr: '<main> sayfada bir kez bulunur ve ana içeriği işaretler; ekran okuyucu kullanıcıları doğrudan oraya atlayabilir. <section> ve <article> onun içindeki içeriği böler.',
+    },
+  }),
+  choice({
+    id: 'j-html-button-submit', level, topic: 'html',
+    code: `<form action="/save">
+  <input name="title">
+  <button>Preview</button>
+</form>`, codeLang: 'html',
+    prompt: {
+      ar: 'ماذا يحدث عند الضغط على Preview؟',
+      en: 'What happens when Preview is clicked?',
+      tr: 'Preview’a tıklanınca ne olur?',
+    },
+    options: {
+      ar: ['يُرسَل الفورم، لأن الزر داخل form نوعه submit افتراضيًا', 'لا شيء', 'يُمسح الفورم', 'يظهر خطأ'],
+      en: ['The form is submitted, because a button in a form is type="submit" by default', 'Nothing', 'The form is reset', 'An error is shown'],
+      tr: ['Form gönderilir, çünkü form içindeki buton varsayılan olarak type="submit"’tir', 'Hiçbir şey', 'Form sıfırlanır', 'Hata gösterilir'],
+    },
+    answer: 0,
+    why: {
+      ar: 'أي <button> داخل form بدون type يتصرف كـ submit. للأزرار التي لا يجب أن ترسل الفورم اكتب type="button" دائمًا.',
+      en: 'Any <button> inside a form with no type acts as submit. For buttons that should not send the form, always write type="button".',
+      tr: 'Form içinde type’ı olmayan her <button> submit gibi davranır. Formu göndermemesi gereken butonlara her zaman type="button" yazın.',
+    },
+  }),
+
+  // ── CSS ──
+  choice({
+    id: 'j-css-inline-width', level, topic: 'css',
+    code: `span {
+  width: 200px;
+  height: 50px;
+}`, codeLang: 'css',
+    prompt: {
+      ar: 'لماذا لا يتغيّر عرض الـ span وارتفاعه؟',
+      en: 'Why do the span’s width and height not change?',
+      tr: 'span’ın genişliği ve yüksekliği neden değişmiyor?',
+    },
+    options: {
+      ar: ['لأن span عنصر inline، وwidth وheight لا تؤثر عليه', 'لأن span لا يقبل CSS', 'لأن القيم يجب أن تكون بـ %', 'لأنه يحتاج !important'],
+      en: ['span is inline, and width and height do not apply to inline elements', 'span does not accept CSS', 'The values must be in %', 'It needs !important'],
+      tr: ['span inline’dır ve width/height inline öğelere uygulanmaz', 'span CSS kabul etmez', 'Değerler % olmalı', '!important gerekir'],
+    },
+    answer: 0,
+    why: {
+      ar: 'العناصر inline تأخذ حجم محتواها. لتطبيق width وheight اجعله display: inline-block أو block، أو ضعه داخل flex أو grid.',
+      en: 'Inline elements size to their content. To apply width and height, make it display: inline-block or block, or place it inside flex or grid.',
+      tr: 'Inline öğeler içerikleri kadar yer kaplar. width ve height uygulamak için display: inline-block veya block yapın ya da flex/grid içine koyun.',
+    },
+  }),
+  choice({
+    id: 'j-css-important', level, topic: 'css',
+    code: `/* <p class="note" style="color: blue">Hi</p> */
+
+.note { color: red !important; }`, codeLang: 'css',
+    prompt: {
+      ar: 'ما لون النص؟',
+      en: 'What color is the text?',
+      tr: 'Metnin rengi nedir?',
+    },
+    options: ['red', 'blue', 'black', 'purple'],
+    answer: 0,
+    why: {
+      ar: 'الـ style المضمّن أقوى من أي محدد عادي، لكن !important يتغلّب عليه. استخدم !important نادرًا، لأنه يجعل تعديل التنسيق لاحقًا صعبًا.',
+      en: 'An inline style beats any normal selector, but !important beats it. Use !important rarely, because it makes later style changes hard.',
+      tr: 'Satır içi stil her normal seçiciyi yener, ama !important onu da yener. !important’ı nadiren kullanın; sonradan stil değiştirmeyi zorlaştırır.',
+    },
+  }),
+  choice({
+    id: 'j-css-center', level, topic: 'css',
+    prompt: {
+      ar: 'أبسط طريقة لتوسيط عنصر أفقيًا وعموديًا داخل حاويته؟',
+      en: 'What is the simplest way to center an item horizontally and vertically in its container?',
+      tr: 'Bir öğeyi kapsayıcısında yatay ve dikey ortalamanın en basit yolu nedir?',
+    },
+    options: [
+      'display: flex; justify-content: center; align-items: center;',
+      'text-align: center; vertical-align: middle;',
+      'margin: auto; float: center;',
+      'position: center;',
+    ],
+    answer: 0,
+    why: {
+      ar: 'في flex: justify-content يوسّط على المحور الرئيسي (أفقيًا افتراضيًا) وalign-items على المحور العرضي. وفي grid تكفي place-items: center.',
+      en: 'In flex, justify-content centers along the main axis (horizontal by default) and align-items along the cross axis. In grid, place-items: center is enough.',
+      tr: 'Flex’te justify-content ana eksende (varsayılan yatay), align-items çapraz eksende ortalar. Grid’de place-items: center yeterlidir.',
+    },
+  }),
+  choice({
+    id: 'j-css-min-width-media', level, topic: 'css',
+    code: `.menu { display: none; }
+
+@media (min-width: 768px) {
+  .menu { display: flex; }
+}`, codeLang: 'css',
+    prompt: {
+      ar: 'على أي شاشات تظهر القائمة؟',
+      en: 'On which screens is the menu visible?',
+      tr: 'Menü hangi ekranlarda görünür?',
+    },
+    options: {
+      ar: ['768px وأعرض', 'أقل من 768px', 'كل الشاشات', 'ولا شاشة'],
+      en: ['768px and wider', 'Narrower than 768px', 'All screens', 'No screens'],
+      tr: ['768px ve daha geniş', '768px’ten dar', 'Tüm ekranlar', 'Hiçbir ekran'],
+    },
+    answer: 0,
+    why: {
+      ar: 'هذا أسلوب mobile-first: التنسيق الأساسي للموبايل (مخفية)، وmin-width تضيف تغييرات للشاشات الأعرض من 768px.',
+      en: 'This is mobile-first: the base styles are for mobile (hidden), and min-width adds changes for screens 768px and wider.',
+      tr: 'Bu mobile-first yaklaşımıdır: temel stiller mobil içindir (gizli), min-width ise 768px ve daha geniş ekranlar için değişiklik ekler.',
+    },
+  }),
+  choice({
+    id: 'j-css-position-fixed', level, topic: 'css',
+    prompt: {
+      ar: 'زر "للأعلى" يجب أن يبقى في زاوية الشاشة حتى أثناء التمرير. أي position؟',
+      en: 'A "back to top" button must stay in the screen corner even while scrolling. Which position?',
+      tr: '"Yukarı çık" butonu kaydırırken bile ekran köşesinde kalmalı. Hangi position?',
+    },
+    options: ['fixed', 'absolute', 'relative', 'static'],
+    answer: 0,
+    why: {
+      ar: 'fixed يُحدَّد موضعه نسبةً إلى نافذة العرض (viewport) فلا يتحرك مع التمرير. absolute يُحدَّد نسبةً لأقرب أب له position، ويتحرك مع الصفحة.',
+      en: 'fixed is positioned relative to the viewport, so it does not move when scrolling. absolute is positioned relative to the nearest positioned ancestor and scrolls with the page.',
+      tr: 'fixed görünüm alanına (viewport) göre konumlanır ve kaydırmayla hareket etmez. absolute, konumlandırılmış en yakın üst öğeye göre konumlanır ve sayfayla kayar.',
+    },
+  }),
+
+  // ── Browser ──
+  choice({
+    id: 'j-script-in-head', level, topic: 'browser',
+    code: `<head>
+  <script>
+    document.getElementById('title').textContent = 'Hello';
+  </script>
+</head>
+<body>
+  <h1 id="title"></h1>
+</body>`, codeLang: 'html',
+    prompt: {
+      ar: 'ماذا يحدث؟',
+      en: 'What happens?',
+      tr: 'Ne olur?',
+    },
+    options: {
+      ar: ['TypeError، لأن العنصر لم يُنشأ بعد فـ getElementById يعيد null', 'يظهر Hello', 'لا شيء ولا خطأ', 'يظهر Hello بعد ثانية'],
+      en: ['TypeError: the element does not exist yet, so getElementById returns null', 'Hello is shown', 'Nothing happens, no error', 'Hello shows after a second'],
+      tr: ['TypeError: öğe henüz yok, getElementById null döndürür', 'Hello gösterilir', 'Hiçbir şey olmaz, hata yok', 'Hello bir saniye sonra görünür'],
+    },
+    answer: 0,
+    why: {
+      ar: 'المتصفح يقرأ الـ HTML من الأعلى للأسفل ويشغّل السكربت فور وصوله إليه، قبل وجود <h1>. ضع السكربت في نهاية body، أو استخدم defer.',
+      en: 'The browser reads HTML top to bottom and runs the script as soon as it reaches it, before <h1> exists. Put the script at the end of body or use defer.',
+      tr: 'Tarayıcı HTML’i yukarıdan aşağı okur ve betiği ulaştığı anda, <h1> oluşmadan çalıştırır. Betiği body’nin sonuna koyun ya da defer kullanın.',
+    },
+  }),
+  choice({
+    id: 'j-http-post-login', level, topic: 'browser',
+    prompt: {
+      ar: 'أي طريقة HTTP مناسبة لإرسال فورم تسجيل الدخول (إيميل وكلمة مرور)؟',
+      en: 'Which HTTP method fits a login form (email and password)?',
+      tr: 'Giriş formu (e-posta ve şifre) için hangi HTTP metodu uygundur?',
+    },
+    options: ['POST', 'GET', 'HEAD', 'OPTIONS'],
+    answer: 0,
+    why: {
+      ar: 'مع GET تُوضع البيانات في الرابط، فتظهر في السجل والـ logs والـ history. POST يرسلها في جسم الطلب. ومع ذلك يجب أن يكون الموقع على HTTPS ليُشفَّر الطلب كله.',
+      en: 'With GET, data goes into the URL, so it shows up in history and server logs. POST sends it in the request body. The site still needs HTTPS so the whole request is encrypted.',
+      tr: 'GET ile veri URL’ye konur; geçmişte ve sunucu kayıtlarında görünür. POST onu istek gövdesinde gönderir. Tüm isteğin şifrelenmesi için site yine de HTTPS kullanmalıdır.',
     },
   }),
 ]
