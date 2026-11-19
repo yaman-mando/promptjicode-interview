@@ -18,7 +18,7 @@ const badge: Record<string, string> = {
     <h1 class="text-4xl leading-tight font-extrabold sm:text-5xl" dir="ltr">
       Promptji<span class="text-caramel">Code</span> Interview
     </h1>
-    <p class="mx-auto mt-4 max-w-xl text-lg text-sand">{{ t('tagline') }}</p>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-sand"><BidiText :text="t('tagline')" /></p>
   </section>
 
   <h2 class="mb-4 text-xl font-bold">{{ t('chooseLevel') }}</h2>
@@ -33,7 +33,7 @@ const badge: Record<string, string> = {
       <span class="mb-3 w-fit rounded-full px-3 py-1 font-mono text-sm font-bold" :class="badge[level]">
         {{ t(`levels.${level}.name`) }}
       </span>
-      <p class="flex-1 text-[15px] leading-relaxed text-cream/90">{{ t(`levels.${level}.desc`) }}</p>
+      <p class="flex-1 text-[15px] leading-relaxed text-cream/90"><BidiText :text="t(`levels.${level}.desc`)" /></p>
       <p class="mt-4 text-sm text-sand">{{ t('questionsCount', { n: counts?.[level] ?? '…' }) }}</p>
       <span class="mt-4 rounded-xl bg-caramel py-2.5 text-center font-bold text-ink transition group-hover:brightness-110">
         {{ t('start') }}

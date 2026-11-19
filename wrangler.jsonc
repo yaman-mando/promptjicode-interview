@@ -13,8 +13,7 @@
     {
       "binding": "DB",
       "database_name": "promptjicode-interview",
-      // Replace with the id printed by: npx wrangler d1 create promptjicode-interview
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "8a886385-16fc-45db-b80a-2dd9e311098e",
       "migrations_dir": "migrations"
     }
   ]
