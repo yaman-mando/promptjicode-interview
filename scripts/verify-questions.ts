@@ -40,7 +40,7 @@ for (const q of QUESTIONS) {
     if (!q.text[l]?.prompt || !q.text[l]?.explanation) fail(q.id, `missing ${l} text`)
   }
   const opts = q.options ?? q.text.en.options ?? []
-  if (new Set(opts.map(norm)).size !== opts.length) fail(q.id, 'two options look the same')
+  if (new Set(opts.map(o => o.replace(/\s/g, ''))).size !== opts.length) fail(q.id, 'two options are the same')
 
   if (q.run === false || !q.code || (q.codeLang && q.codeLang !== 'js')) continue
 
