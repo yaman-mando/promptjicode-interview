@@ -41,6 +41,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Set NUXT_QUIZ_SECRET in production (wrangler secret put NUXT_QUIZ_SECRET)
     quizSecret: 'dev-only-secret-change-me',
+    // Set NUXT_ADMIN_PASSWORD in production to enable /admin. Empty = admin disabled.
+    adminPassword: '',
+  },
+
+  routeRules: {
+    '/admin/**': { headers: { 'X-Robots-Tag': 'noindex' } },
+    '/*/admin/**': { headers: { 'X-Robots-Tag': 'noindex' } },
   },
 
   nitro: {
