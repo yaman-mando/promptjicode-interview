@@ -105,6 +105,91 @@
     "answer": "Correct answer",
     "picks": "What people picked",
     "explanation": "Explanation",
-    "attempts": "{n} tests"
+    "attempts": "{n} tests",
+    "visitors": "Visitors",
+    "today": "Today",
+    "lastDays": "Last {n} days",
+    "onlineNow": "Online now: {n}",
+    "uniqueVisitors": "Visitors",
+    "newCount": "{n} new",
+    "sessions": "Visits",
+    "pageviewsCount": "{n} pages",
+    "avgVisit": "Average visit",
+    "bounce": "{n}% left after one page",
+    "completion": "Test completion",
+    "doneOf": "{done} of {started} tests",
+    "funnel": "From visit to result",
+    "fVisited": "Visited",
+    "fStarted": "Started a test",
+    "fFinished": "Finished",
+    "levelLine": "{started} started · {done} finished · {left} left",
+    "stops": "Where people stopped",
+    "stop0": "Before any answer",
+    "stop1": "First quarter",
+    "stop2": "Second quarter",
+    "stop3": "Third quarter",
+    "stop4": "Near the end",
+    "perDay": "Per day",
+    "perHour": "By hour of day (Türkiye time)",
+    "countries": "Countries",
+    "country": "Country",
+    "cities": "Cities",
+    "devices": "Devices",
+    "browsers": "Browsers",
+    "systems": "Operating systems",
+    "languages": "Site language",
+    "sources": "Where they came from",
+    "direct": "Direct",
+    "pages": "Top pages",
+    "recentVisits": "Latest visits",
+    "deviceCol": "Device",
+    "source": "Source",
+    "stay": "Time",
+    "test": "Test",
+    "newVisitor": "New",
+    "returning": "Returning",
+    "finished": "Finished",
+    "stopped": "Stopped",
+    "unknown": "Unknown",
+    "privacyNote": "No IP addresses or personal data are stored. Country and city are approximate, from Cloudflare. Your own visits while signed in are not counted.",
+    "device": {
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop"
+    }
+  },
+  "mainSite": "PromptjiCode home",
+  "seo": {
+    "title": "Frontend Interview Questions — Free Level Test",
+    "description": "Practice real frontend interview questions on JavaScript, CSS, React, Vue and TypeScript. Pick Junior, Mid or Senior, get explanations, and compare your score. Free, no sign-up.",
+    "levelTitle": "{level} Frontend Interview Questions — Free Test",
+    "levelDescription": "Free {level} frontend interview test with real questions. {desc} See your score and how you compare.",
+    "resultTitle": "I scored {score}/{total} on the {level} test",
+    "resultDescription": "Try the frontend interview questions test and compare your score.",
+    "h1": "Test yourself on real frontend interview questions",
+    "topicsTitle": "What the questions cover",
+    "faqTitle": "FAQ",
+    "faq": [
+      {
+        "q": "What is PromptjiCode Interview?",
+        "a": "A free site for practising frontend interview questions. Each test picks random questions from the bank for your level, and at the end you see your score with an explanation for every question."
+      },
+      {
+        "q": "Is it free? Do I need an account?",
+        "a": "It is completely free, with no sign-up and no email. Pick a level and start."
+      },
+      {
+        "q": "Which topics do the questions cover?",
+        "a": "JavaScript (closures, the event loop, Promises), CSS and HTML, React and Vue, TypeScript, browser performance and security: the things companies ask in interviews."
+      },
+      {
+        "q": "How do I compare my score with others?",
+        "a": "When you finish, your score is ranked against everyone who took the same level, and you see what percentage of them you did better than."
+      },
+      {
+        "q": "Which languages is the site in?",
+        "a": "Arabic, English and Turkish. Code stays in English, the way you see it at work."
+      }
+    ]
   }
 }

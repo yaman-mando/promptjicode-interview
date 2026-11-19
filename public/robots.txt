@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /en/admin
+Disallow: /tr/admin
+Disallow: /api/
+Disallow: /result/
+Disallow: /en/result/
+Disallow: /tr/result/
+
+Sitemap: https://interview.promptjicode.com/sitemap.xml

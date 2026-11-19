@@ -5,6 +5,7 @@ import { LEVELS } from '#shared/types/quiz'
 const route = useRoute()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const { $track } = useNuxtApp()
 
 const level = route.params.level as Level
 if (!LEVELS.includes(level)) {
@@ -26,6 +27,7 @@ async function load() {
     test.value = await $fetch<StartResponse>('/api/quiz/start', { query: { level, locale: locale.value } })
     answers.value = test.value.questions.map(() => null)
     index.value = 0
+    $track('quiz_start', { level, total: test.value.questions.length })
   }
   catch {
     loadError.value = true
@@ -38,8 +40,12 @@ const total = computed(() => test.value?.questions.length ?? 0)
 const isLast = computed(() => index.value === total.value - 1)
 const chosen = computed(() => answers.value[index.value])
 
+const answeredCount = () => answers.value.filter(a => a !== null).length
+
 function choose(i: number) {
+  const first = answers.value[index.value] === null
   answers.value[index.value] = i
+  if (first) $track('quiz_progress', { level, answered: answeredCount(), total: total.value })
 }
 
 async function next() {
@@ -65,6 +71,7 @@ async function submit() {
     }
     const { id } = await $fetch<{ id: string }>('/api/quiz/submit', { method: 'POST', body })
     done = true
+    $track('quiz_done', { level, attemptId: id, answered: answeredCount(), total: total.value })
     await navigateTo(localePath(`/result/${id}`))
   }
   catch {
@@ -73,10 +80,25 @@ async function submit() {
   }
 }
 
+// Record where people stop when they leave a test half-way
+let leaveSent = false
+function sendLeave() {
+  if (done || leaveSent || !test.value) return
+  leaveSent = true
+  $track('quiz_leave', { level, answered: answeredCount(), total: total.value }, true)
+}
+const onPageHide = () => sendLeave()
+onMounted(() => window.addEventListener('pagehide', onPageHide))
+onBeforeUnmount(() => window.removeEventListener('pagehide', onPageHide))
+
 // Warn before leaving a test half-way
 onBeforeRouteLeave(() => {
-  if (done || !test.value || answers.value.every(a => a === null)) return true
-  return window.confirm(t('quiz.leave'))
+  if (done || !test.value) return true
+  if (answers.value.every(a => a === null) || window.confirm(t('quiz.leave'))) {
+    sendLeave()
+    return true
+  }
+  return false
 })
 
 // Keyboard: A–D or 1–4 pick an option, Enter goes on
@@ -90,13 +112,22 @@ function onKey(e: KeyboardEvent) {
 onMounted(() => window.addEventListener('keydown', onKey))
 onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 
-useHead({ title: () => `${t(`levels.${level}.name`)} · PromptjiCode Interview` })
+useSeoMeta({
+  title: () => t('seo.levelTitle', { level: t(`levels.${level}.name`) }),
+  description: () => t('seo.levelDescription', { level: t(`levels.${level}.name`), desc: t(`levels.${level}.desc`) }),
+  ogTitle: () => t('seo.levelTitle', { level: t(`levels.${level}.name`) }),
+  ogDescription: () => t('seo.levelDescription', { level: t(`levels.${level}.name`), desc: t(`levels.${level}.desc`) }),
+})
 </script>
 
 <template>
   <div class="pt-4">
     <!-- Loading / error -->
-    <p v-if="!test && !loadError" class="py-24 text-center text-sand">{{ t('quiz.loading') }}</p>
+    <div v-if="!test && !loadError" class="py-20 text-center">
+      <h1 class="mb-3 text-2xl font-bold">{{ t('seo.levelTitle', { level: t(`levels.${level}.name`) }) }}</h1>
+      <p class="mx-auto mb-6 max-w-lg text-sand"><BidiText :text="t(`levels.${level}.desc`)" /></p>
+      <p class="text-sm text-sand/70">{{ t('quiz.loading') }}</p>
+    </div>
     <div v-else-if="loadError" class="py-24 text-center">
       <p class="mb-4 text-sand">{{ t('quiz.error') }}</p>
       <button class="rounded-xl bg-caramel px-5 py-2.5 font-bold text-ink" @click="load">{{ t('quiz.retry') }}</button>

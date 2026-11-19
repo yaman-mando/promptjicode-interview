@@ -32,10 +32,16 @@ async function share() {
 
 const isCode = (s: string) => /^[\x00-\x7F]*$/.test(s)
 
-useHead({
-  title: () => result.value
-    ? `${result.value.score}/${result.value.total} · ${t(`levels.${result.value.level}.name`)} · PromptjiCode Interview`
-    : 'PromptjiCode Interview',
+// Results are personal: shareable with a good preview, but kept out of search results
+const resultTitle = () => result.value
+  ? t('seo.resultTitle', { score: result.value.score, total: result.value.total, level: t(`levels.${result.value.level}.name`) })
+  : 'PromptjiCode Interview'
+useSeoMeta({
+  title: resultTitle,
+  ogTitle: resultTitle,
+  description: () => t('seo.resultDescription'),
+  ogDescription: () => t('seo.resultDescription'),
+  robots: 'noindex, follow',
 })
 </script>
 

@@ -105,6 +105,91 @@
     "answer": "Doğru cevap",
     "picks": "Kullanıcı seçimleri",
     "explanation": "Açıklama",
-    "attempts": "{n} test"
+    "attempts": "{n} test",
+    "visitors": "Ziyaretçiler",
+    "today": "Bugün",
+    "lastDays": "Son {n} gün",
+    "onlineNow": "Şu an çevrimiçi: {n}",
+    "uniqueVisitors": "Ziyaretçi",
+    "newCount": "{n} yeni",
+    "sessions": "Ziyaret",
+    "pageviewsCount": "{n} sayfa",
+    "avgVisit": "Ortalama ziyaret",
+    "bounce": "%{n} tek sayfada çıktı",
+    "completion": "Test tamamlama",
+    "doneOf": "{started} testten {done}",
+    "funnel": "Ziyaretten sonuca",
+    "fVisited": "Ziyaret etti",
+    "fStarted": "Test başlattı",
+    "fFinished": "Bitirdi",
+    "levelLine": "{started} başladı · {done} bitti · {left} bıraktı",
+    "stops": "Nerede bıraktılar",
+    "stop0": "İlk cevaptan önce",
+    "stop1": "İlk çeyrek",
+    "stop2": "İkinci çeyrek",
+    "stop3": "Üçüncü çeyrek",
+    "stop4": "Sona yakın",
+    "perDay": "Günlük",
+    "perHour": "Günün saatine göre (TSİ)",
+    "countries": "Ülkeler",
+    "country": "Ülke",
+    "cities": "Şehirler",
+    "devices": "Cihazlar",
+    "browsers": "Tarayıcılar",
+    "systems": "İşletim sistemleri",
+    "languages": "Site dili",
+    "sources": "Nereden geldiler",
+    "direct": "Doğrudan",
+    "pages": "En çok görülen sayfalar",
+    "recentVisits": "Son ziyaretler",
+    "deviceCol": "Cihaz",
+    "source": "Kaynak",
+    "stay": "Süre",
+    "test": "Test",
+    "newVisitor": "Yeni",
+    "returning": "Geri dönen",
+    "finished": "Bitirdi",
+    "stopped": "Bıraktı",
+    "unknown": "Bilinmiyor",
+    "privacyNote": "IP adresi veya kişisel veri saklanmaz. Ülke ve şehir Cloudflare'den gelen yaklaşık bilgidir. Giriş yapmışken kendi ziyaretlerin sayılmaz.",
+    "device": {
+      "mobile": "Mobil",
+      "tablet": "Tablet",
+      "desktop": "Masaüstü"
+    }
+  },
+  "mainSite": "Ana sayfa",
+  "seo": {
+    "title": "Frontend Mülakat Soruları — Ücretsiz Seviye Testi",
+    "description": "JavaScript, CSS, React, Vue ve TypeScript üzerine gerçek frontend mülakat sorularıyla kendini test et. Junior, Mid veya Senior seç, açıklamaları gör ve puanını karşılaştır. Ücretsiz, kayıt yok.",
+    "levelTitle": "{level} Frontend Mülakat Soruları — Ücretsiz Test",
+    "levelDescription": "Gerçek sorularla ücretsiz {level} frontend mülakat testi. {desc} Puanını gör ve diğerleriyle karşılaştır.",
+    "resultTitle": "{level} testinde {score}/{total} yaptım",
+    "resultDescription": "Frontend mülakat soruları testini dene ve puanını karşılaştır.",
+    "h1": "Gerçek frontend mülakat sorularıyla kendini test et",
+    "topicsTitle": "Sorular neleri kapsıyor",
+    "faqTitle": "Sık sorulan sorular",
+    "faq": [
+      {
+        "q": "PromptjiCode Interview nedir?",
+        "a": "Frontend mülakat sorularıyla pratik yapman için ücretsiz bir site. Her test seviyene göre soru bankasından rastgele sorular seçer; sonunda her sorunun açıklamasıyla birlikte puanını görürsün."
+      },
+      {
+        "q": "Ücretsiz mi? Hesap gerekiyor mu?",
+        "a": "Tamamen ücretsiz; kayıt ya da e-posta yok. Seviyeni seç ve başla."
+      },
+      {
+        "q": "Sorular hangi konuları kapsıyor?",
+        "a": "JavaScript (closure, event loop, Promise), CSS ve HTML, React ve Vue, TypeScript, tarayıcı performansı ve güvenlik: şirketlerin mülakatta sorduğu konular."
+      },
+      {
+        "q": "Puanımı başkalarıyla nasıl karşılaştırırım?",
+        "a": "Testi bitirince puanın aynı seviyeyi çözen herkesle sıralanır ve onların yüzde kaçından daha iyi olduğunu görürsün."
+      },
+      {
+        "q": "Site hangi dillerde?",
+        "a": "Arapça, İngilizce ve Türkçe. Kod, işte gördüğün gibi İngilizce kalır."
+      }
+    ]
   }
 }

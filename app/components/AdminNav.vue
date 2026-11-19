@@ -14,6 +14,9 @@ async function logout() {
     <NuxtLink :to="localePath('/admin')" class="rounded-lg px-3 py-1.5 text-sm font-semibold text-sand hover:text-cream" exact-active-class="!bg-white/10 !text-cream">
       {{ t('admin.dashboard') }}
     </NuxtLink>
+    <NuxtLink :to="localePath('/admin/visitors')" class="rounded-lg px-3 py-1.5 text-sm font-semibold text-sand hover:text-cream" active-class="!bg-white/10 !text-cream">
+      {{ t('admin.visitors') }}
+    </NuxtLink>
     <NuxtLink :to="localePath('/admin/questions')" class="rounded-lg px-3 py-1.5 text-sm font-semibold text-sand hover:text-cream" active-class="!bg-white/10 !text-cream">
       {{ t('admin.questions') }}
     </NuxtLink>
