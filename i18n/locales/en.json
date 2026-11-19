@@ -1,0 +1,45 @@
+{
+  "brand": "PromptjiCode Interview",
+  "tagline": "Real frontend interview questions. Test yourself and see how you compare.",
+  "chooseLevel": "Choose your test level",
+  "questionsCount": "{n} questions · no sign-up",
+  "start": "Start",
+  "levels": {
+    "junior": { "name": "Junior", "desc": "JavaScript and HTML basics that come up in every interview." },
+    "mid": { "name": "Mid", "desc": "Async, the event loop, React and CSS in more depth." },
+    "senior": { "name": "Senior", "desc": "Performance, stacking contexts, React and Promise details." }
+  },
+  "openTest": { "title": "Open test", "desc": "Questions adapt to your answers to find your real level.", "soon": "Coming soon" },
+  "quiz": {
+    "loading": "Preparing your questions…",
+    "question": "Question {current} of {total}",
+    "next": "Next",
+    "finish": "Finish test",
+    "skip": "Skip",
+    "submitting": "Calculating your result…",
+    "error": "Something went wrong. Please try again.",
+    "retry": "Try again",
+    "leave": "You will lose your progress. Leave the test?"
+  },
+  "result": {
+    "title": "Your result",
+    "score": "{score} out of {total}",
+    "time": "Time: {time}",
+    "percentile": "Better than {p}% of people who took the {level} test",
+    "early": "Not enough people have taken this test yet to compare. Share the link with friends!",
+    "byTopic": "By topic",
+    "review": "Review your answers",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer",
+    "skipped": "Not answered",
+    "why": "Why?",
+    "again": "New test",
+    "otherLevel": "Try another level",
+    "share": "Copy result link",
+    "copied": "Copied ✓",
+    "notFound": "We couldn't find this result."
+  },
+  "topics": { "javascript": "JavaScript", "async": "Async", "css": "CSS", "html": "HTML", "react": "React" },
+  "footer": "Write it right… get it right",
+  "github": "Code on GitHub"
+}

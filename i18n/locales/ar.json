@@ -1,0 +1,45 @@
+{
+  "brand": "PromptjiCode Interview",
+  "tagline": "أسئلة مقابلات فرونت إند حقيقية. اختبر نفسك، وقارن نتيجتك بغيرك.",
+  "chooseLevel": "اختر مستوى الاختبار",
+  "questionsCount": "{n} أسئلة · بدون تسجيل",
+  "start": "ابدأ",
+  "levels": {
+    "junior": { "name": "Junior", "desc": "أساسيات JavaScript وHTML التي تُسأل في كل مقابلة." },
+    "mid": { "name": "Mid", "desc": "الـ async والـ event loop وReact وCSS بعمق أكبر." },
+    "senior": { "name": "Senior", "desc": "الأداء، وstacking context، وتفاصيل React والـ Promises." }
+  },
+  "openTest": { "title": "الاختبار المفتوح", "desc": "يتغيّر مستوى الأسئلة حسب إجاباتك ليحدد مستواك الحقيقي.", "soon": "قريبًا" },
+  "quiz": {
+    "loading": "جاري تجهيز الأسئلة…",
+    "question": "سؤال {current} من {total}",
+    "next": "التالي",
+    "finish": "أنهِ الاختبار",
+    "skip": "تخطَّ",
+    "submitting": "جاري حساب النتيجة…",
+    "error": "حدث خطأ. حاول مرة أخرى.",
+    "retry": "إعادة المحاولة",
+    "leave": "ستخسر تقدّمك في الاختبار. هل تريد الخروج؟"
+  },
+  "result": {
+    "title": "نتيجتك",
+    "score": "{score} من {total}",
+    "time": "الوقت: {time}",
+    "percentile": "أفضل من {p}٪ ممن أجروا اختبار {level}",
+    "early": "ما زال عدد من أجروا هذا الاختبار قليلًا للمقارنة. شارك الرابط مع أصدقائك!",
+    "byTopic": "حسب الموضوع",
+    "review": "مراجعة الإجابات",
+    "yourAnswer": "إجابتك",
+    "correctAnswer": "الإجابة الصحيحة",
+    "skipped": "لم تُجب",
+    "why": "لماذا؟",
+    "again": "اختبار جديد",
+    "otherLevel": "جرّب مستوى آخر",
+    "share": "انسخ رابط النتيجة",
+    "copied": "تم النسخ ✓",
+    "notFound": "لم نجد هذه النتيجة."
+  },
+  "topics": { "javascript": "JavaScript", "async": "Async", "css": "CSS", "html": "HTML", "react": "React" },
+  "footer": "اكتبها صح… بتطلع صح",
+  "github": "الكود على GitHub"
+}

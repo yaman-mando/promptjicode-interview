@@ -1,0 +1,45 @@
+{
+  "brand": "PromptjiCode Interview",
+  "tagline": "Gerçek frontend mülakat soruları. Kendini test et, sonucunu başkalarıyla karşılaştır.",
+  "chooseLevel": "Test seviyeni seç",
+  "questionsCount": "{n} soru · kayıt gerekmez",
+  "start": "Başla",
+  "levels": {
+    "junior": { "name": "Junior", "desc": "Her mülakatta sorulan JavaScript ve HTML temelleri." },
+    "mid": { "name": "Mid", "desc": "Async, event loop, React ve CSS daha derinlemesine." },
+    "senior": { "name": "Senior", "desc": "Performans, stacking context, React ve Promise detayları." }
+  },
+  "openTest": { "title": "Açık test", "desc": "Sorular cevaplarına göre değişir ve gerçek seviyeni bulur.", "soon": "Yakında" },
+  "quiz": {
+    "loading": "Sorular hazırlanıyor…",
+    "question": "Soru {current} / {total}",
+    "next": "Sonraki",
+    "finish": "Testi bitir",
+    "skip": "Atla",
+    "submitting": "Sonucun hesaplanıyor…",
+    "error": "Bir hata oluştu. Lütfen tekrar dene.",
+    "retry": "Tekrar dene",
+    "leave": "İlerlemen kaybolacak. Testten çıkmak istiyor musun?"
+  },
+  "result": {
+    "title": "Sonucun",
+    "score": "{total} sorudan {score}",
+    "time": "Süre: {time}",
+    "percentile": "{level} testini çözenlerin %{p}’inden daha iyi",
+    "early": "Karşılaştırma için henüz yeterli katılımcı yok. Bağlantıyı arkadaşlarınla paylaş!",
+    "byTopic": "Konulara göre",
+    "review": "Cevaplarını incele",
+    "yourAnswer": "Senin cevabın",
+    "correctAnswer": "Doğru cevap",
+    "skipped": "Cevaplanmadı",
+    "why": "Neden?",
+    "again": "Yeni test",
+    "otherLevel": "Başka bir seviye dene",
+    "share": "Sonuç bağlantısını kopyala",
+    "copied": "Kopyalandı ✓",
+    "notFound": "Bu sonucu bulamadık."
+  },
+  "topics": { "javascript": "JavaScript", "async": "Async", "css": "CSS", "html": "HTML", "react": "React" },
+  "footer": "Doğru yaz… doğru çıksın",
+  "github": "Kod GitHub’da"
+}
