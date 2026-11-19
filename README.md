@@ -27,12 +27,11 @@ npm run dev                # http://localhost:3000
 
 ## Deploy (free tier)
 
-```bash
-npx wrangler login
-npx wrangler d1 create promptjicode-interview   # put the database_id in wrangler.jsonc
-npx wrangler secret put NUXT_QUIZ_SECRET        # any long random string
-npm run deploy
-```
+Deployed with **Cloudflare Workers Builds**: every push to `main` builds and deploys.
+
+- Build command: `npm run build`
+- Deploy command: `npm run deploy:ci` (applies D1 migrations, then deploys)
+- Secret: `NUXT_QUIZ_SECRET` (any long random string), set in the Worker's settings
 
 ## Adding a question
 

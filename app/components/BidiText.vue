@@ -8,7 +8,7 @@ const props = defineProps<{ text: string }>()
 
 interface Part { text: string, kind: 'plain' | 'term' | 'code' }
 
-const CODE_HINT = /[(){}[\]=<>#.?|&$_+]|^[a-z]+[A-Z]|^\d/
+const CODE_HINT = /[(){}[\]=<>#?|&$_+]|\w\.\w|^\.|^[a-z]+[A-Z]|^\d/
 
 const parts = computed<Part[]>(() => {
   // Only right-to-left text needs this; English and Turkish render as they are
