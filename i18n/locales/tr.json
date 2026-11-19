@@ -5,11 +5,24 @@
   "questionsCount": "{n} soru · kayıt gerekmez",
   "start": "Başla",
   "levels": {
-    "junior": { "name": "Junior", "desc": "Her mülakatta sorulan JavaScript ve HTML temelleri." },
-    "mid": { "name": "Mid", "desc": "Async, event loop, React ve CSS daha derinlemesine." },
-    "senior": { "name": "Senior", "desc": "Performans, stacking context, React ve Promise detayları." }
+    "junior": {
+      "name": "Junior",
+      "desc": "Her mülakatta sorulan JavaScript ve HTML temelleri."
+    },
+    "mid": {
+      "name": "Mid",
+      "desc": "Async, event loop, React ve CSS daha derinlemesine."
+    },
+    "senior": {
+      "name": "Senior",
+      "desc": "Performans, stacking context, React ve Promise detayları."
+    }
   },
-  "openTest": { "title": "Açık test", "desc": "Sorular cevaplarına göre değişir ve gerçek seviyeni bulur.", "soon": "Yakında" },
+  "openTest": {
+    "title": "Açık test",
+    "desc": "Sorular cevaplarına göre değişir ve gerçek seviyeni bulur.",
+    "soon": "Yakında"
+  },
   "quiz": {
     "loading": "Sorular hazırlanıyor…",
     "question": "Soru {current} / {total}",
@@ -39,7 +52,18 @@
     "copied": "Kopyalandı ✓",
     "notFound": "Bu sonucu bulamadık."
   },
-  "topics": { "javascript": "JavaScript", "async": "Async", "css": "CSS", "html": "HTML", "react": "React" },
+  "topics": {
+    "javascript": "JavaScript",
+    "async": "Async",
+    "css": "CSS",
+    "html": "HTML",
+    "react": "React",
+    "vue": "Vue",
+    "typescript": "TypeScript",
+    "browser": "Tarayıcı",
+    "performance": "Performans",
+    "security": "Güvenlik"
+  },
   "footer": "Doğru yaz… doğru çıksın",
   "github": "Kod GitHub’da"
 }

@@ -5,11 +5,24 @@
   "questionsCount": "{n} questions · no sign-up",
   "start": "Start",
   "levels": {
-    "junior": { "name": "Junior", "desc": "JavaScript and HTML basics that come up in every interview." },
-    "mid": { "name": "Mid", "desc": "Async, the event loop, React and CSS in more depth." },
-    "senior": { "name": "Senior", "desc": "Performance, stacking contexts, React and Promise details." }
+    "junior": {
+      "name": "Junior",
+      "desc": "JavaScript and HTML basics that come up in every interview."
+    },
+    "mid": {
+      "name": "Mid",
+      "desc": "Async, the event loop, React and CSS in more depth."
+    },
+    "senior": {
+      "name": "Senior",
+      "desc": "Performance, stacking contexts, React and Promise details."
+    }
   },
-  "openTest": { "title": "Open test", "desc": "Questions adapt to your answers to find your real level.", "soon": "Coming soon" },
+  "openTest": {
+    "title": "Open test",
+    "desc": "Questions adapt to your answers to find your real level.",
+    "soon": "Coming soon"
+  },
   "quiz": {
     "loading": "Preparing your questions…",
     "question": "Question {current} of {total}",
@@ -39,7 +52,18 @@
     "copied": "Copied ✓",
     "notFound": "We couldn't find this result."
   },
-  "topics": { "javascript": "JavaScript", "async": "Async", "css": "CSS", "html": "HTML", "react": "React" },
+  "topics": {
+    "javascript": "JavaScript",
+    "async": "Async",
+    "css": "CSS",
+    "html": "HTML",
+    "react": "React",
+    "vue": "Vue",
+    "typescript": "TypeScript",
+    "browser": "Browser",
+    "performance": "Performance",
+    "security": "Security"
+  },
   "footer": "Write it right… get it right",
   "github": "Code on GitHub"
 }
