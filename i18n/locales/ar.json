@@ -5,11 +5,24 @@
   "questionsCount": "{n} أسئلة · بدون تسجيل",
   "start": "ابدأ",
   "levels": {
-    "junior": { "name": "Junior", "desc": "أساسيات JavaScript وHTML التي تُسأل في كل مقابلة." },
-    "mid": { "name": "Mid", "desc": "الـ async والـ event loop وReact وCSS بعمق أكبر." },
-    "senior": { "name": "Senior", "desc": "الأداء، وstacking context، وتفاصيل React والـ Promises." }
+    "junior": {
+      "name": "Junior",
+      "desc": "أساسيات JavaScript وHTML التي تُسأل في كل مقابلة."
+    },
+    "mid": {
+      "name": "Mid",
+      "desc": "الـ async والـ event loop وReact وCSS بعمق أكبر."
+    },
+    "senior": {
+      "name": "Senior",
+      "desc": "الأداء، وstacking context، وتفاصيل React والـ Promises."
+    }
   },
-  "openTest": { "title": "الاختبار المفتوح", "desc": "يتغيّر مستوى الأسئلة حسب إجاباتك ليحدد مستواك الحقيقي.", "soon": "قريبًا" },
+  "openTest": {
+    "title": "الاختبار المفتوح",
+    "desc": "يتغيّر مستوى الأسئلة حسب إجاباتك ليحدد مستواك الحقيقي.",
+    "soon": "قريبًا"
+  },
   "quiz": {
     "loading": "جاري تجهيز الأسئلة…",
     "question": "سؤال {current} من {total}",
@@ -39,7 +52,18 @@
     "copied": "تم النسخ ✓",
     "notFound": "لم نجد هذه النتيجة."
   },
-  "topics": { "javascript": "JavaScript", "async": "Async", "css": "CSS", "html": "HTML", "react": "React" },
+  "topics": {
+    "javascript": "JavaScript",
+    "async": "Async",
+    "css": "CSS",
+    "html": "HTML",
+    "react": "React",
+    "vue": "Vue",
+    "typescript": "TypeScript",
+    "browser": "المتصفح",
+    "performance": "الأداء",
+    "security": "الأمان"
+  },
   "footer": "اكتبها صح… بتطلع صح",
   "github": "الكود على GitHub"
 }

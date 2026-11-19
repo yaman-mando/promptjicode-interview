@@ -1,10 +1,7 @@
 import type { Question } from '#shared/types/quiz'
 
-/**
- * Question bank. Server-only: answers never reach the browser before the test is submitted.
- * Arabic is neutral written Arabic (not dialect), matching the channel's on-screen text.
- */
-export const QUESTIONS: Question[] = [
+/** The first 15 questions (from the PromptjiCode interview series). */
+export const LEGACY: Question[] = [
   // ───────────────────────── JUNIOR ─────────────────────────
   {
     id: 'j-nullish',
@@ -110,6 +107,7 @@ console.log(prices.sort());`,
   },
   {
     id: 'j-button',
+    run: false,
     level: 'junior',
     topic: 'html',
     options: ['<div onclick="save()">', '<span onclick="save()">', '<button type="button">', '<a href="#">'],
@@ -158,6 +156,7 @@ console.log(prices.sort());`,
   },
   {
     id: 'm-fetch-404',
+    run: false,
     level: 'mid',
     topic: 'async',
     codeLang: 'js',
@@ -216,6 +215,7 @@ console.log(4);`,
   },
   {
     id: 'm-react-key',
+    run: false,
     level: 'mid',
     topic: 'react',
     codeLang: 'jsx',
@@ -248,6 +248,7 @@ console.log(4);`,
   },
   {
     id: 'm-specificity',
+    run: false,
     level: 'mid',
     topic: 'css',
     codeLang: 'css',
@@ -277,6 +278,7 @@ h1           { color: green; }`,
   // ───────────────────────── SENIOR ─────────────────────────
   {
     id: 's-transform',
+    run: false,
     level: 'senior',
     topic: 'css',
     codeLang: 'css',
@@ -305,6 +307,7 @@ h1           { color: green; }`,
   },
   {
     id: 's-stacking-context',
+    run: false,
     level: 'senior',
     topic: 'css',
     codeLang: 'html',
@@ -335,6 +338,7 @@ h1           { color: green; }`,
   },
   {
     id: 's-setstate-batch',
+    run: false,
     level: 'senior',
     topic: 'react',
     codeLang: 'jsx',

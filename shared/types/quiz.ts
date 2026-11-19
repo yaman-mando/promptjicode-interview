@@ -1,6 +1,8 @@
 export type Level = 'junior' | 'mid' | 'senior'
 export type Locale = 'ar' | 'en' | 'tr'
-export type Topic = 'javascript' | 'async' | 'css' | 'html' | 'react'
+export type Topic =
+  | 'javascript' | 'async' | 'css' | 'html' | 'react' | 'vue'
+  | 'typescript' | 'browser' | 'performance' | 'security'
 
 export const LEVELS: Level[] = ['junior', 'mid', 'senior']
 export const LOCALES: Locale[] = ['ar', 'en', 'tr']
@@ -24,6 +26,8 @@ export interface Question {
   options?: string[]
   answer: number
   text: Record<Locale, QuestionText>
+  /** Verifier only: false when the code cannot run in Node as-is (fetch, DOM, JSX…). */
+  run?: boolean
 }
 
 /** What the browser gets during the test: no answer, no explanation. */
