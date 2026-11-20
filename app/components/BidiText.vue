@@ -4,7 +4,8 @@
  * Every Latin run (like "res.ok" or "(#title)") is wrapped in <bdi> so it keeps its own
  * left-to-right order inside a right-to-left sentence. Code-looking runs also get a code style.
  */
-const props = defineProps<{ text: string }>()
+// plain: isolate English runs for correct order, but never style them as code
+const props = defineProps<{ text: string, plain?: boolean }>()
 
 interface Part { text: string, kind: 'plain' | 'term' | 'code' }
 
@@ -32,7 +33,7 @@ const parts = computed<Part[]>(() => {
     start += lead.length
     if (!run) continue
     if (start > last) out.push({ text: props.text.slice(last, start), kind: 'plain' })
-    out.push({ text: run, kind: CODE_HINT.test(run) ? 'code' : 'term' })
+    out.push({ text: run, kind: !props.plain && CODE_HINT.test(run) ? 'code' : 'term' })
     last = start + run.length
   }
   if (last < props.text.length) out.push({ text: props.text.slice(last), kind: 'plain' })
