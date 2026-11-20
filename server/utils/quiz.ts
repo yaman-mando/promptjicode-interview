@@ -1,7 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
 import type { H3Event } from 'h3'
 import { QUESTIONS } from '../data/questions'
-import type { Level, Locale, Mode, OpenState, PublicQuestion, Question, Topic } from '#shared/types/quiz'
+import type { Level, Locale, Mode, OpenState, PublicQuestion, Question, Topic, Track } from '#shared/types/quiz'
 import { LEVELS, LOCALES, MAX_TIME_LIMIT_MIN, QUESTION_COUNTS, TOPICS } from '#shared/types/quiz'
 
 export const QUESTIONS_PER_TEST = 10
@@ -122,10 +122,10 @@ export function nextOpenLevel(state: OpenState): Level {
 }
 
 /** A question at that level not asked yet, preferring a topic different from the last few. */
-export function pickOpenQuestion(level: Level, askedIds: string[]): Question | undefined {
+export function pickOpenQuestion(level: Level, askedIds: string[], topics: Topic[]): Question | undefined {
   const asked = new Set(askedIds)
   const recentTopics = askedIds.slice(-3).map(id => getQuestion(id)?.topic)
-  const fresh = (l: Level) => shuffle(QUESTIONS.filter(q => q.level === l && !asked.has(q.id)))
+  const fresh = (l: Level) => shuffle(QUESTIONS.filter(q => q.level === l && !asked.has(q.id) && topics.includes(q.topic)))
   // Fall back to the nearest level if this one ran out
   const order = [level, ...LEVELS.filter(l => l !== level).sort((a, b) =>
     Math.abs(LEVELS.indexOf(a) - LEVELS.indexOf(level)) - Math.abs(LEVELS.indexOf(b) - LEVELS.indexOf(level)))]
@@ -176,6 +176,7 @@ async function hmac(secret: string, data: string): Promise<string> {
 }
 
 export interface TestSeal {
+  track: Track
   mode: Mode
   level: Level
   timeLimit: number
@@ -184,7 +185,7 @@ export interface TestSeal {
 }
 
 function tokenPayload(t: TestSeal) {
-  return `${t.mode}|${t.level}|${t.timeLimit}|${t.startedAt}|${t.ids.join(',')}`
+  return `${t.track}|${t.mode}|${t.level}|${t.timeLimit}|${t.startedAt}|${t.ids.join(',')}`
 }
 
 async function sign(event: H3Event, payload: string) {
@@ -203,7 +204,7 @@ export const signTest = (event: H3Event, t: TestSeal) => sign(event, tokenPayloa
 export const verifyTest = async (event: H3Event, t: TestSeal, token: string) => sameString(await signTest(event, t), token)
 
 // The open test signs its whole state, so answers given so far cannot be changed
-const openPayload = (s: OpenState) => `open|${s.startedAt}|${s.timeLimit}|${s.ids.join(',')}|${s.answers.map(a => a ?? '-').join(',')}`
+const openPayload = (s: OpenState) => `open|${s.track}|${s.startedAt}|${s.timeLimit}|${s.ids.join(',')}|${s.answers.map(a => a ?? '-').join(',')}`
 export const signOpen = (event: H3Event, s: OpenState) => sign(event, openPayload(s))
 export const verifyOpen = async (event: H3Event, s: OpenState, token: string) => sameString(await signOpen(event, s), token)
 

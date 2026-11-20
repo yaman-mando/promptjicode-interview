@@ -1,4 +1,4 @@
-import { LEVELS } from '#shared/types/quiz'
+import { LEVELS, TRACK_LIST } from '#shared/types/quiz'
 
 const SITE = 'https://interview.promptjicode.com'
 const LOCALES = ['ar', 'en', 'tr'] as const
@@ -6,7 +6,7 @@ const url = (locale: string, path: string) => `${SITE}${locale === 'ar' ? '' : `
 
 /** Every public page in all three languages, with hreflang links between them. */
 export default defineEventHandler((event) => {
-  const paths = ['/', ...LEVELS.map(l => `/quiz/${l}`), '/quiz/open']
+  const paths = ['/', '/backend', '/fullstack', ...TRACK_LIST.flatMap(tr => [...LEVELS, 'open'].map(l => `/${tr}/${l}`))]
   const today = new Date().toISOString().slice(0, 10)
   const entries = paths.flatMap(path => LOCALES.map((locale) => {
     const alternates = LOCALES.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${url(l, path === '/' ? '' : path) || SITE}"/>`)

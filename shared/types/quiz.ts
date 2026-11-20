@@ -1,11 +1,42 @@
 export type Level = 'junior' | 'mid' | 'senior'
 export type Locale = 'ar' | 'en' | 'tr'
 export type Topic =
+  // frontend
   | 'javascript' | 'async' | 'css' | 'html' | 'react' | 'vue'
   | 'typescript' | 'browser' | 'performance' | 'security' | 'angular'
+  // backend
+  | 'databases' | 'api' | 'architecture' | 'server-security'
+  | 'node' | 'python' | 'php' | 'dotnet'
 
 export const LEVELS: Level[] = ['junior', 'mid', 'senior']
-export const TOPICS: Topic[] = ['javascript', 'async', 'css', 'html', 'react', 'vue', 'angular', 'typescript', 'browser', 'performance', 'security']
+export const TOPICS: Topic[] = [
+  'javascript', 'async', 'css', 'html', 'react', 'vue', 'angular', 'typescript', 'browser', 'performance', 'security',
+  'databases', 'api', 'architecture', 'server-security', 'node', 'python', 'php', 'dotnet',
+]
+
+/**
+ * The three main kinds of test. `core` topics make up "all topics";
+ * `extra` topics (languages and frameworks) are added only when the person picks them,
+ * so a PHP developer does not get C# questions by default.
+ */
+export type Track = 'frontend' | 'backend' | 'fullstack'
+export const TRACK_LIST: Track[] = ['frontend', 'backend', 'fullstack']
+export const TRACKS: Record<Track, { core: Topic[], extra: Topic[] }> = {
+  frontend: {
+    core: ['javascript', 'async', 'css', 'html', 'react', 'vue', 'angular', 'typescript', 'browser', 'performance', 'security'],
+    extra: [],
+  },
+  backend: {
+    core: ['databases', 'api', 'architecture', 'server-security'],
+    extra: ['node', 'python', 'php', 'dotnet'],
+  },
+  fullstack: {
+    core: ['javascript', 'async', 'html', 'css', 'typescript', 'browser', 'performance', 'security', 'databases', 'api', 'architecture', 'server-security'],
+    extra: ['react', 'vue', 'angular', 'node', 'python', 'php', 'dotnet'],
+  },
+}
+export const trackTopics = (t: Track): Topic[] => [...TRACKS[t].core, ...TRACKS[t].extra]
+export const isTrack = (v: unknown): v is Track => v === 'frontend' || v === 'backend' || v === 'fullstack'
 
 /** level = fixed test for one level, custom = chosen topics / length, open = adaptive across levels */
 export type Mode = 'level' | 'custom' | 'open'
@@ -29,7 +60,7 @@ export interface Question {
   level: Level
   topic: Topic
   /** Language of the code block, for the label above it. */
-  codeLang?: 'js' | 'jsx' | 'ts' | 'vue' | 'css' | 'html'
+  codeLang?: 'js' | 'jsx' | 'ts' | 'vue' | 'css' | 'html' | 'py' | 'php' | 'cs' | 'sql' | 'bash' | 'json' | 'http'
   code?: string
   /** Language-neutral options (code, numbers). Overridden by text[locale].options when present. */
   options?: string[]
@@ -50,6 +81,7 @@ export interface PublicQuestion {
 }
 
 export interface StartResponse {
+  track: Track
   mode: Mode
   level: Level
   topics: Topic[]
@@ -61,6 +93,7 @@ export interface StartResponse {
 }
 
 export interface SubmitBody {
+  track: Track
   mode: Mode
   level: Level
   locale: Locale
@@ -75,6 +108,7 @@ export interface SubmitBody {
 
 /** Open test: the state travels with the browser, signed by the server. */
 export interface OpenState {
+  track: Track
   startedAt: number
   timeLimit: number
   ids: string[]
@@ -123,6 +157,7 @@ export interface LevelScore {
 
 export interface ResultResponse {
   id: string
+  track: Track
   mode: Mode
   /** for open tests: the estimated level */
   level: Level

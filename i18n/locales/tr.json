@@ -1,6 +1,6 @@
 {
   "brand": "PromptjiCode Interview",
-  "tagline": "Gerçek frontend mülakat soruları. Kendini test et, sonucunu başkalarıyla karşılaştır.",
+  "tagline": "Geliştiriciler için gerçek mülakat soruları. Kendini test et, puanını karşılaştır.",
   "chooseLevel": "Test seviyeni seç",
   "start": "Başla",
   "levels": {
@@ -91,7 +91,15 @@
     "browser": "Tarayıcı",
     "performance": "Performans",
     "security": "Güvenlik",
-    "angular": "Angular"
+    "angular": "Angular",
+    "databases": "Veritabanları ve SQL",
+    "api": "API’ler ve HTTP",
+    "architecture": "Mimari ve ölçekleme",
+    "server-security": "Sunucu güvenliği",
+    "node": "Node.js",
+    "python": "Python",
+    "php": "PHP / Laravel",
+    "dotnet": "C# / .NET"
   },
   "footer": "Doğru yaz… doğru çıksın",
   "github": "Kod GitHub’da",
@@ -189,10 +197,10 @@
   },
   "mainSite": "Ana sayfa",
   "seo": {
-    "title": "Frontend Mülakat Soruları — Ücretsiz Seviye Testi",
-    "description": "JavaScript, CSS, React, Vue, Angular ve TypeScript üzerine gerçek frontend mülakat sorularıyla kendini test et. Seviyeni veya uzmanlığını seç, açıklamaları gör ve puanını karşılaştır. Ücretsiz, kayıt yok.",
-    "levelTitle": "{level} Frontend Mülakat Soruları — Ücretsiz Test",
-    "levelDescription": "Gerçek sorularla ücretsiz {level} frontend mülakat testi. {desc} Puanını gör ve diğerleriyle karşılaştır.",
+    "title": "Frontend, Backend ve Full-stack Mülakat Soruları — Ücretsiz Seviye Testi",
+    "description": "Gerçek Frontend, Backend ve Full-stack mülakat sorularıyla pratik yap: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP ve .NET. Ücretsiz, kayıt yok.",
+    "levelTitle": "{level} {track} Mülakat Soruları — Ücretsiz Test",
+    "levelDescription": "Gerçek sorularla ücretsiz {level} {track} mülakat testi. {desc} Puanını gör ve karşılaştır.",
     "resultTitle": "{level} testinde {total} sorudan {score} doğru yaptım",
     "resultDescription": "Frontend mülakat soruları testini dene ve puanını karşılaştır.",
     "h1": "Gerçek frontend mülakat sorularıyla kendini test et",
@@ -204,6 +212,10 @@
         "a": "Frontend mülakat sorularıyla pratik yapman için ücretsiz bir site. Her test seviyene göre soru bankasından rastgele sorular seçer; sonunda her sorunun açıklamasıyla birlikte puanını görürsün."
       },
       {
+        "q": "Hangi test türleri var?",
+        "a": "Üç tür: Frontend, Backend ve Full-stack. Her birinde üç seviye (Junior, Mid, Senior) ve bir açık test var; konuları veya dilini ve framework’ünü, soru sayısını ve süreyi seçebilirsin."
+      },
+      {
         "q": "Ücretsiz mi? Hesap gerekiyor mu?",
         "a": "Tamamen ücretsiz; kayıt ya da e-posta yok. Seviyeni seç ve başla."
       },
@@ -213,7 +225,7 @@
       },
       {
         "q": "Sorular hangi konuları kapsıyor?",
-        "a": "JavaScript (closure, event loop, Promise), CSS ve HTML, React, Vue ve Angular, TypeScript, tarayıcı performansı ve güvenlik: şirketlerin mülakatta sorduğu konular."
+        "a": "Frontend: JavaScript, CSS, HTML, React, Vue, Angular, TypeScript, tarayıcı performansı ve güvenlik. Backend: SQL ve veritabanları, API’ler, mimari ve sunucu güvenliği; ayrıca Node.js, Python, PHP/Laravel ve C#/.NET."
       },
       {
         "q": "Puanımı başkalarıyla nasıl karşılaştırırım?",
@@ -226,7 +238,8 @@
     ],
     "resultTitleNamed": "{name}: {level} testinde {total} sorudan {score} doğru",
     "resultTitleOpen": "Açık testteki seviyem: {level} ({score}/{total})",
-    "resultTitleOpenNamed": "{name} açık testte: {level} ({score}/{total})"
+    "resultTitleOpenNamed": "{name} açık testte: {level} ({score}/{total})",
+    "openTitle": "{track} açık testi"
   },
   "cardMeta": "Konu, uzunluk ve süre seç · kayıt yok",
   "openCard": {
@@ -255,7 +268,8 @@
     "optional": "isteğe bağlı",
     "namePlaceholder": "örn. Ayşe",
     "nameHint": "İstersen adın sonuç sayfasında ve paylaşım görselinde görünür. Sonucun isimsiz kalması için boş bırak. Sonuç bağlantısını açan herkes görebilir.",
-    "level": "Seviye"
+    "level": "Seviye",
+    "pickHintExtra": "\"Tüm konular\" sadece genel konuları kapsar. Dilini veya framework’ünü ikinci satırdan ekle."
   },
   "share": {
     "title": "Sonucunu paylaş",
@@ -278,7 +292,52 @@
     "backToTests": "Testlere dön",
     "back": "Geri"
   },
+  "trackLevels": {
+    "frontend": {
+      "junior": "Her mülakatta sorulan JavaScript ve HTML temelleri.",
+      "mid": "Async, event loop, React ve CSS daha derinlemesine.",
+      "senior": "Performans, stacking context, React ve Promise detayları."
+    },
+    "backend": {
+      "junior": "SQL, HTTP ve REST temelleri: ilk backend işinde sorulanlar.",
+      "mid": "İndeksler ve transaction’lar, kimlik doğrulama, önbellekleme ve daha temiz API tasarımı.",
+      "senior": "Ölçekleme ve kuyruklar, eşzamanlılık ve yarış durumları, sistem düzeyinde güvenlik."
+    },
+    "fullstack": {
+      "junior": "Ön ve arka uç temelleri: JavaScript, HTML, SQL ve HTTP.",
+      "mid": "Arayüzü API’ye bağlamak, kimlik doğrulama, veritabanları ve iki taraflı performans.",
+      "senior": "Tüm sistem genelinde mimari, güvenlik ve ölçekleme kararları."
+    }
+  },
   "tracks": {
+    "label": "Test türü",
+    "frontend": {
+      "name": "Frontend",
+      "desc": "JavaScript, CSS, HTML, React, Vue, Angular ve TypeScript",
+      "h1": "Gerçek frontend mülakat sorularıyla kendini test et",
+      "seoTitle": "Frontend Mülakat Soruları — Ücretsiz Seviye Testi",
+      "seoDesc": "JavaScript, CSS, React, Vue, Angular ve TypeScript üzerine gerçek frontend mülakat soruları. Seviyeni veya uzmanlığını seç, puanını karşılaştır. Ücretsiz, kayıt yok.",
+      "extraTitle": ""
+    },
+    "backend": {
+      "name": "Backend",
+      "desc": "Veritabanları, API’ler, mimari ve güvenlik; ayrıca Node.js, Python, PHP ve .NET",
+      "h1": "Gerçek backend mülakat sorularıyla kendini test et",
+      "seoTitle": "Backend Mülakat Soruları — Ücretsiz Seviye Testi",
+      "seoDesc": "Gerçek backend mülakat soruları: SQL ve veritabanları, API’ler, mimari ve güvenlik; ayrıca Node.js, Python, PHP/Laravel ve C#/.NET. Ücretsiz, kayıt yok.",
+      "extraTitle": "Dilin veya framework’ün"
+    },
+    "fullstack": {
+      "name": "Full-stack",
+      "desc": "Ön ve arka uç birlikte: tarayıcıdan veritabanına",
+      "h1": "Gerçek full-stack mülakat sorularıyla kendini test et",
+      "seoTitle": "Full-stack Mülakat Soruları — Ücretsiz Seviye Testi",
+      "seoDesc": "Ön ve arka ucu birleştiren gerçek full-stack mülakat soruları: JavaScript, React, Node.js, veritabanları ve API’ler. Ücretsiz, kayıt yok.",
+      "extraTitle": "Framework’ler ve diller"
+    }
+  },
+  "chooseLevelTrack": "Bir {track} seviyesi seç",
+  "specs": {
     "title": "Uzmanlığa göre test",
     "desc": "Çalıştığın teknolojiyi seç; seviyeyi veya konuları hazırlık ekranında değiştir.",
     "cta": "Teste başla"

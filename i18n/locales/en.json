@@ -1,6 +1,6 @@
 {
   "brand": "PromptjiCode Interview",
-  "tagline": "Real frontend interview questions. Test yourself and see how you compare.",
+  "tagline": "Real interview questions for developers. Test yourself and compare your score.",
   "chooseLevel": "Choose your test level",
   "start": "Start",
   "levels": {
@@ -91,7 +91,15 @@
     "browser": "Browser",
     "performance": "Performance",
     "security": "Security",
-    "angular": "Angular"
+    "angular": "Angular",
+    "databases": "Databases & SQL",
+    "api": "APIs & HTTP",
+    "architecture": "Architecture & scaling",
+    "server-security": "Server security",
+    "node": "Node.js",
+    "python": "Python",
+    "php": "PHP / Laravel",
+    "dotnet": "C# / .NET"
   },
   "footer": "Write it right… get it right",
   "github": "Code on GitHub",
@@ -189,10 +197,10 @@
   },
   "mainSite": "PromptjiCode home",
   "seo": {
-    "title": "Frontend Interview Questions — Free Level Test",
-    "description": "Practise real frontend interview questions on JavaScript, CSS, React, Vue, Angular and TypeScript. Pick your level or specialisation, get explanations, and compare your score. Free, no sign-up.",
-    "levelTitle": "{level} Frontend Interview Questions — Free Test",
-    "levelDescription": "Free {level} frontend interview test with real questions. {desc} See your score and how you compare.",
+    "title": "Frontend, Backend & Full-stack Interview Questions — Free Level Test",
+    "description": "Practise real Frontend, Backend and Full-stack interview questions: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP and .NET. Free, no sign-up.",
+    "levelTitle": "{level} {track} Interview Questions — Free Test",
+    "levelDescription": "Free {level} {track} interview test with real questions. {desc} See your score and how you compare.",
     "resultTitle": "I scored {score}/{total} on the {level} test",
     "resultDescription": "Try the frontend interview questions test and compare your score.",
     "h1": "Test yourself on real frontend interview questions",
@@ -204,6 +212,10 @@
         "a": "A free site for practising frontend interview questions. Each test picks random questions from the bank for your level, and at the end you see your score with an explanation for every question."
       },
       {
+        "q": "What kinds of tests are there?",
+        "a": "Three: Frontend, Backend and Full-stack. Each has three levels (Junior, Mid, Senior) and an open test, and you can pick topics or your language and framework, the number of questions and a time limit."
+      },
+      {
         "q": "Is it free? Do I need an account?",
         "a": "It is completely free, with no sign-up and no email. Pick a level and start."
       },
@@ -213,7 +225,7 @@
       },
       {
         "q": "Which topics do the questions cover?",
-        "a": "JavaScript (closures, the event loop, Promises), CSS and HTML, React, Vue and Angular, TypeScript, browser performance and security: the things companies ask in interviews."
+        "a": "Frontend: JavaScript, CSS, HTML, React, Vue, Angular, TypeScript, browser performance and security. Backend: SQL and databases, APIs, architecture and server security, plus Node.js, Python, PHP/Laravel and C#/.NET."
       },
       {
         "q": "How do I compare my score with others?",
@@ -226,7 +238,8 @@
     ],
     "resultTitleNamed": "{name} scored {score}/{total} on the {level} test",
     "resultTitleOpen": "My level in the open test: {level} ({score}/{total})",
-    "resultTitleOpenNamed": "{name}'s level in the open test: {level} ({score}/{total})"
+    "resultTitleOpenNamed": "{name}'s level in the open test: {level} ({score}/{total})",
+    "openTitle": "{track} open test"
   },
   "cardMeta": "Pick topics, length and timer · no sign-up",
   "openCard": {
@@ -255,7 +268,8 @@
     "optional": "optional",
     "namePlaceholder": "e.g. Sara",
     "nameHint": "If you want, your name appears on the result sheet and the share image. Leave it empty to keep the result anonymous. Anyone who opens the result link will see it.",
-    "level": "Level"
+    "level": "Level",
+    "pickHintExtra": "\"All topics\" covers the general topics only. Add your language or framework from the second row."
   },
   "share": {
     "title": "Share your result",
@@ -278,7 +292,52 @@
     "backToTests": "Back to tests",
     "back": "Back"
   },
+  "trackLevels": {
+    "frontend": {
+      "junior": "JavaScript and HTML basics that come up in every interview.",
+      "mid": "Async, the event loop, React and CSS in more depth.",
+      "senior": "Performance, stacking contexts, React and Promise details."
+    },
+    "backend": {
+      "junior": "SQL, HTTP and REST basics: what you get asked for a first backend job.",
+      "mid": "Indexes and transactions, authentication, caching and cleaner API design.",
+      "senior": "Scaling and queues, concurrency and race conditions, and system-level security."
+    },
+    "fullstack": {
+      "junior": "Front and back basics together: JavaScript, HTML, SQL and HTTP.",
+      "mid": "Wiring the UI to the API, auth, databases and performance on both sides.",
+      "senior": "Architecture, security and scaling decisions across the whole system."
+    }
+  },
   "tracks": {
+    "label": "Test type",
+    "frontend": {
+      "name": "Frontend",
+      "desc": "JavaScript, CSS, HTML, React, Vue, Angular and TypeScript",
+      "h1": "Test yourself on real frontend interview questions",
+      "seoTitle": "Frontend Interview Questions — Free Level Test",
+      "seoDesc": "Practise real frontend interview questions on JavaScript, CSS, React, Vue, Angular and TypeScript. Pick your level or specialisation and compare your score. Free, no sign-up.",
+      "extraTitle": ""
+    },
+    "backend": {
+      "name": "Backend",
+      "desc": "Databases, APIs, architecture and security, plus Node.js, Python, PHP and .NET",
+      "h1": "Test yourself on real backend interview questions",
+      "seoTitle": "Backend Interview Questions — Free Level Test",
+      "seoDesc": "Practise real backend interview questions: SQL and databases, APIs, architecture and security, plus Node.js, Python, PHP/Laravel and C#/.NET. Free, no sign-up.",
+      "extraTitle": "Your language or framework"
+    },
+    "fullstack": {
+      "name": "Full-stack",
+      "desc": "Front and back together: from the browser to the database",
+      "h1": "Test yourself on real full-stack interview questions",
+      "seoTitle": "Full-stack Interview Questions — Free Level Test",
+      "seoDesc": "Practise real full-stack interview questions across front and back end: JavaScript, React, Node.js, databases and APIs. Free, no sign-up.",
+      "extraTitle": "Frameworks and languages"
+    }
+  },
+  "chooseLevelTrack": "Pick a {track} level",
+  "specs": {
     "title": "Test by specialisation",
     "desc": "Pick the technology you work with, then change the level or topics on the setup screen.",
     "cta": "Start a test"

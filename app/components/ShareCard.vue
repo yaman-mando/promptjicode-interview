@@ -15,11 +15,13 @@ const canNativeShare = ref(false)
 const isOpen = computed(() => props.result.mode === 'open')
 const pct = computed(() => Math.round((props.result.score / props.result.total) * 100))
 const levelName = computed(() => t(`levels.${props.result.level}.name`))
+// "Backend Mid": the track is part of the test name (frontend included, so every card says what it was)
+const testName = computed(() => `${t(`tracks.${props.result.track ?? 'frontend'}.name`)} ${levelName.value}`)
 const pageUrl = computed(() => `https://interview.promptjicode.com${locale.value === 'ar' ? '' : `/${locale.value}`}/result/${props.result.id}`)
 const shareText = computed(() => t(isOpen.value ? 'share.textOpen' : 'share.text', {
   score: props.result.score,
   total: props.result.total,
-  level: levelName.value,
+  level: isOpen.value ? levelName.value : testName.value,
 }))
 
 function loadImage(src: string) {
@@ -104,7 +106,7 @@ async function draw() {
   ctx.font = font(800, 56)
   ctx.fillText(isOpen.value
     ? t(nm ? 'share.cardOpenNamed' : 'share.cardOpen', { name: nm ?? '' })
-    : t(nm ? 'share.cardTitleNamed' : 'share.cardTitle', { level: levelName.value, name: nm ?? '' }), SIZE / 2, 262, SIZE - 140)
+    : t(nm ? 'share.cardTitleNamed' : 'share.cardTitle', { level: testName.value, name: nm ?? '' }), SIZE / 2, 262, SIZE - 140)
 
   // Ring
   const cx = SIZE / 2
