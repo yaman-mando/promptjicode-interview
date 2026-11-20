@@ -16,10 +16,10 @@ const isOpen = computed(() => props.result.mode === 'open')
 const pct = computed(() => Math.round((props.result.score / props.result.total) * 100))
 const levelName = computed(() => t(`levels.${props.result.level}.name`))
 const pageUrl = computed(() => `https://interview.promptjicode.com${locale.value === 'ar' ? '' : `/${locale.value}`}/result/${props.result.id}`)
-const shareText = computed(() => t('share.text', {
+const shareText = computed(() => t(isOpen.value ? 'share.textOpen' : 'share.text', {
   score: props.result.score,
   total: props.result.total,
-  level: isOpen.value ? t('levels.open.name') : levelName.value,
+  level: levelName.value,
 }))
 
 function loadImage(src: string) {
@@ -100,8 +100,11 @@ async function draw() {
   ctx.direction = rtl ? 'rtl' : 'ltr'
   ctx.textAlign = 'center'
   ctx.fillStyle = C.cream
+  const nm = props.result.name
   ctx.font = font(800, 56)
-  ctx.fillText(isOpen.value ? t('share.cardOpen') : t('share.cardTitle', { level: levelName.value }), SIZE / 2, 262)
+  ctx.fillText(isOpen.value
+    ? t(nm ? 'share.cardOpenNamed' : 'share.cardOpen', { name: nm ?? '' })
+    : t(nm ? 'share.cardTitleNamed' : 'share.cardTitle', { level: levelName.value, name: nm ?? '' }), SIZE / 2, 262, SIZE - 140)
 
   // Ring
   const cx = SIZE / 2

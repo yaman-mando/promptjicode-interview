@@ -2,6 +2,9 @@
 import type { Level, LevelsInfo, Locale, OpenStep, PublicQuestion, StartResponse, SubmitBody, Topic } from '#shared/types/quiz'
 import { LEVELS, MAX_TIME_LIMIT_MIN, OPEN_TEST_LENGTH, QUESTION_COUNTS, TIME_PRESETS, TOPICS } from '#shared/types/quiz'
 
+// A new key per URL, so switching level or topics builds a fresh page
+definePageMeta({ key: r => r.fullPath })
+
 const route = useRoute()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
@@ -31,6 +34,11 @@ const otherMinutes = ref(Math.min(MAX_TIME_LIMIT_MIN, Math.max(1, Number(q.time)
 const timeMinutes = computed(() => timePreset.value === 'other'
   ? Math.min(MAX_TIME_LIMIT_MIN, Math.max(1, Math.round(otherMinutes.value || 1)))
   : timePreset.value)
+
+// Optional name, shown on the result sheet and the share image
+const name = ref('')
+onMounted(() => { try { name.value = localStorage.getItem('pci_name') ?? '' } catch { /* private mode */ } })
+const cleanName = () => name.value.replace(/[\u0000-\u001f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 40)
 
 function toggleTopic(tp: Topic) {
   allTopics.value = false
@@ -73,11 +81,30 @@ const step = ref<OpenStep | null>(null)
 const openChosen = ref<number | null>(null)
 
 const index = ref(0)
+const maxIndex = ref(0) // furthest question reached; the panel can go back to any question up to here
+const openLog = ref<(number | null)[]>([]) // open test: what was answered at each past step
 const question = computed<PublicQuestion | undefined>(() => isOpen ? step.value?.question : test.value?.questions[index.value])
 const total = computed(() => isOpen ? step.value?.total ?? OPEN_TEST_LENGTH : test.value?.questions.length ?? 0)
 const isLast = computed(() => index.value === total.value - 1)
 const chosen = computed(() => isOpen ? openChosen.value : answers.value[index.value] ?? null)
 const answeredCount = () => isOpen ? index.value + (openChosen.value !== null ? 1 : 0) : answers.value.filter(a => a !== null).length
+
+// Question panel: status of each square
+type Status = 'current' | 'answered' | 'skipped' | 'locked'
+const statuses = computed<Status[]>(() => Array.from({ length: total.value }, (_, i) => {
+  if (i === index.value) return 'current'
+  if (isOpen) return i < index.value ? (openLog.value[i] !== null ? 'answered' : 'skipped') : 'locked'
+  if (i > maxIndex.value) return 'locked'
+  return answers.value[i] !== null ? 'answered' : 'skipped'
+}))
+const unanswered = computed(() => isOpen
+  ? total.value - openLog.value.filter(a => a !== null).length - (openChosen.value !== null ? 1 : 0)
+  : answers.value.filter(a => a === null).length)
+
+function goTo(i: number) {
+  if (isOpen || submitting.value || i > maxIndex.value || i === index.value) return
+  index.value = i
+}
 
 // Timer
 const timeLimit = ref(0) // seconds
@@ -86,21 +113,49 @@ const now = ref(Date.now())
 let ticker: ReturnType<typeof setInterval> | undefined
 const remaining = computed(() => Math.max(0, Math.ceil((deadline.value - now.value) / 1000)))
 const remainingText = computed(() => `${Math.floor(remaining.value / 60)}:${String(remaining.value % 60).padStart(2, '0')}`)
-const lowTime = computed(() => timeLimit.value > 0 && remaining.value <= Math.min(30, timeLimit.value / 5))
+// The last minute turns red, with a short beep when it starts
+const lowTime = computed(() => timeLimit.value > 0 && remaining.value <= 60)
+const sound = ref(true)
+onMounted(() => { try { sound.value = localStorage.getItem('pci_sound') !== 'off' } catch { /* private mode */ } })
+watch(sound, (v) => { try { localStorage.setItem('pci_sound', v ? 'on' : 'off') } catch { /* private mode */ } })
+let audio: AudioContext | null = null
+function beep(times = 1) {
+  if (!sound.value || !audio) return
+  for (let i = 0; i < times; i++) {
+    const at = audio.currentTime + i * 0.22
+    const osc = audio.createOscillator()
+    const gain = audio.createGain()
+    osc.type = 'sine'
+    osc.frequency.value = 880
+    gain.gain.setValueAtTime(0.0001, at)
+    gain.gain.exponentialRampToValueAtTime(0.18, at + 0.02)
+    gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.16)
+    osc.connect(gain).connect(audio.destination)
+    osc.start(at)
+    osc.stop(at + 0.18)
+  }
+}
+let warned = false
 
 function startTimer(seconds: number) {
   timeLimit.value = seconds
   if (!seconds) return
+  // Browsers only allow sound after a click, and "Start" is that click
+  try { audio = new AudioContext() } catch { audio = null }
+  warned = seconds <= 60
   deadline.value = Date.now() + seconds * 1000
   ticker = setInterval(() => {
     now.value = Date.now()
+    if (!warned && remaining.value <= 60) { warned = true; beep(2) }
     if (remaining.value <= 0 && !done && !timeUp.value) onTimeUp()
   }, 250)
 }
+onBeforeUnmount(() => { audio?.close().catch(() => {}) })
 onBeforeUnmount(() => clearInterval(ticker))
 
 async function onTimeUp() {
   timeUp.value = true
+  beep(3)
   clearInterval(ticker)
   if (isOpen) await sendOpenAnswer(true)
   else await submit()
@@ -114,7 +169,9 @@ async function start() {
     if (isOpen) {
       step.value = await $fetch<OpenStep>('/api/quiz/open/start', { method: 'POST', body: { locale: locale.value, time: seconds } })
       openChosen.value = null
+      openLog.value = []
       index.value = 0
+      maxIndex.value = 0
     }
     else {
       test.value = await $fetch<StartResponse>('/api/quiz/start', {
@@ -128,7 +185,9 @@ async function start() {
       })
       answers.value = test.value.questions.map(() => null)
       index.value = 0
+      maxIndex.value = 0
     }
+    try { localStorage.setItem('pci_name', cleanName()) } catch { /* private mode */ }
     phase.value = 'test'
     startTimer(seconds)
     window.scrollTo({ top: 0 })
@@ -154,9 +213,16 @@ async function next() {
   if (isOpen) return sendOpenAnswer(false)
   if (!isLast.value) {
     index.value++
+    maxIndex.value = Math.max(maxIndex.value, index.value)
     return
   }
+  // Last question: ask first if some questions have no answer
+  if (unanswered.value > 0 && !(await endModal.value?.ask())) return
   await submit()
+}
+
+function prev() {
+  if (!isOpen && index.value > 0) index.value--
 }
 
 function skip() {
@@ -186,6 +252,7 @@ async function submit() {
       token: test.value.token,
       questionIds: test.value.questions.map(x => x.id),
       answers: answers.value,
+      name: cleanName(),
     }
     const { id } = await $fetch<{ id: string }>('/api/quiz/submit', { method: 'POST', body })
     await finished(id)
@@ -203,11 +270,13 @@ async function sendOpenAnswer(finish: boolean) {
   try {
     const res = await $fetch<OpenStep | { id: string }>('/api/quiz/open/answer', {
       method: 'POST',
-      body: { state: step.value.state, token: step.value.token, locale: locale.value, answer: openChosen.value, finish },
+      body: { state: step.value.state, token: step.value.token, locale: locale.value, answer: openChosen.value, finish, name: cleanName() },
     })
     if ('id' in res) return await finished(res.id)
+    openLog.value.push(openChosen.value)
     step.value = res
     index.value = res.index
+    maxIndex.value = res.index
     openChosen.value = null
     submitting.value = false
     // Time ran out while this answer was on its way: end the test now
@@ -219,11 +288,13 @@ async function sendOpenAnswer(finish: boolean) {
   }
 }
 
-function endNow() {
-  if (window.confirm(t('quiz.endConfirm'))) {
-    if (isOpen) sendOpenAnswer(true)
-    else submit()
-  }
+const endModal = ref<{ ask: () => Promise<boolean> } | null>(null)
+const leaveModal = ref<{ ask: () => Promise<boolean> } | null>(null)
+
+async function endNow() {
+  if (!(await endModal.value?.ask())) return
+  if (isOpen) sendOpenAnswer(true)
+  else submit()
 }
 
 // Record where people stop when they leave a test half-way
@@ -238,9 +309,9 @@ onMounted(() => window.addEventListener('pagehide', onPageHide))
 onBeforeUnmount(() => window.removeEventListener('pagehide', onPageHide))
 
 // Warn before leaving a test half-way
-onBeforeRouteLeave(() => {
+onBeforeRouteLeave(async () => {
   if (done || phase.value !== 'test') return true
-  if (answeredCount() === 0 || window.confirm(t('quiz.leave'))) {
+  if (answeredCount() === 0 || (await leaveModal.value?.ask())) {
     sendLeave()
     return true
   }
@@ -250,11 +321,17 @@ onBeforeRouteLeave(() => {
 // Keyboard: A–D or 1–4 pick an option, Enter goes on
 function onKey(e: KeyboardEvent) {
   if (phase.value !== 'test' || !question.value || submitting.value || e.ctrlKey || e.metaKey || e.altKey) return
-  if (e.target instanceof HTMLInputElement) return
+  if (e.target instanceof HTMLInputElement || document.querySelector('[role=alertdialog]')) return
   const letter = 'abcd'.indexOf(e.key.toLowerCase())
   const n = letter >= 0 ? letter + 1 : Number(e.key)
   if (n >= 1 && n <= question.value.options.length) choose(n - 1)
   else if (e.key === 'Enter' && chosen.value !== null && !(e.target instanceof HTMLButtonElement)) next()
+  else if (!isOpen && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+    // Arrow pointing "back" depends on the reading direction
+    const back = (e.key === 'ArrowRight') === (locale.value === 'ar')
+    if (back) prev()
+    else if (index.value < maxIndex.value) index.value++
+  }
 }
 onMounted(() => window.addEventListener('keydown', onKey))
 onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
@@ -275,7 +352,21 @@ const segBtn = (on: boolean) => on
   <div class="pt-4">
     <!-- ── Setup ── -->
     <section v-if="phase === 'setup'" class="setup-in mx-auto max-w-2xl">
-      <span class="mb-3 inline-block rounded-full bg-white/5 px-3 py-1 font-mono text-sm font-bold text-caramel">{{ levelName }}</span>
+      <NuxtLink :to="localePath('/')" class="mb-5 inline-flex items-center gap-1.5 rounded-lg py-1 text-sm font-semibold text-sand transition hover:text-cream">
+        <svg viewBox="0 0 24 24" class="size-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6" /></svg>
+        {{ t('nav.backToTests') }}
+      </NuxtLink>
+      <br>
+      <span v-if="isOpen" class="mb-3 inline-block rounded-full bg-white/5 px-3 py-1 font-mono text-sm font-bold text-caramel">{{ levelName }}</span>
+      <nav v-else class="mb-4 inline-flex gap-1 rounded-xl bg-white/5 p-1" :aria-label="t('setup.level')">
+        <NuxtLink
+          v-for="l in LEVELS" :key="l"
+          :to="localePath({ path: `/quiz/${l}`, query: route.query })"
+          :aria-current="l === level ? 'page' : undefined"
+          class="rounded-lg px-3 py-1 font-mono text-sm font-bold transition"
+          :class="l === level ? 'bg-caramel text-ink' : 'text-sand hover:text-cream'"
+        >{{ t(`levels.${l}.name`) }}</NuxtLink>
+      </nav>
       <h1 class="mb-2 text-2xl leading-snug font-bold sm:text-3xl">{{ isOpen ? levelName : t('seo.levelTitle', { level: levelName }) }}</h1>
       <p class="mb-8 text-sand"><BidiText :text="t(isOpen ? 'levels.open.desc' : `levels.${level}.desc`)" /></p>
 
@@ -347,6 +438,17 @@ const segBtn = (on: boolean) => on
           </div>
         </div>
 
+        <!-- Name (optional) -->
+        <div>
+          <label for="pci-name" class="mb-2.5 block text-sm font-bold text-sand">{{ t('setup.name') }} <span class="font-normal text-sand/70">· {{ t('setup.optional') }}</span></label>
+          <input
+            id="pci-name" v-model="name" type="text" maxlength="40" autocomplete="given-name"
+            :placeholder="t('setup.namePlaceholder')"
+            class="w-full max-w-sm rounded-xl border border-white/15 bg-ink-2 px-4 py-2.5 text-cream placeholder:text-sand/50 focus:border-caramel focus:outline-none"
+          >
+          <p class="mt-2 text-xs leading-relaxed text-sand/80">{{ t('setup.nameHint') }}</p>
+        </div>
+
         <div class="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5">
           <p class="text-sm text-sand">{{ t('setup.summary', { n: plannedCount, time: fmtLimit(timeMinutes) }) }}</p>
           <button
@@ -369,13 +471,25 @@ const segBtn = (on: boolean) => on
         <div class="mb-2 flex items-center justify-between gap-3 text-sm">
           <span class="font-semibold">{{ t('quiz.question', { current: index + 1, total }) }}</span>
           <div class="flex items-center gap-2">
-            <span class="rounded-full bg-white/5 px-3 py-0.5 font-mono text-xs text-sand">
+            <button
+              v-if="timeLimit" type="button"
+              class="grid size-7 place-items-center rounded-full text-sand transition hover:bg-white/5 hover:text-cream"
+              :aria-pressed="sound" :title="sound ? t('quiz.soundOn') : t('quiz.soundOff')" :aria-label="sound ? t('quiz.soundOn') : t('quiz.soundOff')"
+              @click="sound = !sound"
+            >
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 9v6h4l5 4V5L8 9H4Z" />
+                <path v-if="sound" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />
+                <path v-else d="m17 9 5 6m0-6-5 6" />
+              </svg>
+            </button>
+            <span class="hidden rounded-full bg-white/5 px-3 py-0.5 font-mono text-xs text-sand sm:inline">
               {{ levelName }} · {{ t(`topics.${question.topic}`) }}
             </span>
             <span
               v-if="timeLimit"
               class="flex items-center gap-1.5 rounded-full px-3 py-0.5 font-mono text-xs font-bold tabular-nums transition-colors"
-              :class="lowTime ? 'timer-low bg-bad/20 text-bad' : 'bg-white/5 text-cream'"
+:class="lowTime ? 'timer-low bg-bad/20 text-bad ring-1 ring-bad/40' : 'bg-white/5 text-cream'"
               role="timer" :aria-label="t('quiz.timeLeft')" dir="ltr"
             >
               <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2.5M9 2h6" stroke-linecap="round" /></svg>
@@ -390,6 +504,35 @@ const segBtn = (on: boolean) => on
           <div class="h-full rounded-full transition-[width] duration-300 ease-linear" :class="lowTime ? 'bg-bad' : 'bg-sand/50'" :style="{ width: `${(remaining / timeLimit) * 100}%` }" />
         </div>
       </div>
+
+      <!-- Question panel -->
+      <nav class="mb-6" :aria-label="t('quiz.panel')">
+        <ol class="flex flex-wrap gap-1.5">
+          <li v-for="(st, i) in statuses" :key="i">
+            <button
+              type="button"
+              class="grid size-8 place-items-center rounded-lg border font-mono text-xs font-bold transition"
+              :class="{
+                'border-caramel bg-caramel text-ink scale-105': st === 'current',
+                'border-good/40 bg-good/15 text-good hover:border-good': st === 'answered',
+                'border-dashed border-sand/50 bg-transparent text-sand hover:border-cream': st === 'skipped',
+                'border-white/5 bg-white/[0.02] text-sand/30': st === 'locked',
+                'pointer-events-none': isOpen || st === 'locked',
+              }"
+              :disabled="isOpen || st === 'locked' || submitting"
+              :aria-current="st === 'current' ? 'step' : undefined"
+              :aria-label="`${i + 1} · ${t(`quiz.status.${st}`)}`"
+              :title="t(`quiz.status.${st}`)"
+              @click="goTo(i)"
+            >{{ i + 1 }}</button>
+          </li>
+        </ol>
+        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-sand">
+          <span class="flex items-center gap-1.5"><i class="size-2.5 rounded-sm bg-good/60" />{{ t('quiz.status.answered') }}</span>
+          <span class="flex items-center gap-1.5"><i class="size-2.5 rounded-sm border border-dashed border-sand" />{{ t('quiz.status.skipped') }}</span>
+          <span v-if="isOpen" class="text-sand/70">{{ t('quiz.noBackOpen') }}</span>
+        </div>
+      </nav>
 
       <Transition name="q" mode="out-in">
         <div :key="question.id">
@@ -423,12 +566,19 @@ const segBtn = (on: boolean) => on
       </Transition>
 
       <div class="mt-8 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-1">
-          <button type="button" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-sand hover:text-cream" :disabled="submitting" @click="skip">
+        <div class="flex flex-wrap items-center gap-1">
+          <button
+            v-if="!isOpen" type="button"
+            class="flex items-center gap-1 rounded-xl px-3 py-2.5 text-sm font-semibold text-sand transition hover:text-cream disabled:opacity-30"
+            :disabled="index === 0 || submitting" @click="prev"
+          >
+            <svg viewBox="0 0 24 24" class="size-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6" /></svg>
+            {{ t('quiz.prev') }}
+          </button>
+          <button type="button" class="rounded-xl px-3 py-2.5 text-sm font-semibold text-sand hover:text-cream" :disabled="submitting" @click="skip">
             {{ t('quiz.skip') }}
           </button>
           <button
-            v-if="isOpen || timeLimit"
             type="button" class="rounded-xl px-3 py-2.5 text-sm text-sand/70 hover:text-cream" :disabled="submitting" @click="endNow"
           >
             {{ t('quiz.endNow') }}
@@ -451,5 +601,13 @@ const segBtn = (on: boolean) => on
         <button type="button" class="ms-2 underline" @click="isOpen ? sendOpenAnswer(timeUp) : submit()">{{ t('quiz.retry') }}</button>
       </p>
     </template>
+
+    <ConfirmModal ref="endModal" :title="t('quiz.endTitle')" :confirm-label="t('quiz.endYes')" :cancel-label="t('quiz.keepGoing')">
+      <p>{{ isOpen ? t('quiz.endConfirmOpen') : t('quiz.endConfirm') }}</p>
+      <p v-if="unanswered > 0" class="mt-2 font-semibold text-caramel">{{ t('quiz.unanswered', { n: unanswered }) }}</p>
+    </ConfirmModal>
+    <ConfirmModal ref="leaveModal" tone="bad" :title="t('quiz.leaveTitle')" :confirm-label="t('quiz.leaveYes')" :cancel-label="t('quiz.keepGoing')">
+      <p>{{ t('quiz.leave') }}</p>
+    </ConfirmModal>
   </div>
 </template>

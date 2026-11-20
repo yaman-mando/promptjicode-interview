@@ -10,6 +10,7 @@ interface AttemptRow {
   level: Level
   time_limit: number | null
   topics: string | null
+  name: string | null
   score: number
   total: number
   ratio: number
@@ -77,6 +78,7 @@ export default defineEventHandler(async (event): Promise<ResultResponse> => {
     level: row.level,
     timeLimit: row.time_limit ?? 0,
     topicsChosen: row.topics ? JSON.parse(row.topics) : [],
+    name: row.name ?? null,
     score: row.score,
     total: row.total,
     durationMs: row.duration_ms,

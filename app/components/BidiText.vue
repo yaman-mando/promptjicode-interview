@@ -44,6 +44,6 @@ const parts = computed<Part[]>(() => {
   <span><template v-for="(p, i) in parts" :key="i"><bdi
     v-if="p.kind !== 'plain'"
     dir="ltr"
-    :class="p.kind === 'code' ? 'rounded bg-white/[0.07] px-1 font-mono text-[0.9em]' : ''"
+    :class="[p.kind === 'code' ? 'rounded bg-white/[0.07] px-1 font-mono text-[0.9em]' : '', p.text.length <= 24 ? 'whitespace-nowrap' : '']"
   >{{ p.text }}</bdi><template v-else>{{ p.text }}</template></template></span>
 </template>

@@ -30,11 +30,29 @@
     "submitting": "Sonucun hesaplanıyor…",
     "error": "Bir hata oluştu. Lütfen tekrar dene.",
     "retry": "Tekrar dene",
-    "leave": "İlerlemen kaybolacak. Testten çıkmak istiyor musun?",
+    "leave": "İlerlemen kaybolacak ve sonuç kaydedilmeyecek.",
     "timeLeft": "Kalan süre",
     "timeUp": "Süre doldu! Sonucun hesaplanıyor…",
-    "endNow": "Şimdi bitir",
-    "endConfirm": "Testi bitirip cevapladığın soruları değerlendireceğiz. Devam edilsin mi?"
+    "endNow": "Testi bitir",
+    "endConfirm": "Testin şimdi değerlendirilecek. Cevapsız sorular yanlış sayılır.",
+    "prev": "Önceki",
+    "panel": "Sorular",
+    "status": {
+      "current": "Şu anki soru",
+      "answered": "Cevaplandı",
+      "skipped": "Atlandı",
+      "locked": "Henüz gelmedin"
+    },
+    "noBackOpen": "Açık testte geri dönülemez",
+    "soundOn": "Uyarı sesi açık",
+    "soundOff": "Uyarı sesi kapalı",
+    "endTitle": "Test bitirilsin mi?",
+    "endConfirmOpen": "Şu ana kadar geldiğin sorular değerlendirilecek.",
+    "unanswered": "{n} soru hâlâ cevapsız.",
+    "endYes": "Bitir ve sonucu gör",
+    "keepGoing": "Devam et",
+    "leaveTitle": "Testten çıkılsın mı?",
+    "leaveYes": "Çık"
   },
   "result": {
     "title": "Sonucun",
@@ -58,7 +76,9 @@
     "byLevel": "Soru zorluğuna göre",
     "timeLimit": "Süre sınırı: {m} dk",
     "topicsChosen": "Konular: {list}",
-    "tryOpen": "Açık testi dene"
+    "tryOpen": "Açık testi dene",
+    "titleNamed": "{name} adlı kişinin sonucu",
+    "print": "Sonucu yazdır"
   },
   "topics": {
     "javascript": "JavaScript",
@@ -70,7 +90,8 @@
     "typescript": "TypeScript",
     "browser": "Tarayıcı",
     "performance": "Performans",
-    "security": "Güvenlik"
+    "security": "Güvenlik",
+    "angular": "Angular"
   },
   "footer": "Doğru yaz… doğru çıksın",
   "github": "Kod GitHub’da",
@@ -169,10 +190,10 @@
   "mainSite": "Ana sayfa",
   "seo": {
     "title": "Frontend Mülakat Soruları — Ücretsiz Seviye Testi",
-    "description": "JavaScript, CSS, React, Vue ve TypeScript üzerine gerçek frontend mülakat sorularıyla kendini test et. Junior, Mid veya Senior seç, açıklamaları gör ve puanını karşılaştır. Ücretsiz, kayıt yok.",
+    "description": "JavaScript, CSS, React, Vue, Angular ve TypeScript üzerine gerçek frontend mülakat sorularıyla kendini test et. Seviyeni veya uzmanlığını seç, açıklamaları gör ve puanını karşılaştır. Ücretsiz, kayıt yok.",
     "levelTitle": "{level} Frontend Mülakat Soruları — Ücretsiz Test",
     "levelDescription": "Gerçek sorularla ücretsiz {level} frontend mülakat testi. {desc} Puanını gör ve diğerleriyle karşılaştır.",
-    "resultTitle": "{level} testinde {score}/{total} yaptım",
+    "resultTitle": "{level} testinde {total} sorudan {score} doğru yaptım",
     "resultDescription": "Frontend mülakat soruları testini dene ve puanını karşılaştır.",
     "h1": "Gerçek frontend mülakat sorularıyla kendini test et",
     "topicsTitle": "Sorular neleri kapsıyor",
@@ -192,7 +213,7 @@
       },
       {
         "q": "Sorular hangi konuları kapsıyor?",
-        "a": "JavaScript (closure, event loop, Promise), CSS ve HTML, React ve Vue, TypeScript, tarayıcı performansı ve güvenlik: şirketlerin mülakatta sorduğu konular."
+        "a": "JavaScript (closure, event loop, Promise), CSS ve HTML, React, Vue ve Angular, TypeScript, tarayıcı performansı ve güvenlik: şirketlerin mülakatta sorduğu konular."
       },
       {
         "q": "Puanımı başkalarıyla nasıl karşılaştırırım?",
@@ -202,7 +223,10 @@
         "q": "Site hangi dillerde?",
         "a": "Arapça, İngilizce ve Türkçe. Kod, işte gördüğün gibi İngilizce kalır."
       }
-    ]
+    ],
+    "resultTitleNamed": "{name}: {level} testinde {total} sorudan {score} doğru",
+    "resultTitleOpen": "Açık testteki seviyem: {level} ({score}/{total})",
+    "resultTitleOpenNamed": "{name} açık testte: {level} ({score}/{total})"
   },
   "cardMeta": "Konu, uzunluk ve süre seç · kayıt yok",
   "openCard": {
@@ -226,7 +250,12 @@
     "start": "Teste başla",
     "how1": "Mid seviyesinde bir soruyla başlarsın.",
     "how2": "Doğru cevap bir sonrakini zorlaştırır; yanlış ya da atlanan cevap kolaylaştırır.",
-    "how3": "Sorular tüm konulardan gelir ve geri dönemezsin."
+    "how3": "Sorular tüm konulardan gelir ve geri dönemezsin.",
+    "name": "Adın",
+    "optional": "isteğe bağlı",
+    "namePlaceholder": "örn. Ayşe",
+    "nameHint": "İstersen adın sonuç sayfasında ve paylaşım görselinde görünür. Sonucun isimsiz kalması için boş bırak. Sonuç bağlantısını açan herkes görebilir.",
+    "level": "Seviye"
   },
   "share": {
     "title": "Sonucunu paylaş",
@@ -240,6 +269,18 @@
     "cardBetter": "Katılımcıların %{p}'inden iyi",
     "cardCorrect": "{total} sorudan {score} doğru",
     "cardCta": "Testi ücretsiz dene",
-    "text": "PromptjiCode Interview'da {level} testinde {total} sorudan {score} doğru yaptım. Sen de dene:"
+    "text": "PromptjiCode Interview'da {level} testinde {total} sorudan {score} doğru yaptım. Sen de dene:",
+    "textOpen": "PromptjiCode Interview açık testi seviyemi {level} olarak tahmin etti ({total} sorudan {score}). Sen de dene:",
+    "cardTitleNamed": "{name} · {level} testi sonucu",
+    "cardOpenNamed": "{name} · açık test seviyesi"
+  },
+  "nav": {
+    "backToTests": "Testlere dön",
+    "back": "Geri"
+  },
+  "tracks": {
+    "title": "Uzmanlığa göre test",
+    "desc": "Çalıştığın teknolojiyi seç; seviyeyi veya konuları hazırlık ekranında değiştir.",
+    "cta": "Teste başla"
   }
 }

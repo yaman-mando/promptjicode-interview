@@ -2,10 +2,10 @@ export type Level = 'junior' | 'mid' | 'senior'
 export type Locale = 'ar' | 'en' | 'tr'
 export type Topic =
   | 'javascript' | 'async' | 'css' | 'html' | 'react' | 'vue'
-  | 'typescript' | 'browser' | 'performance' | 'security'
+  | 'typescript' | 'browser' | 'performance' | 'security' | 'angular'
 
 export const LEVELS: Level[] = ['junior', 'mid', 'senior']
-export const TOPICS: Topic[] = ['javascript', 'async', 'css', 'html', 'react', 'vue', 'typescript', 'browser', 'performance', 'security']
+export const TOPICS: Topic[] = ['javascript', 'async', 'css', 'html', 'react', 'vue', 'angular', 'typescript', 'browser', 'performance', 'security']
 
 /** level = fixed test for one level, custom = chosen topics / length, open = adaptive across levels */
 export type Mode = 'level' | 'custom' | 'open'
@@ -69,6 +69,8 @@ export interface SubmitBody {
   token: string
   questionIds: string[]
   answers: (number | null)[]
+  /** optional, shown on the result */
+  name?: string
 }
 
 /** Open test: the state travels with the browser, signed by the server. */
@@ -94,6 +96,7 @@ export interface OpenAnswerBody {
   answer: number | null
   /** true when the time ran out or the user ends the test early */
   finish?: boolean
+  name?: string
 }
 
 /** Info for the setup screen: which topics each level has questions for (counts are not shown). */
@@ -126,6 +129,8 @@ export interface ResultResponse {
   /** seconds, 0 = no limit */
   timeLimit: number
   topicsChosen: Topic[]
+  /** name the person chose to show, or null */
+  name: string | null
   score: number
   total: number
   durationMs: number
