@@ -13,11 +13,20 @@ export default defineEventHandler(async (event) => {
   const todayStart = Math.floor((now + TZ_OFFSET) / 86400_000) * 86400_000 - TZ_OFFSET
   const from = todayStart - (days - 1) * 86400_000
 
+  // Which site to show: this app, promptjicode.com, or only sessions that opened Yaman's page
+  const scope = q.scope === 'main' || q.scope === 'yaman' ? q.scope : 'interview'
+  const S = scope === 'interview'
+    ? `site = 'interview'`
+    : scope === 'main'
+      ? `site = 'main'`
+      : `site = 'main' AND id IN (SELECT session FROM events WHERE type = 'pageview' AND path LIKE '%/yaman%')`
+  const inScope = `session IN (SELECT id FROM sessions WHERE ${S})`
+
   const group = (col: string, limit = 12) =>
     db.prepare(`SELECT COALESCE(${col}, '') AS k, COUNT(*) AS sessions, COUNT(DISTINCT visitor) AS visitors,
                        SUM(CASE WHEN quiz_started > 0 THEN 1 ELSE 0 END) AS started,
                        SUM(CASE WHEN quiz_done > 0 THEN 1 ELSE 0 END) AS done
-                  FROM sessions WHERE first_ts >= ? GROUP BY k ORDER BY sessions DESC LIMIT ${limit}`).bind(from)
+                  FROM sessions WHERE first_ts >= ? AND ${S} GROUP BY k ORDER BY sessions DESC LIMIT ${limit}`).bind(from)
 
   const res = await db.batch([
     // 0 summary
@@ -26,15 +35,15 @@ export default defineEventHandler(async (event) => {
                        SUM(CASE WHEN pageviews <= 1 AND quiz_started = 0 THEN 1 ELSE 0 END) AS bounced,
                        SUM(CASE WHEN quiz_started > 0 THEN 1 ELSE 0 END) AS s_started,
                        SUM(CASE WHEN quiz_done > 0 THEN 1 ELSE 0 END) AS s_done
-                  FROM sessions WHERE first_ts >= ?`).bind(from),
+                  FROM sessions WHERE first_ts >= ? AND ${S}`).bind(from),
     // 1 online now
-    db.prepare(`SELECT COUNT(*) AS n FROM sessions WHERE last_ts >= ?`).bind(now - 2 * 60_000),
+    db.prepare(`SELECT COUNT(*) AS n FROM sessions WHERE last_ts >= ? AND ${S}`).bind(now - 2 * 60_000),
     // 2 quiz events per level
     db.prepare(`SELECT level, type, COUNT(*) AS n FROM events
-                 WHERE ts >= ? AND type IN ('quiz_start', 'quiz_done', 'quiz_leave') GROUP BY level, type`).bind(from),
+                 WHERE ts >= ? AND ${inScope} AND type IN ('quiz_start', 'quiz_done', 'quiz_leave') GROUP BY level, type`).bind(from),
     // 3 where people stopped
     db.prepare(`SELECT answered, total, COUNT(*) AS n FROM events
-                 WHERE ts >= ? AND type = 'quiz_leave' GROUP BY answered, total ORDER BY answered`).bind(from),
+                 WHERE ts >= ? AND ${inScope} AND type = 'quiz_leave' GROUP BY answered, total ORDER BY answered`).bind(from),
     // 4..10 breakdowns
     group('country', 30),
     group('city', 12),
@@ -44,23 +53,26 @@ export default defineEventHandler(async (event) => {
     group('referrer'),
     group('locale'),
     // 11 top pages
-    db.prepare(`SELECT path AS k, COUNT(*) AS n FROM events WHERE ts >= ? AND type = 'pageview'
+    db.prepare(`SELECT path AS k, COUNT(*) AS n FROM events WHERE ts >= ? AND ${inScope} AND type = 'pageview'
                  GROUP BY path ORDER BY n DESC LIMIT 12`).bind(from),
     // 12 daily
     db.prepare(`SELECT CAST((first_ts + ${TZ_OFFSET}) / 86400000 AS INTEGER) AS day, COUNT(*) AS sessions,
                        COUNT(DISTINCT visitor) AS visitors,
                        SUM(CASE WHEN quiz_started > 0 THEN 1 ELSE 0 END) AS started,
                        SUM(CASE WHEN quiz_done > 0 THEN 1 ELSE 0 END) AS done
-                  FROM sessions WHERE first_ts >= ? GROUP BY day ORDER BY day`).bind(from),
+                  FROM sessions WHERE first_ts >= ? AND ${S} GROUP BY day ORDER BY day`).bind(from),
     // 13 hour of day
     db.prepare(`SELECT CAST(((first_ts + ${TZ_OFFSET}) % 86400000) / 3600000 AS INTEGER) AS hour, COUNT(*) AS n
-                  FROM sessions WHERE first_ts >= ? GROUP BY hour`).bind(from),
+                  FROM sessions WHERE first_ts >= ? AND ${S} GROUP BY hour`).bind(from),
     // 14 recent sessions
     db.prepare(`SELECT id, first_ts, last_ts, country, city, device, browser, os, referrer, landing, locale,
                        pageviews, is_new, quiz_level, quiz_started, quiz_answered, quiz_total, quiz_done, attempt_id
-                  FROM sessions ORDER BY last_ts DESC LIMIT 40`),
+                  FROM sessions WHERE ${S} ORDER BY last_ts DESC LIMIT 40`),
     // 15 utm
     group('utm_source'),
+    // 16 clicks (main site: email, WhatsApp, services…)
+    db.prepare(`SELECT label AS k, COUNT(*) AS n, COUNT(DISTINCT session) AS sessions FROM events
+                 WHERE ts >= ? AND ${inScope} AND type = 'click' GROUP BY label ORDER BY n DESC LIMIT 20`).bind(from),
   ])
   const rows = (i: number) => (res[i]!.results ?? []) as Row[]
 
@@ -85,6 +97,8 @@ export default defineEventHandler(async (event) => {
   }))
 
   return {
+    scope,
+    clicks: rows(16).map(r => ({ key: String(r.k ?? ''), count: n(r.n), sessions: n(r.sessions) })),
     days,
     from,
     summary: {

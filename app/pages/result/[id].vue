@@ -234,6 +234,9 @@ const dateText = computed(() => result.value
               <p class="mb-1 font-bold text-caramel">{{ t('result.why') }}</p>
               <p class="leading-relaxed text-cream/90"><BidiText :text="q.explanation" /></p>
             </div>
+            <div class="mt-2 flex justify-end">
+              <ReportButton :question-id="q.id" :prompt="q.prompt" :track="result.track" />
+            </div>
           </li>
         </ol>
       </section>

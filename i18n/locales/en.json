@@ -193,6 +193,37 @@
       "mobile": "Mobile",
       "tablet": "Tablet",
       "desktop": "Desktop"
+    },
+    "reports": "Reports",
+    "reportStatus": {
+      "new": "New",
+      "done": "Done"
+    },
+    "noReports": "No reports here.",
+    "anonymous": "Anonymous",
+    "openQuestion": "Open question",
+    "markDone": "Mark done",
+    "markNew": "Mark new",
+    "scope": {
+      "interview": "Interview site",
+      "main": "Main site",
+      "yaman": "My page"
+    },
+    "clicks": "Clicks",
+    "clicksSub": "Email, WhatsApp, services…",
+    "clicksTitle": "What visitors clicked",
+    "clickKinds": {
+      "email": "Email",
+      "copyEmail": "Copied email",
+      "phone": "Copied phone",
+      "whatsapp": "WhatsApp",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "service": "Service request",
+      "banner": "Services banner email",
+      "project": "Project link",
+      "social": "Channel social link",
+      "interview": "Interview site link"
     }
   },
   "mainSite": "PromptjiCode home",
@@ -209,27 +240,39 @@
     "faq": [
       {
         "q": "What is PromptjiCode Interview?",
-        "a": "A free site for practising frontend interview questions. Each test picks random questions from the bank for your level, and at the end you see your score with an explanation for every question."
+        "a": "A free site to test yourself on developer interview questions in Frontend, Backend and Full-stack. Each test picks random questions based on your choices, and at the end you see your score with an explanation for every question."
       },
       {
         "q": "What kinds of tests are there?",
-        "a": "Three: Frontend, Backend and Full-stack. Each has three levels (Junior, Mid, Senior) and an open test, and you can pick topics or your language and framework, the number of questions and a time limit."
+        "a": "Three tracks: Frontend, Backend and Full-stack. Each has three levels (Junior, Mid, Senior) and an open test, and you can pick topics or your language and framework, 5 to 20 questions, and a time limit if you like."
       },
       {
         "q": "Is it free? Do I need an account?",
-        "a": "It is completely free, with no sign-up and no email. Pick a level and start."
+        "a": "It is completely free, with no sign-up and no email. Pick a track and a level and start."
       },
       {
         "q": "What is the open test?",
-        "a": "A 15-question test that starts at Mid and gets harder when you answer right and easier when you answer wrong. At the end it estimates your level: Junior, Mid or Senior."
+        "a": "A 15-question test from the general topics of the track you choose. It starts at Mid, gets harder when you answer right and easier when you answer wrong, and at the end estimates your level: Junior, Mid or Senior."
       },
       {
         "q": "Which topics do the questions cover?",
-        "a": "Frontend: JavaScript, CSS, HTML, React, Vue, Angular, TypeScript, browser performance and security. Backend: SQL and databases, APIs, architecture and server security, plus Node.js, Python, PHP/Laravel and C#/.NET."
+        "a": "Frontend: JavaScript, CSS, HTML, React, Vue, Angular, TypeScript, browser performance and security. Backend: databases and SQL, APIs, architecture and server security, plus Node.js, Python, PHP/Laravel and C#/.NET. Full-stack combines both."
       },
       {
         "q": "How do I compare my score with others?",
-        "a": "When you finish, your score is ranked against everyone who took the same level, and you see what percentage of them you did better than."
+        "a": "When you finish, your score is ranked against everyone who took the same track and level (or the same track’s open test), and you see what percentage of them you did better than. It shows once there are enough results."
+      },
+      {
+        "q": "Can I share or print my result?",
+        "a": "Yes. The result page has a ready-made image for LinkedIn, WhatsApp and more, and a button to print your result with the full review. You can type your name before the test to show on it; that is optional."
+      },
+      {
+        "q": "I found a mistake in a question. What should I do?",
+        "a": "Press \"Report a mistake\" under the question, during the test or in the result review, pick the type of problem and add a note. We review every report and fix the question."
+      },
+      {
+        "q": "Will new questions and topics be added?",
+        "a": "Yes. We keep adding new sections and growing the question bank, and we review existing questions based on your reports."
       },
       {
         "q": "Which languages is the site in?",
@@ -341,5 +384,27 @@
     "title": "Test by specialisation",
     "desc": "Pick the technology you work with, then change the level or topics on the setup screen.",
     "cta": "Start a test"
+  },
+  "growthNote": "We keep adding new sections and growing the question bank.",
+  "report": {
+    "button": "Report a mistake",
+    "title": "Report a mistake in this question",
+    "question": "Question",
+    "type": "Type of problem",
+    "types": {
+      "wrong_answer": "The correct answer is wrong",
+      "unclear": "The question is unclear",
+      "translation": "Translation or wording",
+      "code": "Mistake in the code",
+      "other": "Something else"
+    },
+    "note": "Your note",
+    "notePlaceholder": "What is wrong, and what should it be?",
+    "rude": "Your text seems to contain offensive words. Please reword it so we can accept the report.",
+    "send": "Send report",
+    "cancel": "Cancel",
+    "close": "Close",
+    "thanks": "Thank you!",
+    "thanksText": "We got your report and will review and fix the question."
   }
 }

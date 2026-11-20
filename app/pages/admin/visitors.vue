@@ -4,8 +4,10 @@ definePageMeta({ middleware: 'admin' })
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const days = ref(7)
+const scope = ref<'interview' | 'main' | 'yaman'>('interview')
+const isQuizSite = computed(() => scope.value === 'interview')
 const { data: a, refresh, pending } = await useFetch('/api/admin/analytics', {
-  query: { days },
+  query: { days, scope },
   headers: useRequestHeaders(['cookie']),
 })
 
@@ -24,6 +26,13 @@ const countryName = (cc: string | null) => {
   if (!cc || cc === 'XX' || cc === 'T1') return t('admin.unknown')
   try { return regionNames.value?.of(cc) ?? cc }
   catch { return cc }
+}
+// Click labels sent by promptjicode.com: email, whatsapp, phone, linkedin, github, service:<id>, banner…
+const clickLabel = (k: string) => {
+  const [kind, id] = k.split(':')
+  if (kind === 'service' && id) return `${t('admin.clickKinds.service')}: ${id}`
+  const key = `admin.clickKinds.${kind}`
+  return t(key) === key ? k : t(key)
 }
 const pct = (x: number, y: number) => (y ? Math.round((x / y) * 100) : 0)
 const fmtDur = (sec: number) => {
@@ -72,6 +81,16 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
   <div class="pt-2">
     <AdminNav />
 
+    <!-- Which site -->
+    <div class="mb-3 inline-flex flex-wrap gap-1 rounded-xl bg-white/5 p-1">
+      <button
+        v-for="sc in (['interview', 'main', 'yaman'] as const)" :key="sc" type="button"
+        class="rounded-lg px-3 py-1.5 text-sm font-semibold transition"
+        :class="scope === sc ? 'bg-cream text-ink' : 'text-sand hover:text-cream'"
+        @click="scope = sc"
+      >{{ t(`admin.scope.${sc}`) }}</button>
+    </div>
+
     <div class="mb-5 flex flex-wrap items-center gap-2">
       <button
         v-for="d in [1, 7, 30, 90]" :key="d" type="button"
@@ -94,7 +113,9 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
           { label: t('admin.uniqueVisitors'), value: a.summary.visitors, sub: t('admin.newCount', { n: a.summary.newVisitors }) },
           { label: t('admin.sessions'), value: a.summary.sessions, sub: t('admin.pageviewsCount', { n: a.summary.pageviews }) },
           { label: t('admin.avgVisit'), value: fmtDur(a.summary.avgSeconds), sub: t('admin.bounce', { n: pct(a.summary.bounced, a.summary.sessions) }) },
-          { label: t('admin.completion'), value: `${pct(totals.done, totals.started)}%`, sub: t('admin.doneOf', { done: totals.done, started: totals.started }) },
+          isQuizSite
+            ? { label: t('admin.completion'), value: `${pct(totals.done, totals.started)}%`, sub: t('admin.doneOf', { done: totals.done, started: totals.started }) }
+            : { label: t('admin.clicks'), value: a.clicks.reduce((n, c) => n + c.count, 0), sub: t('admin.clicksSub') },
         ]" :key="c.label" class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <div class="text-sm text-sand">{{ c.label }}</div>
           <div class="mt-1 font-mono text-2xl font-bold" dir="ltr">{{ c.value }}</div>
@@ -102,8 +123,20 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
         </div>
       </div>
 
+      <!-- Clicks (main site) -->
+      <section v-if="!isQuizSite" class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+        <h2 class="mb-3 font-bold">{{ t('admin.clicksTitle') }}</h2>
+        <p v-if="!a.clicks.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
+        <ul class="grid gap-2">
+          <li v-for="c in a.clicks" :key="c.key" class="text-sm">
+            <div class="mb-1 flex justify-between gap-2"><span>{{ clickLabel(c.key) }}</span><span class="font-mono text-sand">{{ c.count }}</span></div>
+            <div class="h-1.5 overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full bg-caramel/70" :style="{ width: `${(c.count / Math.max(1, a.clicks[0]!.count)) * 100}%` }" /></div>
+          </li>
+        </ul>
+      </section>
+
       <!-- Funnel -->
-      <section class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <section v-if="isQuizSite" class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
         <h2 class="mb-4 font-bold">{{ t('admin.funnel') }}</h2>
         <div class="grid gap-3">
           <div v-for="(f, i) in [
@@ -258,7 +291,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
                 <th class="px-3 py-2 text-start font-medium">{{ t('admin.deviceCol') }}</th>
                 <th class="px-3 py-2 text-start font-medium">{{ t('admin.source') }}</th>
                 <th class="px-3 py-2 text-start font-medium">{{ t('admin.stay') }}</th>
-                <th class="px-3 py-2 text-start font-medium">{{ t('admin.test') }}</th>
+                <th v-if="isQuizSite" class="px-3 py-2 text-start font-medium">{{ t('admin.test') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -272,7 +305,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
                 <td class="px-3 py-2 whitespace-nowrap">{{ t(`admin.device.${r.device || 'desktop'}`) }}<div class="text-[11px] text-sand">{{ r.os }} · {{ r.browser }}</div></td>
                 <td class="px-3 py-2"><span dir="ltr">{{ r.referrer || t('admin.direct') }}</span><div class="font-mono text-[11px] text-sand" dir="ltr">{{ r.landing }}</div></td>
                 <td class="px-3 py-2 whitespace-nowrap font-mono" dir="ltr">{{ fmtDur(Math.round((r.lastTs - r.firstTs) / 1000)) }}<div class="text-[11px] text-sand">{{ t('admin.pageviewsCount', { n: r.pageviews }) }}</div></td>
-                <td class="px-3 py-2 whitespace-nowrap">
+                <td v-if="isQuizSite" class="px-3 py-2 whitespace-nowrap">
                   <template v-if="!r.quizStarted"><span class="text-sand">—</span></template>
                   <template v-else>
                     <span class="font-semibold" :class="r.quizDone ? 'text-good' : 'text-bad'">{{ r.quizDone ? t('admin.finished') : t('admin.stopped') }}</span>

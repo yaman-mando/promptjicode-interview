@@ -325,7 +325,7 @@ onBeforeRouteLeave(async () => {
 // Keyboard: A–D or 1–4 pick an option, Enter goes on
 function onKey(e: KeyboardEvent) {
   if (phase.value !== 'test' || !question.value || submitting.value || e.ctrlKey || e.metaKey || e.altKey) return
-  if (e.target instanceof HTMLInputElement || document.querySelector('[role=alertdialog]')) return
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || document.querySelector('[role=alertdialog], [role=dialog]')) return
   const letter = 'abcd'.indexOf(e.key.toLowerCase())
   const n = letter >= 0 ? letter + 1 : Number(e.key)
   if (n >= 1 && n <= question.value.options.length) choose(n - 1)
@@ -594,6 +594,9 @@ const segBtn = (on: boolean) => on
               <span class="min-w-0" :class="/^[\x00-\x7F]*$/.test(opt) ? 'ltr font-mono text-[15px]' : 'text-[16px]'"><BidiText :text="opt" /></span>
             </button>
           </fieldset>
+          <div class="mt-3 flex justify-end">
+            <ReportButton :question-id="question.id" :prompt="question.prompt" :track="track" />
+          </div>
         </div>
       </Transition>
 

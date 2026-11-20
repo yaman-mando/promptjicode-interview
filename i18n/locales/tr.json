@@ -193,6 +193,37 @@
       "mobile": "Mobil",
       "tablet": "Tablet",
       "desktop": "Masaüstü"
+    },
+    "reports": "Bildirimler",
+    "reportStatus": {
+      "new": "Yeni",
+      "done": "Tamamlandı"
+    },
+    "noReports": "Burada bildirim yok.",
+    "anonymous": "İsimsiz",
+    "openQuestion": "Soruyu aç",
+    "markDone": "Tamamlandı yap",
+    "markNew": "Yeni yap",
+    "scope": {
+      "interview": "Mülakat sitesi",
+      "main": "Ana site",
+      "yaman": "Kişisel sayfam"
+    },
+    "clicks": "Tıklamalar",
+    "clicksSub": "E-posta, WhatsApp, hizmetler…",
+    "clicksTitle": "Ziyaretçilerin tıkladıkları",
+    "clickKinds": {
+      "email": "E-posta",
+      "copyEmail": "E-posta kopyalandı",
+      "phone": "Telefon kopyalandı",
+      "whatsapp": "WhatsApp",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "service": "Hizmet talebi",
+      "banner": "Hizmet şeridi e-postası",
+      "project": "Proje bağlantısı",
+      "social": "Kanal sosyal bağlantısı",
+      "interview": "Mülakat sitesi bağlantısı"
     }
   },
   "mainSite": "Ana sayfa",
@@ -209,27 +240,39 @@
     "faq": [
       {
         "q": "PromptjiCode Interview nedir?",
-        "a": "Frontend mülakat sorularıyla pratik yapman için ücretsiz bir site. Her test seviyene göre soru bankasından rastgele sorular seçer; sonunda her sorunun açıklamasıyla birlikte puanını görürsün."
+        "a": "Frontend, Backend ve Full-stack geliştirici mülakat sorularıyla kendini test etmen için ücretsiz bir site. Her test seçimlerine göre rastgele sorular seçer; sonunda her sorunun açıklamasıyla birlikte puanını görürsün."
       },
       {
         "q": "Hangi test türleri var?",
-        "a": "Üç tür: Frontend, Backend ve Full-stack. Her birinde üç seviye (Junior, Mid, Senior) ve bir açık test var; konuları veya dilini ve framework’ünü, soru sayısını ve süreyi seçebilirsin."
+        "a": "Üç alan: Frontend, Backend ve Full-stack. Her birinde üç seviye (Junior, Mid, Senior) ve bir açık test var; konuları veya dilini ve framework’ünü, 5 ile 20 arası soru sayısını ve istersen süre sınırını seçebilirsin."
       },
       {
         "q": "Ücretsiz mi? Hesap gerekiyor mu?",
-        "a": "Tamamen ücretsiz; kayıt ya da e-posta yok. Seviyeni seç ve başla."
+        "a": "Tamamen ücretsiz; kayıt ya da e-posta yok. Bir alan ve seviye seç, başla."
       },
       {
         "q": "Açık test nedir?",
-        "a": "Mid seviyesinden başlayan 15 soruluk bir test: doğru cevapta zorlaşır, yanlışta kolaylaşır. Sonunda seviyeni tahmin eder: Junior, Mid veya Senior."
+        "a": "Seçtiğin alanın genel konularından 15 soruluk bir test. Mid seviyesinden başlar, doğru cevapta zorlaşır, yanlışta kolaylaşır ve sonunda seviyeni tahmin eder: Junior, Mid veya Senior."
       },
       {
         "q": "Sorular hangi konuları kapsıyor?",
-        "a": "Frontend: JavaScript, CSS, HTML, React, Vue, Angular, TypeScript, tarayıcı performansı ve güvenlik. Backend: SQL ve veritabanları, API’ler, mimari ve sunucu güvenliği; ayrıca Node.js, Python, PHP/Laravel ve C#/.NET."
+        "a": "Frontend: JavaScript, CSS, HTML, React, Vue, Angular, TypeScript, tarayıcı performansı ve güvenlik. Backend: veritabanları ve SQL, API’ler, mimari ve sunucu güvenliği; ayrıca Node.js, Python, PHP/Laravel ve C#/.NET. Full-stack ikisini birleştirir."
       },
       {
         "q": "Puanımı başkalarıyla nasıl karşılaştırırım?",
-        "a": "Testi bitirince puanın aynı seviyeyi çözen herkesle sıralanır ve onların yüzde kaçından daha iyi olduğunu görürsün."
+        "a": "Testi bitirince puanın aynı alan ve seviyeyi (veya aynı alanın açık testini) çözen herkesle sıralanır ve onların yüzde kaçından daha iyi olduğunu görürsün. Yeterli sonuç toplanınca görünür."
+      },
+      {
+        "q": "Sonucumu paylaşabilir veya yazdırabilir miyim?",
+        "a": "Evet. Sonuç sayfasında LinkedIn, WhatsApp ve diğerleri için hazır bir görsel ve sonucu tüm soru incelemesiyle yazdırmak için bir buton var. Testten önce adını yazarsan üzerinde görünür; bu isteğe bağlıdır."
+      },
+      {
+        "q": "Bir soruda hata buldum, ne yapmalıyım?",
+        "a": "Testte ya da sonuç incelemesinde sorunun altındaki \"Hata bildir\"e bas, hatanın türünü seç ve notunu yaz. Her bildirimi inceleyip soruyu düzeltiriz."
+      },
+      {
+        "q": "Yeni sorular ve konular eklenecek mi?",
+        "a": "Evet. Sürekli yeni bölümler ekliyor ve soru bankasını büyütüyoruz; mevcut soruları da bildirimlerinize göre gözden geçiriyoruz."
       },
       {
         "q": "Site hangi dillerde?",
@@ -341,5 +384,27 @@
     "title": "Uzmanlığa göre test",
     "desc": "Çalıştığın teknolojiyi seç; seviyeyi veya konuları hazırlık ekranında değiştir.",
     "cta": "Teste başla"
+  },
+  "growthNote": "Sürekli yeni bölümler ekliyor ve soru bankasını büyütüyoruz.",
+  "report": {
+    "button": "Hata bildir",
+    "title": "Bu sorudaki hatayı bildir",
+    "question": "Soru",
+    "type": "Sorunun türü",
+    "types": {
+      "wrong_answer": "Doğru cevap yanlış",
+      "unclear": "Soru anlaşılmıyor",
+      "translation": "Çeviri veya ifade hatası",
+      "code": "Kodda hata",
+      "other": "Başka bir şey"
+    },
+    "note": "Notun",
+    "notePlaceholder": "Yanlış olan ne, doğrusu ne olmalı?",
+    "rude": "Metninde uygunsuz kelimeler var gibi görünüyor. Bildirimi alabilmemiz için lütfen düzenle.",
+    "send": "Bildirimi gönder",
+    "cancel": "İptal",
+    "close": "Kapat",
+    "thanks": "Teşekkürler!",
+    "thanksText": "Bildirimini aldık; soruyu inceleyip düzelteceğiz."
   }
 }
