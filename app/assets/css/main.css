@@ -158,3 +158,6 @@ html, body { overflow-x: clip; }
   .review-item { break-inside: avoid; }
   main { max-width: none !important; }
 }
+
+/* Arabic letters join each other: tightening or widening the spacing breaks the joins */
+html[lang="ar"] :is(.tracking-tight, .tracking-wide, .h2) { letter-spacing: normal; }
