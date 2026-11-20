@@ -49,5 +49,6 @@ export default defineEventHandler(async (event) => {
     timeLimit: body.timeLimit,
     topics: body.mode === 'custom' ? [...topics] : null,
     estimate: null,
+    name: cleanName(body.name),
   })
 })

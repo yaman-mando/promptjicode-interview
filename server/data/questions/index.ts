@@ -3,10 +3,14 @@ import { LEGACY } from './_legacy'
 import { JUNIOR } from './junior'
 import { MID } from './mid'
 import { SENIOR } from './senior'
+import { ANGULAR } from './extra/angular'
+import { TS_HTML_CSS } from './extra/ts-html-css'
+import { VUE_REACT } from './extra/vue-react'
+import { WEB } from './extra/web'
 
 /**
  * Question bank. Server-only: answers never reach the browser before the test is submitted.
  * Arabic is neutral written Arabic (not dialect), matching the channel's on-screen text.
  * Run `npm run verify` after adding questions.
  */
-export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR]
+export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB]

@@ -48,6 +48,7 @@ export default defineEventHandler(async (event): Promise<OpenStep | { id: string
       timeLimit: s.timeLimit,
       topics: null,
       estimate: g.estimate,
+      name: cleanName(body.name),
     })
   }
 

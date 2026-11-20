@@ -10,7 +10,16 @@ const badge: Record<string, string> = {
   senior: 'bg-bad/15 text-bad',
 }
 
-const TOPICS = ['javascript', 'async', 'css', 'html', 'react', 'vue', 'typescript', 'browser', 'performance', 'security']
+const TOPICS = ['javascript', 'async', 'css', 'html', 'react', 'vue', 'angular', 'typescript', 'browser', 'performance', 'security']
+// Specialisation tests: one topic, any level (Mid by default)
+const TRACKS = [
+  { topic: 'vue', mark: 'V', color: '#42b883' },
+  { topic: 'react', mark: 'R', color: '#58c4dc' },
+  { topic: 'angular', mark: 'A', color: '#e5645a' },
+  { topic: 'typescript', mark: 'TS', color: '#3178c6' },
+  { topic: 'javascript', mark: 'JS', color: '#e2c35c' },
+  { topic: 'css', mark: 'CSS', color: '#b48ce6' },
+]
 const faq = computed(() => (tm('seo.faq') as { q: unknown, a: unknown }[]).map(f => ({ q: rt(f.q as never), a: rt(f.a as never) })))
 
 const SITE = 'https://interview.promptjicode.com'
@@ -125,6 +134,24 @@ useHead(() => ({
       {{ t('openCard.cta') }}
     </span>
   </NuxtLink>
+
+  <section class="mt-12">
+    <h2 class="mb-1 text-xl font-bold">{{ t('tracks.title') }}</h2>
+    <p class="mb-4 text-sand">{{ t('tracks.desc') }}</p>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <NuxtLink
+        v-for="tr in TRACKS" :key="tr.topic"
+        :to="localePath({ path: '/quiz/mid', query: { topics: tr.topic } })"
+        class="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.06]"
+      >
+        <span class="grid size-11 shrink-0 place-items-center rounded-xl font-mono text-sm font-bold" :style="{ background: `${tr.color}22`, color: tr.color }" dir="ltr">{{ tr.mark }}</span>
+        <span class="min-w-0">
+          <span class="block font-bold">{{ t(`topics.${tr.topic}`) }}</span>
+          <span class="block text-xs text-sand">{{ t('tracks.cta') }}</span>
+        </span>
+      </NuxtLink>
+    </div>
+  </section>
 
   <section class="mt-12">
     <h2 class="mb-4 text-xl font-bold">{{ t('seo.topicsTitle') }}</h2>

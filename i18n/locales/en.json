@@ -30,11 +30,29 @@
     "submitting": "Calculating your result…",
     "error": "Something went wrong. Please try again.",
     "retry": "Try again",
-    "leave": "You will lose your progress. Leave the test?",
+    "leave": "You will lose your progress and the result will not be saved.",
     "timeLeft": "Time left",
     "timeUp": "Time is up! Getting your result…",
-    "endNow": "End now",
-    "endConfirm": "We will end the test and grade the questions you answered. Continue?"
+    "endNow": "End test",
+    "endConfirm": "We will grade your test now. Questions without an answer count as wrong.",
+    "prev": "Previous",
+    "panel": "Questions",
+    "status": {
+      "current": "Current question",
+      "answered": "Answered",
+      "skipped": "Skipped",
+      "locked": "Not reached yet"
+    },
+    "noBackOpen": "No going back in the open test",
+    "soundOn": "Alert sound on",
+    "soundOff": "Alert sound off",
+    "endTitle": "End the test?",
+    "endConfirmOpen": "We will grade the questions you have reached so far.",
+    "unanswered": "{n} still have no answer.",
+    "endYes": "End and see result",
+    "keepGoing": "Keep going",
+    "leaveTitle": "Leave the test?",
+    "leaveYes": "Leave"
   },
   "result": {
     "title": "Your result",
@@ -58,7 +76,9 @@
     "byLevel": "By question difficulty",
     "timeLimit": "Time limit: {m} min",
     "topicsChosen": "Topics: {list}",
-    "tryOpen": "Try the open test"
+    "tryOpen": "Try the open test",
+    "titleNamed": "{name}'s result",
+    "print": "Print result"
   },
   "topics": {
     "javascript": "JavaScript",
@@ -70,7 +90,8 @@
     "typescript": "TypeScript",
     "browser": "Browser",
     "performance": "Performance",
-    "security": "Security"
+    "security": "Security",
+    "angular": "Angular"
   },
   "footer": "Write it right… get it right",
   "github": "Code on GitHub",
@@ -169,7 +190,7 @@
   "mainSite": "PromptjiCode home",
   "seo": {
     "title": "Frontend Interview Questions — Free Level Test",
-    "description": "Practice real frontend interview questions on JavaScript, CSS, React, Vue and TypeScript. Pick Junior, Mid or Senior, get explanations, and compare your score. Free, no sign-up.",
+    "description": "Practise real frontend interview questions on JavaScript, CSS, React, Vue, Angular and TypeScript. Pick your level or specialisation, get explanations, and compare your score. Free, no sign-up.",
     "levelTitle": "{level} Frontend Interview Questions — Free Test",
     "levelDescription": "Free {level} frontend interview test with real questions. {desc} See your score and how you compare.",
     "resultTitle": "I scored {score}/{total} on the {level} test",
@@ -192,7 +213,7 @@
       },
       {
         "q": "Which topics do the questions cover?",
-        "a": "JavaScript (closures, the event loop, Promises), CSS and HTML, React and Vue, TypeScript, browser performance and security: the things companies ask in interviews."
+        "a": "JavaScript (closures, the event loop, Promises), CSS and HTML, React, Vue and Angular, TypeScript, browser performance and security: the things companies ask in interviews."
       },
       {
         "q": "How do I compare my score with others?",
@@ -202,7 +223,10 @@
         "q": "Which languages is the site in?",
         "a": "Arabic, English and Turkish. Code stays in English, the way you see it at work."
       }
-    ]
+    ],
+    "resultTitleNamed": "{name} scored {score}/{total} on the {level} test",
+    "resultTitleOpen": "My level in the open test: {level} ({score}/{total})",
+    "resultTitleOpenNamed": "{name}'s level in the open test: {level} ({score}/{total})"
   },
   "cardMeta": "Pick topics, length and timer · no sign-up",
   "openCard": {
@@ -226,7 +250,12 @@
     "start": "Start the test",
     "how1": "You start with a Mid question.",
     "how2": "A right answer makes the next one harder; a wrong or skipped one makes it easier.",
-    "how3": "Questions come from every topic, and you cannot go back."
+    "how3": "Questions come from every topic, and you cannot go back.",
+    "name": "Your name",
+    "optional": "optional",
+    "namePlaceholder": "e.g. Sara",
+    "nameHint": "If you want, your name appears on the result sheet and the share image. Leave it empty to keep the result anonymous. Anyone who opens the result link will see it.",
+    "level": "Level"
   },
   "share": {
     "title": "Share your result",
@@ -240,6 +269,18 @@
     "cardBetter": "Better than {p}% of people",
     "cardCorrect": "{score} of {total} correct",
     "cardCta": "Try the test for free",
-    "text": "I got {score}/{total} on the {level} test at PromptjiCode Interview. Try it:"
+    "text": "I got {score}/{total} on the {level} test at PromptjiCode Interview. Try it:",
+    "textOpen": "The open test at PromptjiCode Interview put me at {level} ({score}/{total}). Try it:",
+    "cardTitleNamed": "{name}'s {level} test result",
+    "cardOpenNamed": "{name}'s level in the open test"
+  },
+  "nav": {
+    "backToTests": "Back to tests",
+    "back": "Back"
+  },
+  "tracks": {
+    "title": "Test by specialisation",
+    "desc": "Pick the technology you work with, then change the level or topics on the setup screen.",
+    "cta": "Start a test"
   }
 }

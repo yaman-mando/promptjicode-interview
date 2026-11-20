@@ -53,16 +53,39 @@ const barClass = (ok: number) => ok >= 0.7 ? 'bg-good' : ok >= 0.4 ? 'bg-caramel
 const isCode = (s: string) => /^[\x00-\x7F]*$/.test(s)
 
 // Results are personal: shareable with a good preview, but kept out of search results
-const resultTitle = () => result.value
-  ? t('seo.resultTitle', { score: result.value.score, total: result.value.total, level: testName.value })
-  : 'PromptjiCode Interview'
+const resultTitle = () => {
+  const r = result.value
+  if (!r) return 'PromptjiCode Interview'
+  const vars = { score: r.score, total: r.total, level: t(`levels.${r.level}.name`), name: r.name ?? '' }
+  if (r.mode === 'open') return t(r.name ? 'seo.resultTitleOpenNamed' : 'seo.resultTitleOpen', vars)
+  return t(r.name ? 'seo.resultTitleNamed' : 'seo.resultTitle', vars)
+}
+const resultDesc = () => {
+  const r = result.value
+  if (r?.percentile == null) return t('seo.resultDescription')
+  return `${r.mode === 'open' ? t('result.openPercentile', { p: r.percentile }) : t('result.percentile', { p: r.percentile, level: testName.value })}. ${t('seo.resultDescription')}`
+}
+// Link previews (WhatsApp, LinkedIn…) get a pre-made image for this level and score band
+const ogImage = () => {
+  const r = result.value
+  if (!r) return 'https://interview.promptjicode.com/og.jpg'
+  const file = r.mode === 'open' ? `open-${r.level}` : `r-${r.level}-${Math.round(pct.value / 5) * 5}`
+  return `https://interview.promptjicode.com/og/${file}.jpg`
+}
 useSeoMeta({
   title: resultTitle,
   ogTitle: resultTitle,
-  description: () => t('seo.resultDescription'),
-  ogDescription: () => t('seo.resultDescription'),
+  description: resultDesc,
+  ogDescription: resultDesc,
+  ogImage,
+  twitterImage: ogImage,
   robots: 'noindex, follow',
 })
+
+const printPage = () => window.print()
+const dateText = computed(() => result.value
+  ? new Date(result.value.createdAt).toLocaleDateString(locale.value === 'ar' ? 'ar-u-nu-latn' : locale.value, { dateStyle: 'long' })
+  : '')
 </script>
 
 <template>
@@ -70,10 +93,28 @@ useSeoMeta({
     <p v-if="error" class="py-24 text-center text-sand">{{ t('result.notFound') }}</p>
 
     <template v-else-if="result">
+      <div class="no-print mb-4 flex items-center justify-between gap-3">
+        <NuxtLink :to="localePath('/')" class="inline-flex items-center gap-1.5 rounded-lg py-1 text-sm font-semibold text-sand transition hover:text-cream">
+          <svg viewBox="0 0 24 24" class="size-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6" /></svg>
+          {{ t('nav.backToTests') }}
+        </NuxtLink>
+        <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2 text-sm font-semibold transition hover:border-caramel" @click="printPage">
+          <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2" /><path d="M7 14h10v7H7z" /></svg>
+          {{ t('result.print') }}
+        </button>
+      </div>
+
+      <!-- Printed sheet header -->
+      <div class="print-only mb-6 border-b pb-4">
+        <p class="text-sm">PromptjiCode Interview · interview.promptjicode.com</p>
+        <h1 class="mt-1 text-2xl font-bold">{{ result.name ? t('result.titleNamed', { name: result.name }) : t('result.title') }} · {{ testName }}</h1>
+        <p class="mt-1 text-sm">{{ dateText }}</p>
+      </div>
+
       <!-- Score -->
       <section class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center sm:p-8">
         <p class="mb-5 text-sm font-semibold text-sand">
-          {{ t('result.title') }} · <span class="font-mono">{{ testName }}</span>
+          {{ result.name ? t('result.titleNamed', { name: result.name }) : t('result.title') }} · <span class="font-mono">{{ testName }}</span>
           <span v-if="result.mode === 'custom'" class="ms-1 rounded bg-white/10 px-1.5 py-0.5 text-xs">{{ t('setup.custom') }}</span>
         </p>
 
@@ -105,7 +146,7 @@ useSeoMeta({
           <span v-if="result.topicsChosen.length">{{ t('result.topicsChosen', { list: result.topicsChosen.map(tp => t(`topics.${tp}`)).join(locale === 'ar' ? '، ' : ', ') }) }}</span>
         </p>
 
-        <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <div class="no-print mt-6 flex flex-wrap justify-center gap-3">
           <NuxtLink :to="againLink" class="rounded-xl bg-caramel px-5 py-2.5 font-bold text-ink transition hover:brightness-110">
             {{ t('result.again') }}
           </NuxtLink>
@@ -118,7 +159,7 @@ useSeoMeta({
         </div>
       </section>
 
-      <ClientOnly><ShareCard :result="result" /></ClientOnly>
+      <ClientOnly><ShareCard class="no-print" :result="result" /></ClientOnly>
 
       <!-- Open test: by difficulty -->
       <section v-if="result.levels.length" class="mt-8">
@@ -126,8 +167,8 @@ useSeoMeta({
         <ul class="grid gap-3">
           <li v-for="(lv, i) in result.levels" :key="lv.level" class="grid grid-cols-[6.5rem_1fr_3rem] items-center gap-3">
             <span class="font-mono text-sm">{{ t(`levels.${lv.level}.name`) }}</span>
-            <div class="h-2.5 overflow-hidden rounded-full bg-white/10">
-              <div class="bar-grow h-full rounded-full" :class="barClass(lv.correct / lv.total)" :style="{ width: `${Math.max(4, (lv.correct / lv.total) * 100)}%`, animationDelay: `${200 + i * 90}ms` }" />
+            <div class="print-track h-2.5 overflow-hidden rounded-full bg-white/10">
+              <div class="bar-grow print-keep-bg h-full rounded-full" :class="barClass(lv.correct / lv.total)" :style="{ width: `${Math.max(4, (lv.correct / lv.total) * 100)}%`, animationDelay: `${200 + i * 90}ms` }" />
             </div>
             <span class="text-end font-mono text-sm text-sand" dir="ltr">{{ lv.correct }}/{{ lv.total }}</span>
           </li>
@@ -140,9 +181,9 @@ useSeoMeta({
         <ul class="grid gap-3">
           <li v-for="(tp, i) in result.topics" :key="tp.topic" class="grid grid-cols-[6.5rem_1fr_3rem] items-center gap-3">
             <span class="font-mono text-sm">{{ t(`topics.${tp.topic}`) }}</span>
-            <div class="h-2.5 overflow-hidden rounded-full bg-white/10">
+            <div class="print-track h-2.5 overflow-hidden rounded-full bg-white/10">
               <div
-                class="bar-grow h-full rounded-full"
+                class="bar-grow print-keep-bg h-full rounded-full"
                 :class="barClass(tp.correct / tp.total)"
                 :style="{ width: `${Math.max(4, (tp.correct / tp.total) * 100)}%`, animationDelay: `${200 + i * 70}ms` }"
               />
@@ -159,7 +200,7 @@ useSeoMeta({
           <li
             v-for="(q, i) in result.review"
             :key="q.id"
-            class="min-w-0 rounded-2xl border p-5"
+            class="review-item min-w-0 rounded-2xl border p-5"
             :class="q.correct ? 'border-good/30 bg-good/[0.04]' : 'border-bad/30 bg-bad/[0.04]'"
           >
             <div class="mb-3 flex items-start gap-3">

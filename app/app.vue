@@ -19,7 +19,7 @@ useSeoMeta({
   ogSiteName: 'PromptjiCode Interview',
   ogType: 'website',
   ogUrl: () => `https://interview.promptjicode.com${route.path === '/' ? '' : route.path}`,
-  ogImage: 'https://interview.promptjicode.com/og.png',
+  ogImage: 'https://interview.promptjicode.com/og.jpg',
   ogImageWidth: 1200,
   ogImageHeight: 630,
   ogImageAlt: 'PromptjiCode Interview',
