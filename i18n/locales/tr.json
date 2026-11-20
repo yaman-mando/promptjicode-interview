@@ -2,7 +2,6 @@
   "brand": "PromptjiCode Interview",
   "tagline": "Gerçek frontend mülakat soruları. Kendini test et, sonucunu başkalarıyla karşılaştır.",
   "chooseLevel": "Test seviyeni seç",
-  "questionsCount": "{n} soru · kayıt gerekmez",
   "start": "Başla",
   "levels": {
     "junior": {
@@ -16,12 +15,11 @@
     "senior": {
       "name": "Senior",
       "desc": "Performans, stacking context, React ve Promise detayları."
+    },
+    "open": {
+      "name": "Açık test",
+      "desc": "Cevaplarına göre zorlaşan ya da kolaylaşan 15 soru. Sonunda seviyeni tahmin ederiz."
     }
-  },
-  "openTest": {
-    "title": "Açık test",
-    "desc": "Sorular cevaplarına göre değişir ve gerçek seviyeni bulur.",
-    "soon": "Yakında"
   },
   "quiz": {
     "loading": "Sorular hazırlanıyor…",
@@ -32,7 +30,11 @@
     "submitting": "Sonucun hesaplanıyor…",
     "error": "Bir hata oluştu. Lütfen tekrar dene.",
     "retry": "Tekrar dene",
-    "leave": "İlerlemen kaybolacak. Testten çıkmak istiyor musun?"
+    "leave": "İlerlemen kaybolacak. Testten çıkmak istiyor musun?",
+    "timeLeft": "Kalan süre",
+    "timeUp": "Süre doldu! Sonucun hesaplanıyor…",
+    "endNow": "Şimdi bitir",
+    "endConfirm": "Testi bitirip cevapladığın soruları değerlendireceğiz. Devam edilsin mi?"
   },
   "result": {
     "title": "Sonucun",
@@ -50,7 +52,13 @@
     "otherLevel": "Başka bir seviye dene",
     "share": "Sonuç bağlantısını kopyala",
     "copied": "Kopyalandı ✓",
-    "notFound": "Bu sonucu bulamadık."
+    "notFound": "Bu sonucu bulamadık.",
+    "estimated": "Tahmini seviyen",
+    "openPercentile": "Açık testi çözenlerin %{p}'inden daha iyi",
+    "byLevel": "Soru zorluğuna göre",
+    "timeLimit": "Süre sınırı: {m} dk",
+    "topicsChosen": "Konular: {list}",
+    "tryOpen": "Açık testi dene"
   },
   "topics": {
     "javascript": "JavaScript",
@@ -179,6 +187,10 @@
         "a": "Tamamen ücretsiz; kayıt ya da e-posta yok. Seviyeni seç ve başla."
       },
       {
+        "q": "Açık test nedir?",
+        "a": "Mid seviyesinden başlayan 15 soruluk bir test: doğru cevapta zorlaşır, yanlışta kolaylaşır. Sonunda seviyeni tahmin eder: Junior, Mid veya Senior."
+      },
+      {
         "q": "Sorular hangi konuları kapsıyor?",
         "a": "JavaScript (closure, event loop, Promise), CSS ve HTML, React ve Vue, TypeScript, tarayıcı performansı ve güvenlik: şirketlerin mülakatta sorduğu konular."
       },
@@ -191,5 +203,43 @@
         "a": "Arapça, İngilizce ve Türkçe. Kod, işte gördüğün gibi İngilizce kalır."
       }
     ]
+  },
+  "cardMeta": "Konu, uzunluk ve süre seç · kayıt yok",
+  "openCard": {
+    "kicker": "Seviyenden emin değil misin?",
+    "cta": "Açık teste başla"
+  },
+  "setup": {
+    "title": "Testini hazırla",
+    "topics": "Konular",
+    "allTopics": "Tüm konular",
+    "custom": "Özel",
+    "pickHint": "Bir veya daha fazla konu seç.",
+    "count": "Soru sayısı",
+    "time": "Süre",
+    "noLimit": "Süresiz",
+    "min": "{n} dk",
+    "other": "Diğer",
+    "minutes": "dakika",
+    "fewer": "Bu konularda bu seviyede daha az soru var; test {n} soru olacak.",
+    "summary": "Soru: {n} · Süre: {time}",
+    "start": "Teste başla",
+    "how1": "Mid seviyesinde bir soruyla başlarsın.",
+    "how2": "Doğru cevap bir sonrakini zorlaştırır; yanlış ya da atlanan cevap kolaylaştırır.",
+    "how3": "Sorular tüm konulardan gelir ve geri dönemezsin."
+  },
+  "share": {
+    "title": "Sonucunu paylaş",
+    "download": "Görseli indir",
+    "native": "Paylaş",
+    "copy": "Bağlantıyı kopyala",
+    "copied": "Kopyalandı ✓",
+    "preparing": "Görsel hazırlanıyor…",
+    "cardTitle": "{level} testi sonucum",
+    "cardOpen": "Açık testteki seviyem",
+    "cardBetter": "Katılımcıların %{p}'inden iyi",
+    "cardCorrect": "{total} sorudan {score} doğru",
+    "cardCta": "Testi ücretsiz dene",
+    "text": "PromptjiCode Interview'da {level} testinde {total} sorudan {score} doğru yaptım. Sen de dene:"
   }
 }

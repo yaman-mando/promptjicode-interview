@@ -127,7 +127,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
             <p v-if="!Object.keys(a.quiz.levels).length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
             <ul class="grid gap-1.5 text-sm">
               <li v-for="(v, l) in a.quiz.levels" :key="l" class="flex justify-between gap-2">
-                <span>{{ ['junior', 'mid', 'senior'].includes(String(l)) ? t(`levels.${l}.name`) : l }}</span>
+                <span>{{ ['junior', 'mid', 'senior', 'open'].includes(String(l)) ? t(`levels.${l}.name`) : l }}</span>
                 <span class="text-sand">{{ t('admin.levelLine', { started: v.started, done: v.done, left: v.left }) }}</span>
               </li>
             </ul>

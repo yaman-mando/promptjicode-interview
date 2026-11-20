@@ -90,7 +90,11 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
             <tbody>
               <tr v-for="r in s.recent" :key="r.id" class="border-t border-white/5">
                 <td class="px-3 py-2 whitespace-nowrap text-sand">{{ fmtDate(r.created_at) }}</td>
-                <td class="px-3 py-2 font-mono">{{ t(`levels.${r.level}.name`) }}</td>
+                <td class="px-3 py-2 font-mono">
+                  {{ r.mode === 'open' ? `${t('levels.open.name')} → ${t(`levels.${r.level}.name`)}` : t(`levels.${r.level}.name`) }}
+                  <span v-if="r.mode === 'custom'" class="ms-1 rounded bg-white/10 px-1.5 text-[11px] text-sand">{{ t('setup.custom') }}</span>
+                  <span v-if="r.time_limit" class="ms-1 text-[11px] text-sand">⏱ {{ r.time_limit / 60 }}m</span>
+                </td>
                 <td class="px-3 py-2 font-mono uppercase">{{ r.locale }}</td>
                 <td class="px-3 py-2 font-mono" dir="ltr">{{ r.score }}/{{ r.total }}</td>
                 <td class="px-3 py-2 font-mono" dir="ltr">{{ fmtTime(r.duration_ms) }}</td>

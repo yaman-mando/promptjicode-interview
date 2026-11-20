@@ -13,12 +13,14 @@ export default defineEventHandler(async (event) => {
                        AVG(ratio) AS avg_ratio,
                        AVG(duration_ms) AS avg_ms
                   FROM attempts`).bind(weekAgo),
-    db.prepare(`SELECT level, COUNT(*) AS n, AVG(ratio) AS avg_ratio FROM attempts GROUP BY level`),
+    // Open tests are their own group; custom tests count with their level
+    db.prepare(`SELECT CASE WHEN mode = 'open' THEN 'open' ELSE level END AS level, COUNT(*) AS n, AVG(ratio) AS avg_ratio
+                  FROM attempts GROUP BY 1`),
     db.prepare(`SELECT locale, COUNT(*) AS n FROM attempts GROUP BY locale`),
     // Day buckets in UTC
     db.prepare(`SELECT CAST(created_at / 86400000 AS INTEGER) AS day, COUNT(*) AS n
                   FROM attempts WHERE created_at >= ? GROUP BY day ORDER BY day`).bind(twoWeeksAgo),
-    db.prepare(`SELECT id, level, locale, score, total, duration_ms, created_at
+    db.prepare(`SELECT id, mode, level, locale, score, total, duration_ms, created_at, time_limit
                   FROM attempts ORDER BY created_at DESC LIMIT 15`),
   ])
 
@@ -38,6 +40,6 @@ export default defineEventHandler(async (event) => {
       const day = today - 13 + i
       return { date: new Date(day * 86400_000).toISOString().slice(0, 10), count: dayMap.get(day) ?? 0 }
     }),
-    recent: recent!.results as { id: string, level: Level, locale: string, score: number, total: number, duration_ms: number, created_at: number }[],
+    recent: recent!.results as { id: string, mode: string, time_limit: number, level: Level, locale: string, score: number, total: number, duration_ms: number, created_at: number }[],
   }
 })
