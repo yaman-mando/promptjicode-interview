@@ -1,20 +1,24 @@
 import type { Mode, StartResponse } from '#shared/types/quiz'
-import { TOPICS } from '#shared/types/quiz'
+import { TRACKS, isTrack, trackTopics } from '#shared/types/quiz'
 
-/** Starts a level test. Optional: topics (comma list), count, time (seconds). */
+/** Starts a level test. Query: track, level, locale, topics (comma list), count, time (seconds). */
 export default defineEventHandler(async (event): Promise<StartResponse> => {
   const query = getQuery(event)
   if (!isLevel(query.level)) {
     throw createError({ statusCode: 400, statusMessage: 'Unknown level' })
   }
+  const track = isTrack(query.track) ? query.track : 'frontend'
   const level = query.level
   const locale = toLocale(query.locale)
-  let topics = parseTopics(query.topics)
-  if (topics.length === TOPICS.length) topics = []
+  const core = TRACKS[track].core
+  // Only topics that belong to this track; none chosen means the track's core topics
+  let topics = parseTopics(query.topics).filter(t => trackTopics(track).includes(t))
+  const isDefault = !topics.length || (topics.length === core.length && core.every(t => topics.includes(t)))
+  if (isDefault) topics = []
   const count = parseCount(query.count)
   const timeLimit = parseTimeLimit(query.time)
 
-  const picked = pickQuestions(level, count, topics)
+  const picked = pickQuestions(level, count, topics.length ? topics : core)
   if (!picked.length) throw createError({ statusCode: 400, statusMessage: 'No questions for these topics' })
 
   // A test is "custom" when the person changed the topics or the length
@@ -23,12 +27,13 @@ export default defineEventHandler(async (event): Promise<StartResponse> => {
   const ids = picked.map(q => q.id)
 
   return {
+    track,
     mode,
     level,
     topics,
     timeLimit,
     startedAt,
-    token: await signTest(event, { mode, level, timeLimit, startedAt, ids }),
+    token: await signTest(event, { track, mode, level, timeLimit, startedAt, ids }),
     questions: await Promise.all(picked.map(q => toPublicShuffled(event, startedAt, q, locale))),
   }
 })

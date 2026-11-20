@@ -1,7 +1,8 @@
 /**
  * Checks the question bank:
  * - structure: unique ids, answer in range, all 3 languages, same number of options per language
- * - JavaScript output questions (run !== false): runs the code in Node and compares the real
+ * - Output questions (run !== false): runs JavaScript in Node, Python in python3 and PHP in php,
+ *   and compares the real
  *   output with the option marked as correct.
  *
  * Usage: npm run verify            (all questions)
@@ -42,7 +43,25 @@ for (const q of QUESTIONS) {
   const opts = q.options ?? q.text.en.options ?? []
   if (new Set(opts.map(o => o.replace(/\s/g, ''))).size !== opts.length) fail(q.id, 'two options are the same')
 
-  if (q.run === false || !q.code || (q.codeLang && q.codeLang !== 'js')) continue
+  if (q.run === false || !q.code) continue
+
+  // Python and PHP: run the snippet and compare its printed lines (joined with ", ")
+  if (q.codeLang === 'py' || q.codeLang === 'php') {
+    const isPy = q.codeLang === 'py'
+    const file = join(dir, `${q.id}.${isPy ? 'py' : 'php'}`)
+    writeFileSync(file, isPy ? q.code : `<?php\n${q.code.replace(/^<\?php\s*/, '')}\n`)
+    const r = spawnSync(isPy ? 'python3' : 'php', [file], { encoding: 'utf8', timeout: 5000 })
+    ran++
+    if (r.status !== 0 && !r.stdout) { fail(q.id, `could not run: ${(r.stderr || '').split('\n').slice(-3).join(' ')}`); continue }
+    const actual = r.stdout.replace(/\n+$/, '').split('\n').join(', ')
+    const expected = opts[q.answer]!
+    if (norm(actual) !== norm(expected)) {
+      const other = opts.findIndex(o => norm(o) === norm(actual))
+      fail(q.id, `real output "${actual}" ≠ marked answer "${expected}"${other >= 0 ? ` (matches option ${other})` : ''}`)
+    }
+    continue
+  }
+  if (q.codeLang && q.codeLang !== 'js') continue
 
   // Run the snippet: console.log lines are joined with ", ", args inside one call with " ".
   const file = join(dir, `${q.id}.mjs`)

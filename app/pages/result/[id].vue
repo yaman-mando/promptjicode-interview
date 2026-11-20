@@ -21,7 +21,10 @@ const time = computed(() => {
 const ringColor = computed(() => pct.value >= 70 ? 'var(--color-good)' : pct.value >= 40 ? 'var(--color-caramel)' : 'var(--color-bad)')
 
 const isOpen = computed(() => result.value?.mode === 'open')
-const testName = computed(() => isOpen.value ? t('levels.open.name') : t(`levels.${result.value?.level}.name`))
+const trackName = computed(() => t(`tracks.${result.value?.track ?? 'frontend'}.name`))
+const testName = computed(() => isOpen.value
+  ? t('seo.openTitle', { track: trackName.value })
+  : `${trackName.value} ${t(`levels.${result.value?.level}.name`)}`)
 
 // Count the score up and fill the ring once the page is shown
 const shown = ref(0)
@@ -41,12 +44,12 @@ onMounted(() => {
 const againLink = computed(() => {
   const r = result.value
   if (!r) return localePath('/')
-  if (r.mode === 'open') return localePath({ path: '/quiz/open', query: r.timeLimit ? { time: r.timeLimit / 60 } : {} })
+  if (r.mode === 'open') return localePath({ path: `/${r.track}/open`, query: r.timeLimit ? { time: r.timeLimit / 60 } : {} })
   const query: Record<string, string | number> = {}
   if (r.topicsChosen.length) query.topics = r.topicsChosen.join(',')
   if (r.mode === 'custom' && !r.topicsChosen.length) query.count = r.total
   if (r.timeLimit) query.time = r.timeLimit / 60
-  return localePath({ path: `/quiz/${r.level}`, query })
+  return localePath({ path: `/${r.track}/${r.level}`, query })
 })
 const barClass = (ok: number) => ok >= 0.7 ? 'bg-good' : ok >= 0.4 ? 'bg-caramel' : 'bg-bad'
 
@@ -56,7 +59,7 @@ const isCode = (s: string) => /^[\x00-\x7F]*$/.test(s)
 const resultTitle = () => {
   const r = result.value
   if (!r) return 'PromptjiCode Interview'
-  const vars = { score: r.score, total: r.total, level: t(`levels.${r.level}.name`), name: r.name ?? '' }
+  const vars = { score: r.score, total: r.total, level: `${trackName.value} ${t(`levels.${r.level}.name`)}`, name: r.name ?? '' }
   if (r.mode === 'open') return t(r.name ? 'seo.resultTitleOpenNamed' : 'seo.resultTitleOpen', vars)
   return t(r.name ? 'seo.resultTitleNamed' : 'seo.resultTitle', vars)
 }
@@ -150,7 +153,7 @@ const dateText = computed(() => result.value
           <NuxtLink :to="againLink" class="rounded-xl bg-caramel px-5 py-2.5 font-bold text-ink transition hover:brightness-110">
             {{ t('result.again') }}
           </NuxtLink>
-          <NuxtLink v-if="!isOpen" :to="localePath('/quiz/open')" class="rounded-xl border border-white/15 px-5 py-2.5 font-bold transition hover:border-caramel">
+          <NuxtLink v-if="!isOpen" :to="localePath(`/${result.track}/open`)" class="rounded-xl border border-white/15 px-5 py-2.5 font-bold transition hover:border-caramel">
             {{ t('result.tryOpen') }}
           </NuxtLink>
           <NuxtLink :to="localePath('/')" class="rounded-xl px-5 py-2.5 font-semibold text-sand hover:text-cream">

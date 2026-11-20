@@ -1,3 +1,4 @@
+import { isTrack } from '#shared/types/quiz'
 import type { SubmitBody } from '#shared/types/quiz'
 
 const MAX_TEST_AGE_MS = 2 * 60 * 60 * 1000 // a test can be submitted up to 2 hours after it started
@@ -5,7 +6,7 @@ const MAX_TEST_AGE_MS = 2 * 60 * 60 * 1000 // a test can be submitted up to 2 ho
 export default defineEventHandler(async (event) => {
   const body = await readBody<SubmitBody>(event)
 
-  if (!body || !isLevel(body.level) || !isMode(body.mode) || body.mode === 'open'
+  if (!body || !isLevel(body.level) || !isMode(body.mode) || body.mode === 'open' || !isTrack(body.track)
     || !Array.isArray(body.questionIds) || !Array.isArray(body.answers)
     || body.questionIds.length === 0 || body.questionIds.length !== body.answers.length
     || typeof body.startedAt !== 'number' || typeof body.token !== 'string' || typeof body.timeLimit !== 'number') {
@@ -16,7 +17,7 @@ export default defineEventHandler(async (event) => {
   if (body.startedAt > now || now - body.startedAt > MAX_TEST_AGE_MS) {
     throw createError({ statusCode: 400, statusMessage: 'Test expired' })
   }
-  const seal = { mode: body.mode, level: body.level, timeLimit: body.timeLimit, startedAt: body.startedAt, ids: body.questionIds }
+  const seal = { track: body.track, mode: body.mode, level: body.level, timeLimit: body.timeLimit, startedAt: body.startedAt, ids: body.questionIds }
   if (!(await verifyTest(event, seal, body.token))) {
     throw createError({ statusCode: 403, statusMessage: 'Invalid test token' })
   }
@@ -36,6 +37,7 @@ export default defineEventHandler(async (event) => {
 
   const total = body.questionIds.length
   return saveAttempt(event, {
+    track: body.track,
     mode: body.mode,
     level: body.level,
     locale: toLocale(body.locale),

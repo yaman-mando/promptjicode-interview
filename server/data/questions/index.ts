@@ -7,10 +7,14 @@ import { ANGULAR } from './extra/angular'
 import { TS_HTML_CSS } from './extra/ts-html-css'
 import { VUE_REACT } from './extra/vue-react'
 import { WEB } from './extra/web'
+import { ARCH_SECURITY } from './backend/arch-security'
+import { DB_API } from './backend/db-api'
+import { NODE_PYTHON } from './backend/node-python'
+import { PHP_DOTNET } from './backend/php-dotnet'
 
 /**
  * Question bank. Server-only: answers never reach the browser before the test is submitted.
  * Arabic is neutral written Arabic (not dialect), matching the channel's on-screen text.
  * Run `npm run verify` after adding questions.
  */
-export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB]
+export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB, ...DB_API, ...ARCH_SECURITY, ...NODE_PYTHON, ...PHP_DOTNET]

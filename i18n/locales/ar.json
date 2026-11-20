@@ -1,6 +1,6 @@
 {
   "brand": "PromptjiCode Interview",
-  "tagline": "أسئلة مقابلات فرونت إند حقيقية. اختبر نفسك، وقارن نتيجتك بغيرك.",
+  "tagline": "أسئلة مقابلات حقيقية للمطوّرين. اختبر نفسك، وقارن نتيجتك بغيرك.",
   "chooseLevel": "اختر مستوى الاختبار",
   "start": "ابدأ",
   "levels": {
@@ -91,7 +91,15 @@
     "browser": "المتصفح",
     "performance": "الأداء",
     "security": "الأمان",
-    "angular": "Angular"
+    "angular": "Angular",
+    "databases": "قواعد البيانات وSQL",
+    "api": "APIs وHTTP",
+    "architecture": "المعمارية والتوسّع",
+    "server-security": "أمان الخادم",
+    "node": "Node.js",
+    "python": "Python",
+    "php": "PHP / Laravel",
+    "dotnet": "C# / .NET"
   },
   "footer": "اكتبها صح… بتطلع صح",
   "github": "الكود على GitHub",
@@ -189,10 +197,10 @@
   },
   "mainSite": "الصفحة الرئيسية",
   "seo": {
-    "title": "أسئلة مقابلات Front-end واختبار مستوى مجاني",
-    "description": "اختبر نفسك بأسئلة مقابلات Front-end حقيقية: JavaScript وCSS وReact وVue وAngular وTypeScript. اختر مستواك أو تخصصك، وقارن نتيجتك بغيرك. مجاني وبدون تسجيل.",
-    "levelTitle": "أسئلة مقابلات Front-end لمستوى {level}",
-    "levelDescription": "اختبار {level} مجاني بأسئلة مقابلات Front-end حقيقية: {desc} شوف نتيجتك وقارنها بغيرك.",
+    "title": "أسئلة مقابلات Frontend وBackend وFull-stack واختبار مستوى مجاني",
+    "description": "اختبر نفسك بأسئلة مقابلات حقيقية في Frontend وBackend وFull-stack: JavaScript وReact وVue وAngular وSQL وNode.js وPython وPHP و.NET. مجاني وبدون تسجيل.",
+    "levelTitle": "أسئلة مقابلات {track} لمستوى {level}",
+    "levelDescription": "اختبار {level} مجاني بأسئلة مقابلات {track} حقيقية: {desc} شاهد نتيجتك وقارنها بغيرك.",
     "resultTitle": "نتيجتي {score}/{total} في اختبار {level}",
     "resultDescription": "جرّب اختبار أسئلة مقابلات Front-end وقارن نتيجتك.",
     "h1": "اختبر نفسك بأسئلة مقابلات Front-end حقيقية",
@@ -204,6 +212,10 @@
         "a": "موقع مجاني لاختبار معرفتك بأسئلة مقابلات Front-end. يختار كل اختبار أسئلة عشوائية لمستواك أو للمواضيع التي تختارها، وفي النهاية ترى نتيجتك مع شرح لكل سؤال."
       },
       {
+        "q": "ما أنواع الاختبارات المتوفرة؟",
+        "a": "ثلاثة أنواع: Frontend وBackend وFull-stack. في كل نوع ثلاثة مستويات (Junior وMid وSenior) واختبار مفتوح، ويمكنك اختيار المواضيع أو لغتك وإطار عملك وعدد الأسئلة والوقت."
+      },
+      {
         "q": "هل الاختبار مجاني؟ وهل أحتاج إلى حساب؟",
         "a": "مجاني بالكامل، بلا تسجيل ولا بريد إلكتروني. اختر المستوى وابدأ مباشرة."
       },
@@ -213,7 +225,7 @@
       },
       {
         "q": "ما المواضيع التي تغطيها الأسئلة؟",
-        "a": "JavaScript (الـ closures والـ event loop والـ Promises)، وCSS وHTML، وReact وVue وAngular، وTypeScript، وأداء المتصفح والأمان. وهي من نوع الأسئلة التي تُطرح في مقابلات الشركات."
+        "a": "في Frontend: JavaScript وCSS وHTML وReact وVue وAngular وTypeScript وأداء المتصفح والأمان. وفي Backend: SQL وقواعد البيانات والـ APIs والمعمارية وأمان الخادم، مع Node.js وPython وPHP/Laravel وC#/.NET."
       },
       {
         "q": "كيف أقارن نتيجتي بغيري؟",
@@ -226,7 +238,8 @@
     ],
     "resultTitleNamed": "نتيجة {name}: {score}/{total} في اختبار {level}",
     "resultTitleOpen": "مستواي في الاختبار المفتوح: {level} ({score}/{total})",
-    "resultTitleOpenNamed": "مستوى {name} في الاختبار المفتوح: {level} ({score}/{total})"
+    "resultTitleOpenNamed": "مستوى {name} في الاختبار المفتوح: {level} ({score}/{total})",
+    "openTitle": "الاختبار المفتوح · {track}"
   },
   "cardMeta": "اختر المواضيع والعدد والوقت · بدون تسجيل",
   "openCard": {
@@ -255,7 +268,8 @@
     "optional": "اختياري",
     "namePlaceholder": "مثلًا: سارة",
     "nameHint": "يظهر اسمك على ورقة النتيجة وصورة المشاركة إذا أردت ذلك. اتركه فارغًا لتبقى النتيجة بدون اسم. انتبه: كل من يفتح رابط النتيجة سيراه.",
-    "level": "المستوى"
+    "level": "المستوى",
+    "pickHintExtra": "«كل المواضيع» تشمل المواضيع العامة فقط. أضف لغتك أو إطار عملك من القائمة الثانية."
   },
   "share": {
     "title": "شارك نتيجتك",
@@ -278,7 +292,52 @@
     "backToTests": "الرجوع إلى الاختبارات",
     "back": "رجوع"
   },
+  "trackLevels": {
+    "frontend": {
+      "junior": "أساسيات JavaScript وHTML التي تُسأل في كل مقابلة.",
+      "mid": "الـ async والـ event loop وReact وCSS بعمق أكبر.",
+      "senior": "الأداء، وstacking context، وتفاصيل React والـ Promises."
+    },
+    "backend": {
+      "junior": "أساسيات SQL والـ HTTP وواجهات REST، وما يُسأل عنه في أول وظيفة Backend.",
+      "mid": "الفهارس والمعاملات، والمصادقة، والتخزين المؤقت، وتصميم APIs أنظف.",
+      "senior": "التوسّع والطوابير، والتزامن وحالات السباق، والأمان على مستوى النظام."
+    },
+    "fullstack": {
+      "junior": "أساسيات الواجهة والخادم معًا: JavaScript وHTML وSQL وHTTP.",
+      "mid": "ربط الواجهة بالـ API، والمصادقة، وقواعد البيانات، والأداء من الطرفين.",
+      "senior": "قرارات المعمارية والأمان والتوسّع عبر النظام كله."
+    }
+  },
   "tracks": {
+    "label": "نوع الاختبار",
+    "frontend": {
+      "name": "Frontend",
+      "desc": "JavaScript وCSS وHTML وReact وVue وAngular وTypeScript",
+      "h1": "اختبر نفسك بأسئلة مقابلات Front-end حقيقية",
+      "seoTitle": "أسئلة مقابلات Front-end واختبار مستوى مجاني",
+      "seoDesc": "اختبر نفسك بأسئلة مقابلات Front-end حقيقية: JavaScript وCSS وReact وVue وAngular وTypeScript. اختر مستواك أو تخصصك، وقارن نتيجتك بغيرك. مجاني وبدون تسجيل.",
+      "extraTitle": ""
+    },
+    "backend": {
+      "name": "Backend",
+      "desc": "قواعد البيانات والـ APIs والمعمارية والأمان، مع Node.js وPython وPHP و.NET",
+      "h1": "اختبر نفسك بأسئلة مقابلات Back-end حقيقية",
+      "seoTitle": "أسئلة مقابلات Back-end واختبار مستوى مجاني",
+      "seoDesc": "اختبر نفسك بأسئلة مقابلات Back-end حقيقية: SQL وقواعد البيانات والـ APIs والمعمارية والأمان، مع Node.js وPython وPHP/Laravel وC#/.NET. مجاني وبدون تسجيل.",
+      "extraTitle": "لغتك أو إطار العمل"
+    },
+    "fullstack": {
+      "name": "Full-stack",
+      "desc": "الواجهة والخادم معًا: من المتصفح حتى قاعدة البيانات",
+      "h1": "اختبر نفسك بأسئلة مقابلات Full-stack حقيقية",
+      "seoTitle": "أسئلة مقابلات Full-stack واختبار مستوى مجاني",
+      "seoDesc": "اختبر نفسك بأسئلة مقابلات Full-stack حقيقية تجمع الواجهة والخادم: JavaScript وReact وNode.js وقواعد البيانات والـ APIs. مجاني وبدون تسجيل.",
+      "extraTitle": "الأطر واللغات"
+    }
+  },
+  "chooseLevelTrack": "اختر مستوى اختبار {track}",
+  "specs": {
     "title": "اختبار حسب التخصص",
     "desc": "اختر التقنية التي تعمل بها، وغيّر المستوى أو المواضيع من شاشة التجهيز.",
     "cta": "ابدأ اختبارًا"

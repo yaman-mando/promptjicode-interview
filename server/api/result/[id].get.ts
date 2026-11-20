@@ -1,4 +1,4 @@
-import type { Level, LevelScore, Mode, ResultResponse, Topic, TopicScore } from '#shared/types/quiz'
+import type { Level, LevelScore, Mode, ResultResponse, Topic, TopicScore, Track } from '#shared/types/quiz'
 import { LEVELS } from '#shared/types/quiz'
 
 /** Below this many attempts at a level, a percentile would mean little, so none is shown. */
@@ -6,6 +6,7 @@ const MIN_FOR_PERCENTILE = 5
 
 interface AttemptRow {
   id: string
+  track: Track | null
   mode: Mode
   level: Level
   time_limit: number | null
@@ -32,12 +33,13 @@ export default defineEventHandler(async (event): Promise<ResultResponse> => {
 
   // Open tests are compared with other open tests; level and custom tests with tests at the same level
   const isOpen = row.mode === 'open'
+  const track: Track = row.track ?? 'frontend'
   const stats = await db.prepare(
     `SELECT COUNT(*) AS n,
             SUM(CASE WHEN ratio < ? THEN 1 ELSE 0 END) AS below,
             SUM(CASE WHEN ratio = ? THEN 1 ELSE 0 END) AS equal
-       FROM attempts WHERE ${isOpen ? `mode = 'open'` : `mode != 'open' AND level = ?`}`,
-  ).bind(...(isOpen ? [row.ratio, row.ratio] : [row.ratio, row.ratio, row.level])).first<{ n: number, below: number, equal: number }>()
+       FROM attempts WHERE track = ? AND ${isOpen ? `mode = 'open'` : `mode != 'open' AND level = ?`}`,
+  ).bind(...(isOpen ? [row.ratio, row.ratio, track] : [row.ratio, row.ratio, track, row.level])).first<{ n: number, below: number, equal: number }>()
 
   const n = stats?.n ?? 0
   // Mid-rank percentile: people below, plus half of the people with the same score (excluding this attempt)
@@ -74,6 +76,7 @@ export default defineEventHandler(async (event): Promise<ResultResponse> => {
 
   return {
     id: row.id,
+    track,
     mode: row.mode ?? 'level',
     level: row.level,
     timeLimit: row.time_limit ?? 0,

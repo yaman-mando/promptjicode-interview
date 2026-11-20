@@ -53,8 +53,8 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
           <h2 class="mb-3 font-bold">{{ t('admin.perLevel') }}</h2>
           <p v-if="!s.byLevel.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
           <ul class="grid gap-2">
-            <li v-for="l in s.byLevel" :key="l.level" class="flex items-center justify-between gap-3 text-sm">
-              <span class="font-mono">{{ t(`levels.${l.level}.name`) }}</span>
+            <li v-for="l in s.byLevel" :key="`${l.track}-${l.level}`" class="flex items-center justify-between gap-3 text-sm">
+              <span class="font-mono">{{ t(`tracks.${l.track}.name`) }} · {{ t(`levels.${l.level}.name`) }}</span>
               <span class="text-sand">{{ t('admin.attempts', { n: l.count }) }} · <span dir="ltr" class="font-mono text-cream">{{ l.avgPct }}%</span></span>
             </li>
           </ul>
@@ -91,6 +91,7 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
               <tr v-for="r in s.recent" :key="r.id" class="border-t border-white/5">
                 <td class="px-3 py-2 whitespace-nowrap text-sand">{{ fmtDate(r.created_at) }}</td>
                 <td class="px-3 py-2 font-mono">
+                  <span class="text-sand">{{ t(`tracks.${r.track}.name`) }} ·</span>
                   {{ r.mode === 'open' ? `${t('levels.open.name')} → ${t(`levels.${r.level}.name`)}` : t(`levels.${r.level}.name`) }}
                   <span v-if="r.mode === 'custom'" class="ms-1 rounded bg-white/10 px-1.5 text-[11px] text-sand">{{ t('setup.custom') }}</span>
                   <span v-if="r.time_limit" class="ms-1 text-[11px] text-sand">⏱ {{ r.time_limit / 60 }}m</span>

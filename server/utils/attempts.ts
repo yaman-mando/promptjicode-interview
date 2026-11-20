@@ -1,7 +1,8 @@
 import type { H3Event } from 'h3'
-import type { Level, Locale, Mode } from '#shared/types/quiz'
+import type { Level, Locale, Mode, Track } from '#shared/types/quiz'
 
 export interface NewAttempt {
+  track: Track
   mode: Mode
   level: Level
   locale: Locale
@@ -33,12 +34,12 @@ export async function saveAttempt(event: H3Event, a: NewAttempt): Promise<{ id: 
 
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 12)
   await db.prepare(
-    `INSERT INTO attempts (id, mode, level, locale, score, total, ratio, duration_ms, question_ids, answers, token, created_at, time_limit, topics, estimate, name)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO attempts (id, mode, level, locale, score, total, ratio, duration_ms, question_ids, answers, token, created_at, time_limit, topics, estimate, name, track)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   ).bind(
     id, a.mode, a.level, a.locale, a.score, a.total, a.ratio, a.durationMs,
     JSON.stringify(a.ids), JSON.stringify(a.answers), a.token, Date.now(),
-    a.timeLimit, a.topics ? JSON.stringify(a.topics) : null, a.estimate, a.name ?? null,
+    a.timeLimit, a.topics ? JSON.stringify(a.topics) : null, a.estimate, a.name ?? null, a.track,
   ).run()
   return { id }
 }

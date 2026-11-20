@@ -1,5 +1,5 @@
 import type { OpenAnswerBody, OpenState, OpenStep } from '#shared/types/quiz'
-import { OPEN_TEST_LENGTH } from '#shared/types/quiz'
+import { OPEN_TEST_LENGTH, TRACKS, isTrack } from '#shared/types/quiz'
 
 const MAX_TEST_AGE_MS = 2 * 60 * 60 * 1000
 
@@ -10,7 +10,7 @@ const MAX_TEST_AGE_MS = 2 * 60 * 60 * 1000
 export default defineEventHandler(async (event): Promise<OpenStep | { id: string }> => {
   const body = await readBody<OpenAnswerBody>(event)
   const s = body?.state
-  if (!s || typeof s.startedAt !== 'number' || typeof s.timeLimit !== 'number' || !Array.isArray(s.ids) || !Array.isArray(s.answers)
+  if (!s || !isTrack(s.track) || typeof s.startedAt !== 'number' || typeof s.timeLimit !== 'number' || !Array.isArray(s.ids) || !Array.isArray(s.answers)
     || s.ids.length !== s.answers.length + 1 || s.ids.length > OPEN_TEST_LENGTH || typeof body.token !== 'string') {
     throw createError({ statusCode: 400, statusMessage: 'Invalid state' })
   }
@@ -29,12 +29,13 @@ export default defineEventHandler(async (event): Promise<OpenStep | { id: string
   const answered: OpenState = { ...s, answers: [...s.answers, chosen] }
 
   const next = answered.ids.length < OPEN_TEST_LENGTH && !body.finish
-    ? pickOpenQuestion(nextOpenLevel(answered), answered.ids)
+    ? pickOpenQuestion(nextOpenLevel(answered), answered.ids, TRACKS[s.track].core)
     : undefined
 
   if (!next) {
     const g = gradeOpen(answered)
     return saveAttempt(event, {
+      track: s.track,
       mode: 'open',
       level: g.estimate,
       locale,
