@@ -71,7 +71,7 @@ const resultDesc = () => {
 // Link previews (WhatsApp, LinkedIn…) get a pre-made image for this level and score band
 const ogImage = () => {
   const r = result.value
-  if (!r) return 'https://interview.promptjicode.com/og.jpg'
+  if (!r) return 'https://interview.promptjicode.com/og.jpg?v=2'
   const file = r.mode === 'open' ? `open-${r.level}` : `r-${r.level}-${Math.round(pct.value / 5) * 5}`
   return `https://interview.promptjicode.com/og/${file}.jpg`
 }
