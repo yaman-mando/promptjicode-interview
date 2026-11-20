@@ -130,6 +130,10 @@ useHead(() => ({
     </p>
     <h1 class="mx-auto mt-4 max-w-xl text-xl font-bold text-cream"><BidiText :text="t(`tracks.${track}.h1`)" /></h1>
     <p class="mx-auto mt-2 max-w-xl text-lg text-sand"><BidiText :text="t('tagline')" /></p>
+    <p class="mx-auto mt-5 inline-flex items-center gap-2 rounded-full border border-caramel/30 bg-caramel/10 px-4 py-1.5 text-sm text-caramel">
+      <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-caramel opacity-60" /><span class="relative inline-flex size-2 rounded-full bg-caramel" /></span>
+      {{ t('growthNote') }}
+    </p>
   </section>
 
   <!-- Tracks -->

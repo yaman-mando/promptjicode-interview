@@ -20,6 +20,9 @@ async function logout() {
     <NuxtLink :to="localePath('/admin/questions')" class="rounded-lg px-3 py-1.5 text-sm font-semibold text-sand hover:text-cream" active-class="!bg-white/10 !text-cream">
       {{ t('admin.questions') }}
     </NuxtLink>
+    <NuxtLink :to="localePath('/admin/reports')" class="rounded-lg px-3 py-1.5 text-sm font-semibold text-sand hover:text-cream" active-class="!bg-white/10 !text-cream">
+      {{ t('admin.reports') }}
+    </NuxtLink>
     <button type="button" class="ms-auto rounded-lg px-3 py-1.5 text-sm text-sand hover:text-bad" @click="logout">{{ t('admin.logout') }}</button>
   </div>
 </template>

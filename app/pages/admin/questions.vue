@@ -9,7 +9,8 @@ type Row = Question & { stats: { shown: number, correct: number, skipped: number
 const { t, locale } = useI18n()
 const { data: questions } = await useFetch<Row[]>('/api/admin/questions', { headers: useRequestHeaders(['cookie']) })
 
-const search = ref('')
+// ?q= pre-fills the search (used by the reports page)
+const search = ref(String(useRoute().query.q ?? ''))
 const level = ref<Level | ''>('')
 const topic = ref<Topic | ''>('')
 const sort = ref<'hardest' | 'shown' | 'id'>('id')
