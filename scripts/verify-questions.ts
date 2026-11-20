@@ -29,6 +29,21 @@ const fail = (id: string, msg: string) => {
 const norm = (s: string) => s.replace(/[\s'"`,]/g, '')
 
 const seen = new Set<string>()
+let csDir: string | null = null
+let csReady: boolean | null = null
+function csProject() {
+  if (csReady !== null) return csReady
+  if (spawnSync('dotnet', ['--version'], { encoding: 'utf8' }).status !== 0) {
+    console.log('(dotnet not found: C# snippets are not run)')
+    return (csReady = false)
+  }
+  csDir = join(dir, 'cs')
+  const r = spawnSync('dotnet', ['new', 'console', '-o', csDir, '--force'], { encoding: 'utf8', timeout: 120000 })
+  // A console app needs no packages: restore offline from the installed SDK only.
+  writeFileSync(join(csDir, 'nuget.config'), '<?xml version="1.0" encoding="utf-8"?><configuration><packageSources><clear /></packageSources></configuration>')
+  return (csReady = r.status === 0)
+}
+
 for (const q of QUESTIONS) {
   if (seen.has(q.id)) fail(q.id, 'duplicate id')
   seen.add(q.id)
@@ -54,6 +69,21 @@ for (const q of QUESTIONS) {
     ran++
     if (r.status !== 0 && !r.stdout) { fail(q.id, `could not run: ${(r.stderr || '').split('\n').slice(-3).join(' ')}`); continue }
     const actual = r.stdout.replace(/\n+$/, '').split('\n').join(', ')
+    const expected = opts[q.answer]!
+    if (norm(actual) !== norm(expected)) {
+      const other = opts.findIndex(o => norm(o) === norm(actual))
+      fail(q.id, `real output "${actual}" ≠ marked answer "${expected}"${other >= 0 ? ` (matches option ${other})` : ''}`)
+    }
+    continue
+  }
+  // C#: run with the .NET SDK when it is installed (skipped otherwise)
+  if (q.codeLang === 'cs') {
+    if (!csProject()) continue
+    writeFileSync(join(csDir!, 'Program.cs'), q.code)
+    const r = spawnSync('dotnet', ['run', '--project', csDir!, '-v', 'q', '--nologo'], { encoding: 'utf8', timeout: 120000 })
+    ran++
+    if (r.status !== 0) { fail(q.id, `could not run: ${(r.stdout + r.stderr).split('\n').filter(l => /error/.test(l)).slice(0, 2).join(' ')}`); continue }
+    const actual = r.stdout.replace(/\r/g, '').replace(/\n+$/, '').split('\n').join(', ')
     const expected = opts[q.answer]!
     if (norm(actual) !== norm(expected)) {
       const other = opts.findIndex(o => norm(o) === norm(actual))
