@@ -5,6 +5,15 @@ export type Topic =
   | 'typescript' | 'browser' | 'performance' | 'security'
 
 export const LEVELS: Level[] = ['junior', 'mid', 'senior']
+export const TOPICS: Topic[] = ['javascript', 'async', 'css', 'html', 'react', 'vue', 'typescript', 'browser', 'performance', 'security']
+
+/** level = fixed test for one level, custom = chosen topics / length, open = adaptive across levels */
+export type Mode = 'level' | 'custom' | 'open'
+export const QUESTION_COUNTS = [5, 10, 15, 20] as const
+export const OPEN_TEST_LENGTH = 15
+/** Time limits a test can have, in minutes (0 = none). The page also allows any value up to MAX. */
+export const TIME_PRESETS = [0, 5, 10, 15] as const
+export const MAX_TIME_LIMIT_MIN = 60
 export const LOCALES: Locale[] = ['ar', 'en', 'tr']
 
 /** Text for one language. `options` is only set when the options themselves need translating. */
@@ -41,20 +50,54 @@ export interface PublicQuestion {
 }
 
 export interface StartResponse {
+  mode: Mode
   level: Level
+  topics: Topic[]
+  /** seconds, 0 = no limit */
+  timeLimit: number
   startedAt: number
   token: string
   questions: PublicQuestion[]
 }
 
 export interface SubmitBody {
+  mode: Mode
   level: Level
   locale: Locale
+  timeLimit: number
   startedAt: number
   token: string
   questionIds: string[]
   answers: (number | null)[]
 }
+
+/** Open test: the state travels with the browser, signed by the server. */
+export interface OpenState {
+  startedAt: number
+  timeLimit: number
+  ids: string[]
+  answers: (number | null)[]
+}
+
+export interface OpenStep {
+  state: OpenState
+  token: string
+  index: number
+  total: number
+  question: PublicQuestion
+}
+
+export interface OpenAnswerBody {
+  state: OpenState
+  token: string
+  locale: Locale
+  answer: number | null
+  /** true when the time ran out or the user ends the test early */
+  finish?: boolean
+}
+
+/** Info for the setup screen: which topics each level has questions for (counts are not shown). */
+export type LevelsInfo = Record<Level, { topics: Partial<Record<Topic, number>>, total: number }>
 
 export interface ReviewItem extends PublicQuestion {
   chosen: number | null
@@ -69,9 +112,20 @@ export interface TopicScore {
   total: number
 }
 
+export interface LevelScore {
+  level: Level
+  correct: number
+  total: number
+}
+
 export interface ResultResponse {
   id: string
+  mode: Mode
+  /** for open tests: the estimated level */
   level: Level
+  /** seconds, 0 = no limit */
+  timeLimit: number
+  topicsChosen: Topic[]
   score: number
   total: number
   durationMs: number
@@ -80,5 +134,7 @@ export interface ResultResponse {
   percentile: number | null
   sameLevelCount: number
   topics: TopicScore[]
+  /** open tests: how the user did at each level */
+  levels: LevelScore[]
   review: ReviewItem[]
 }

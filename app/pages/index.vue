@@ -3,7 +3,6 @@ import { LEVELS } from '#shared/types/quiz'
 
 const { t, tm, rt, locale } = useI18n()
 const localePath = useLocalePath()
-const { data: counts } = await useFetch('/api/levels')
 
 const badge: Record<string, string> = {
   junior: 'bg-good/15 text-good',
@@ -55,6 +54,14 @@ useHead(() => ({
           'about': ['JavaScript', 'CSS', 'HTML', 'React', 'Vue', 'TypeScript'],
         })),
         {
+          '@type': 'Quiz',
+          'name': t('levels.open.name'),
+          'description': t('levels.open.desc'),
+          'url': `${SITE}${locale.value === 'ar' ? '' : `/${locale.value}`}/quiz/open`,
+          'inLanguage': locale.value,
+          'isAccessibleForFree': true,
+        },
+        {
           '@type': 'FAQPage',
           'mainEntity': faq.value.map(f => ({
             '@type': 'Question',
@@ -91,20 +98,33 @@ useHead(() => ({
         {{ t(`levels.${level}.name`) }}
       </span>
       <p class="flex-1 text-[15px] leading-relaxed text-cream/90"><BidiText :text="t(`levels.${level}.desc`)" /></p>
-      <p class="mt-4 text-sm text-sand">{{ t('questionsCount', { n: counts?.[level] ?? '…' }) }}</p>
+      <p class="mt-4 text-sm text-sand">{{ t('cardMeta') }}</p>
       <span class="mt-4 rounded-xl bg-caramel py-2.5 text-center font-bold text-ink transition group-hover:brightness-110">
         {{ t('start') }}
       </span>
     </NuxtLink>
   </div>
 
-  <div class="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-dashed border-white/15 p-5 opacity-80">
-    <div>
-      <h3 class="font-bold">{{ t('openTest.title') }}</h3>
-      <p class="text-sm text-sand">{{ t('openTest.desc') }}</p>
+  <NuxtLink
+    :to="localePath('/quiz/open')"
+    class="group relative mt-4 flex flex-col gap-4 overflow-hidden rounded-2xl border border-caramel/30 bg-gradient-to-br from-caramel/[0.12] to-transparent p-5 transition hover:-translate-y-0.5 hover:border-caramel/70 sm:flex-row sm:items-center sm:p-6"
+  >
+    <div class="relative flex-1">
+      <p class="mb-1 text-sm font-semibold text-caramel">{{ t('openCard.kicker') }}</p>
+      <h3 class="mb-1.5 text-xl font-bold">{{ t('levels.open.name') }}</h3>
+      <p class="text-[15px] leading-relaxed text-cream/85"><BidiText :text="t('levels.open.desc')" /></p>
+      <div class="mt-3 flex items-center gap-1.5 font-mono text-xs" dir="ltr" aria-hidden="true">
+        <span class="rounded-full bg-good/15 px-2 py-0.5 text-good">Junior</span>
+        <span class="text-sand">⇄</span>
+        <span class="rounded-full bg-caramel/15 px-2 py-0.5 text-caramel">Mid</span>
+        <span class="text-sand">⇄</span>
+        <span class="rounded-full bg-bad/15 px-2 py-0.5 text-bad">Senior</span>
+      </div>
     </div>
-    <span class="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sand">{{ t('openTest.soon') }}</span>
-  </div>
+    <span class="relative rounded-xl bg-caramel px-6 py-3 text-center font-bold text-ink transition group-hover:brightness-110">
+      {{ t('openCard.cta') }}
+    </span>
+  </NuxtLink>
 
   <section class="mt-12">
     <h2 class="mb-4 text-xl font-bold">{{ t('seo.topicsTitle') }}</h2>

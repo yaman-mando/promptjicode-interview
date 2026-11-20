@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     const path = str(b.path, 200)
     if (path && /\/admin(\/|$)/.test(path)) return null
-    const level = LEVELS.includes(b.level as never) ? (b.level as string) : null
+    const level = LEVELS.includes(b.level as never) || b.level === 'open' ? (b.level as string) : null
     const answered = int(b.answered)
     const total = int(b.total)
     const now = Date.now()

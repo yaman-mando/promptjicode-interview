@@ -2,7 +2,6 @@
   "brand": "PromptjiCode Interview",
   "tagline": "Real frontend interview questions. Test yourself and see how you compare.",
   "chooseLevel": "Choose your test level",
-  "questionsCount": "{n} questions · no sign-up",
   "start": "Start",
   "levels": {
     "junior": {
@@ -16,12 +15,11 @@
     "senior": {
       "name": "Senior",
       "desc": "Performance, stacking contexts, React and Promise details."
+    },
+    "open": {
+      "name": "Open test",
+      "desc": "15 questions that get harder or easier as you answer. At the end we estimate your level."
     }
-  },
-  "openTest": {
-    "title": "Open test",
-    "desc": "Questions adapt to your answers to find your real level.",
-    "soon": "Coming soon"
   },
   "quiz": {
     "loading": "Preparing your questions…",
@@ -32,7 +30,11 @@
     "submitting": "Calculating your result…",
     "error": "Something went wrong. Please try again.",
     "retry": "Try again",
-    "leave": "You will lose your progress. Leave the test?"
+    "leave": "You will lose your progress. Leave the test?",
+    "timeLeft": "Time left",
+    "timeUp": "Time is up! Getting your result…",
+    "endNow": "End now",
+    "endConfirm": "We will end the test and grade the questions you answered. Continue?"
   },
   "result": {
     "title": "Your result",
@@ -50,7 +52,13 @@
     "otherLevel": "Try another level",
     "share": "Copy result link",
     "copied": "Copied ✓",
-    "notFound": "We couldn't find this result."
+    "notFound": "We couldn't find this result.",
+    "estimated": "Your estimated level",
+    "openPercentile": "Better than {p}% of people who took the open test",
+    "byLevel": "By question difficulty",
+    "timeLimit": "Time limit: {m} min",
+    "topicsChosen": "Topics: {list}",
+    "tryOpen": "Try the open test"
   },
   "topics": {
     "javascript": "JavaScript",
@@ -179,6 +187,10 @@
         "a": "It is completely free, with no sign-up and no email. Pick a level and start."
       },
       {
+        "q": "What is the open test?",
+        "a": "A 15-question test that starts at Mid and gets harder when you answer right and easier when you answer wrong. At the end it estimates your level: Junior, Mid or Senior."
+      },
+      {
         "q": "Which topics do the questions cover?",
         "a": "JavaScript (closures, the event loop, Promises), CSS and HTML, React and Vue, TypeScript, browser performance and security: the things companies ask in interviews."
       },
@@ -191,5 +203,43 @@
         "a": "Arabic, English and Turkish. Code stays in English, the way you see it at work."
       }
     ]
+  },
+  "cardMeta": "Pick topics, length and timer · no sign-up",
+  "openCard": {
+    "kicker": "Not sure about your level?",
+    "cta": "Start the open test"
+  },
+  "setup": {
+    "title": "Set up your test",
+    "topics": "Topics",
+    "allTopics": "All topics",
+    "custom": "Custom",
+    "pickHint": "Pick one or more topics.",
+    "count": "Questions",
+    "time": "Time limit",
+    "noLimit": "No limit",
+    "min": "{n} min",
+    "other": "Other",
+    "minutes": "minutes",
+    "fewer": "These topics have fewer questions at this level, so the test will have {n}.",
+    "summary": "Questions: {n} · Time: {time}",
+    "start": "Start the test",
+    "how1": "You start with a Mid question.",
+    "how2": "A right answer makes the next one harder; a wrong or skipped one makes it easier.",
+    "how3": "Questions come from every topic, and you cannot go back."
+  },
+  "share": {
+    "title": "Share your result",
+    "download": "Download image",
+    "native": "Share",
+    "copy": "Copy link",
+    "copied": "Copied ✓",
+    "preparing": "Preparing the image…",
+    "cardTitle": "My {level} test result",
+    "cardOpen": "My level in the open test",
+    "cardBetter": "Better than {p}% of people",
+    "cardCorrect": "{score} of {total} correct",
+    "cardCta": "Try the test for free",
+    "text": "I got {score}/{total} on the {level} test at PromptjiCode Interview. Try it:"
   }
 }

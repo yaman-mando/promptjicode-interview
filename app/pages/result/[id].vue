@@ -20,21 +20,41 @@ const time = computed(() => {
 // Ring colour follows the score
 const ringColor = computed(() => pct.value >= 70 ? 'var(--color-good)' : pct.value >= 40 ? 'var(--color-caramel)' : 'var(--color-bad)')
 
-const copied = ref(false)
-async function share() {
-  try {
-    await navigator.clipboard.writeText(window.location.href)
-    copied.value = true
-    setTimeout(() => (copied.value = false), 2000)
+const isOpen = computed(() => result.value?.mode === 'open')
+const testName = computed(() => isOpen.value ? t('levels.open.name') : t(`levels.${result.value?.level}.name`))
+
+// Count the score up and fill the ring once the page is shown
+const shown = ref(0)
+onMounted(() => {
+  const target = pct.value
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return (shown.value = target)
+  const t0 = performance.now()
+  const tick = (now: number) => {
+    const k = Math.min(1, (now - t0) / 1100)
+    shown.value = Math.round(target * (1 - (1 - k) ** 3))
+    if (k < 1) requestAnimationFrame(tick)
   }
-  catch { /* clipboard blocked: nothing to do */ }
-}
+  requestAnimationFrame(tick)
+})
+
+// "New test" keeps the same kind of test, including chosen topics and timer
+const againLink = computed(() => {
+  const r = result.value
+  if (!r) return localePath('/')
+  if (r.mode === 'open') return localePath({ path: '/quiz/open', query: r.timeLimit ? { time: r.timeLimit / 60 } : {} })
+  const query: Record<string, string | number> = {}
+  if (r.topicsChosen.length) query.topics = r.topicsChosen.join(',')
+  if (r.mode === 'custom' && !r.topicsChosen.length) query.count = r.total
+  if (r.timeLimit) query.time = r.timeLimit / 60
+  return localePath({ path: `/quiz/${r.level}`, query })
+})
+const barClass = (ok: number) => ok >= 0.7 ? 'bg-good' : ok >= 0.4 ? 'bg-caramel' : 'bg-bad'
 
 const isCode = (s: string) => /^[\x00-\x7F]*$/.test(s)
 
 // Results are personal: shareable with a good preview, but kept out of search results
 const resultTitle = () => result.value
-  ? t('seo.resultTitle', { score: result.value.score, total: result.value.total, level: t(`levels.${result.value.level}.name`) })
+  ? t('seo.resultTitle', { score: result.value.score, total: result.value.total, level: testName.value })
   : 'PromptjiCode Interview'
 useSeoMeta({
   title: resultTitle,
@@ -53,35 +73,44 @@ useSeoMeta({
       <!-- Score -->
       <section class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center sm:p-8">
         <p class="mb-5 text-sm font-semibold text-sand">
-          {{ t('result.title') }} · <span class="font-mono">{{ t(`levels.${result.level}.name`) }}</span>
+          {{ t('result.title') }} · <span class="font-mono">{{ testName }}</span>
+          <span v-if="result.mode === 'custom'" class="ms-1 rounded bg-white/10 px-1.5 py-0.5 text-xs">{{ t('setup.custom') }}</span>
         </p>
 
         <div
-          class="mx-auto grid size-40 place-items-center rounded-full"
-          :style="{ background: `conic-gradient(${ringColor} ${pct * 3.6}deg, rgba(255,255,255,.08) 0)` }"
+          class="ring-in mx-auto grid size-44 place-items-center rounded-full"
+          :style="{ background: `conic-gradient(${ringColor} ${shown * 3.6}deg, rgba(255,255,255,.08) 0)` }"
         >
-          <div class="grid size-32 place-items-center rounded-full bg-ink">
+          <div class="grid size-36 place-items-center rounded-full bg-ink">
             <div>
-              <div class="font-mono text-4xl font-bold" dir="ltr">{{ pct }}%</div>
+              <template v-if="isOpen">
+                <div class="text-xs text-sand">{{ t('result.estimated') }}</div>
+                <div class="font-mono text-3xl font-bold text-caramel" dir="ltr">{{ t(`levels.${result.level}.name`) }}</div>
+              </template>
+              <div v-else class="font-mono text-4xl font-bold tabular-nums" dir="ltr">{{ shown }}%</div>
               <div class="text-sm text-sand">{{ t('result.score', { score: result.score, total: result.total }) }}</div>
             </div>
           </div>
         </div>
 
-        <p class="mt-6 text-lg font-bold">
+        <p class="rise-late mt-6 text-lg font-bold">
           <template v-if="result.percentile !== null">
-            {{ t('result.percentile', { p: result.percentile, level: t(`levels.${result.level}.name`) }) }}
+            {{ isOpen ? t('result.openPercentile', { p: result.percentile }) : t('result.percentile', { p: result.percentile, level: testName }) }}
           </template>
           <span v-else class="text-base font-semibold text-sand">{{ t('result.early') }}</span>
         </p>
-        <p class="mt-2 text-sm text-sand">{{ t('result.time', { time }) }}</p>
+        <p class="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-sand">
+          <span>{{ t('result.time', { time }) }}</span>
+          <span v-if="result.timeLimit">{{ t('result.timeLimit', { m: result.timeLimit / 60 }) }}</span>
+          <span v-if="result.topicsChosen.length">{{ t('result.topicsChosen', { list: result.topicsChosen.map(tp => t(`topics.${tp}`)).join(locale === 'ar' ? '، ' : ', ') }) }}</span>
+        </p>
 
         <div class="mt-6 flex flex-wrap justify-center gap-3">
-          <button type="button" class="rounded-xl bg-caramel px-5 py-2.5 font-bold text-ink hover:brightness-110" @click="share">
-            {{ copied ? t('result.copied') : t('result.share') }}
-          </button>
-          <NuxtLink :to="localePath(`/quiz/${result.level}`)" class="rounded-xl border border-white/15 px-5 py-2.5 font-bold hover:border-caramel">
+          <NuxtLink :to="againLink" class="rounded-xl bg-caramel px-5 py-2.5 font-bold text-ink transition hover:brightness-110">
             {{ t('result.again') }}
+          </NuxtLink>
+          <NuxtLink v-if="!isOpen" :to="localePath('/quiz/open')" class="rounded-xl border border-white/15 px-5 py-2.5 font-bold transition hover:border-caramel">
+            {{ t('result.tryOpen') }}
           </NuxtLink>
           <NuxtLink :to="localePath('/')" class="rounded-xl px-5 py-2.5 font-semibold text-sand hover:text-cream">
             {{ t('result.otherLevel') }}
@@ -89,17 +118,33 @@ useSeoMeta({
         </div>
       </section>
 
+      <ClientOnly><ShareCard :result="result" /></ClientOnly>
+
+      <!-- Open test: by difficulty -->
+      <section v-if="result.levels.length" class="mt-8">
+        <h2 class="mb-4 text-lg font-bold">{{ t('result.byLevel') }}</h2>
+        <ul class="grid gap-3">
+          <li v-for="(lv, i) in result.levels" :key="lv.level" class="grid grid-cols-[6.5rem_1fr_3rem] items-center gap-3">
+            <span class="font-mono text-sm">{{ t(`levels.${lv.level}.name`) }}</span>
+            <div class="h-2.5 overflow-hidden rounded-full bg-white/10">
+              <div class="bar-grow h-full rounded-full" :class="barClass(lv.correct / lv.total)" :style="{ width: `${Math.max(4, (lv.correct / lv.total) * 100)}%`, animationDelay: `${200 + i * 90}ms` }" />
+            </div>
+            <span class="text-end font-mono text-sm text-sand" dir="ltr">{{ lv.correct }}/{{ lv.total }}</span>
+          </li>
+        </ul>
+      </section>
+
       <!-- By topic -->
       <section class="mt-8">
         <h2 class="mb-4 text-lg font-bold">{{ t('result.byTopic') }}</h2>
         <ul class="grid gap-3">
-          <li v-for="tp in result.topics" :key="tp.topic" class="grid grid-cols-[6.5rem_1fr_3rem] items-center gap-3">
+          <li v-for="(tp, i) in result.topics" :key="tp.topic" class="grid grid-cols-[6.5rem_1fr_3rem] items-center gap-3">
             <span class="font-mono text-sm">{{ t(`topics.${tp.topic}`) }}</span>
             <div class="h-2.5 overflow-hidden rounded-full bg-white/10">
               <div
-                class="h-full rounded-full"
-                :class="tp.correct / tp.total >= 0.7 ? 'bg-good' : tp.correct / tp.total >= 0.4 ? 'bg-caramel' : 'bg-bad'"
-                :style="{ width: `${Math.max(4, (tp.correct / tp.total) * 100)}%` }"
+                class="bar-grow h-full rounded-full"
+                :class="barClass(tp.correct / tp.total)"
+                :style="{ width: `${Math.max(4, (tp.correct / tp.total) * 100)}%`, animationDelay: `${200 + i * 70}ms` }"
               />
             </div>
             <span class="text-end font-mono text-sm text-sand" dir="ltr">{{ tp.correct }}/{{ tp.total }}</span>
