@@ -27,10 +27,11 @@ import { BROWSER_2 } from './extra/browser-2'
 import { VUE_2 } from './extra/vue-2'
 import { TYPESCRIPT_2 } from './extra/typescript-2'
 import { ANGULAR_2 } from './extra/angular-2'
+import { PERFORMANCE_2 } from './extra/performance-2'
 
 /**
  * Question bank. Server-only: answers never reach the browser before the test is submitted.
  * Arabic is neutral written Arabic (not dialect), matching the channel's on-screen text.
  * Run `npm run verify` after adding questions.
  */
-export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB, ...DB_API, ...ARCH_SECURITY, ...NODE_PYTHON, ...PHP_DOTNET, ...PHP_2, ...PYTHON_2, ...NODE_2, ...DOTNET_2, ...DATABASES_2, ...API_2, ...ARCHITECTURE_2, ...SERVER_SECURITY_2, ...HTML_2, ...ASYNC_2, ...REACT_2, ...CSS_2, ...BROWSER_2, ...VUE_2, ...TYPESCRIPT_2, ...ANGULAR_2]
+export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB, ...DB_API, ...ARCH_SECURITY, ...NODE_PYTHON, ...PHP_DOTNET, ...PHP_2, ...PYTHON_2, ...NODE_2, ...DOTNET_2, ...DATABASES_2, ...API_2, ...ARCHITECTURE_2, ...SERVER_SECURITY_2, ...HTML_2, ...ASYNC_2, ...REACT_2, ...CSS_2, ...BROWSER_2, ...VUE_2, ...TYPESCRIPT_2, ...ANGULAR_2, ...PERFORMANCE_2]
