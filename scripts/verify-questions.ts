@@ -29,6 +29,23 @@ const fail = (id: string, msg: string) => {
 const norm = (s: string) => s.replace(/[\s'"`,]/g, '')
 
 const seen = new Set<string>()
+const SQL_RUNNER = `
+import sqlite3, sys
+con = sqlite3.connect(':memory:')
+out, buf = [], ''
+for line in open(sys.argv[1]).read().splitlines(keepends=True):
+    buf += line
+    if sqlite3.complete_statement(buf):
+        try:
+            cur = con.execute(buf)
+            if cur.description:
+                out += [' '.join('NULL' if v is None else str(v) for v in row) for row in cur.fetchall()]
+        except sqlite3.Error:
+            out.append('Error')
+        buf = ''
+print(', '.join(out))
+`
+
 let csDir: string | null = null
 let csReady: boolean | null = null
 function csProject() {
@@ -69,6 +86,21 @@ for (const q of QUESTIONS) {
     ran++
     if (r.status !== 0 && !r.stdout) { fail(q.id, `could not run: ${(r.stderr || '').split('\n').slice(-3).join(' ')}`); continue }
     const actual = r.stdout.replace(/\n+$/, '').split('\n').join(', ')
+    const expected = opts[q.answer]!
+    if (norm(actual) !== norm(expected)) {
+      const other = opts.findIndex(o => norm(o) === norm(actual))
+      fail(q.id, `real output "${actual}" ≠ marked answer "${expected}"${other >= 0 ? ` (matches option ${other})` : ''}`)
+    }
+    continue
+  }
+  // SQL: run in SQLite (Python's sqlite3). Each result row prints its values joined with " ".
+  if (q.codeLang === 'sql') {
+    const file = join(dir, `${q.id}.sql`)
+    writeFileSync(file, q.code)
+    const r = spawnSync('python3', ['-c', SQL_RUNNER, file], { encoding: 'utf8', timeout: 5000 })
+    ran++
+    if (r.status !== 0) { fail(q.id, `could not run: ${r.stderr.split('\n').slice(-2).join(' ')}`); continue }
+    const actual = r.stdout.trim()
     const expected = opts[q.answer]!
     if (norm(actual) !== norm(expected)) {
       const other = opts.findIndex(o => norm(o) === norm(actual))
