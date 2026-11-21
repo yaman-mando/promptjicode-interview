@@ -131,6 +131,8 @@ export interface OpenAnswerBody {
   /** true when the time ran out or the user ends the test early */
   finish?: boolean
   name?: string
+  /** keys of questions this browser saw in earlier tests */
+  seen?: string
 }
 
 /** Info for the setup screen: which topics each level has questions for (counts are not shown). */

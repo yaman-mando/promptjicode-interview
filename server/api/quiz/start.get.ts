@@ -1,7 +1,8 @@
 import type { Mode, StartResponse } from '#shared/types/quiz'
 import { TRACKS, isTrack, trackTopics } from '#shared/types/quiz'
+import { parseSeen } from '#shared/seen'
 
-/** Starts a level test. Query: track, level, locale, topics (comma list), count, time (seconds). */
+/** Starts a level test. Query: track, level, locale, topics (comma list), count, time (seconds), seen (keys of questions already seen). */
 export default defineEventHandler(async (event): Promise<StartResponse> => {
   const query = getQuery(event)
   if (!isLevel(query.level)) {
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event): Promise<StartResponse> => {
   const count = parseCount(query.count)
   const timeLimit = parseTimeLimit(query.time)
 
-  const picked = pickQuestions(level, count, topics.length ? topics : core)
+  const picked = pickQuestions(level, count, topics.length ? topics : core, parseSeen(query.seen))
   if (!picked.length) throw createError({ statusCode: 400, statusMessage: 'No questions for these topics' })
 
   // A test is "custom" when the person changed the topics or the length

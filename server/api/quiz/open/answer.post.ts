@@ -1,3 +1,4 @@
+import { parseSeen } from '#shared/seen'
 import type { OpenAnswerBody, OpenState, OpenStep } from '#shared/types/quiz'
 import { OPEN_TEST_LENGTH, TRACKS, isTrack } from '#shared/types/quiz'
 
@@ -29,7 +30,7 @@ export default defineEventHandler(async (event): Promise<OpenStep | { id: string
   const answered: OpenState = { ...s, answers: [...s.answers, chosen] }
 
   const next = answered.ids.length < OPEN_TEST_LENGTH && !body.finish
-    ? pickOpenQuestion(nextOpenLevel(answered), answered.ids, TRACKS[s.track].core)
+    ? pickOpenQuestion(nextOpenLevel(answered), answered.ids, TRACKS[s.track].core, parseSeen(body.seen))
     : undefined
 
   if (!next) {
