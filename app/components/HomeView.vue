@@ -200,6 +200,20 @@ useHead(() => ({
         </span>
       </NuxtLink>
 
+      <!-- How it works (the video is recorded in Arabic) -->
+      <section v-if="locale === 'ar'" id="how" class="mt-12 grid items-center gap-6 sm:grid-cols-[1fr_auto]">
+        <div>
+          <h2 class="mb-1 text-xl font-bold">{{ t('howto.title') }}</h2>
+          <p class="text-sand">{{ t('howto.desc') }}</p>
+        </div>
+        <video
+          class="mx-auto w-full max-w-[280px] rounded-3xl border border-white/10 bg-ink shadow-2xl shadow-black/40"
+          src="/video/howto.mp4" poster="/video/howto-poster.webp"
+          controls playsinline preload="none" width="540" height="960"
+          :aria-label="t('howto.title')"
+        />
+      </section>
+
       <section class="mt-12">
         <h2 class="mb-1 text-xl font-bold">{{ t('specs.title') }}</h2>
         <p class="mb-4 text-sand">{{ t('specs.desc') }}</p>

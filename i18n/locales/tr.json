@@ -1,6 +1,6 @@
 {
   "brand": "PromptjiCode Interview",
-  "tagline": "Geliştiriciler için gerçek mülakat soruları. Kendini test et, puanını karşılaştır.",
+  "tagline": "Geliştiriciler için mülakat tarzı sorular, her cevap için açıklamayla. Kendini test et, puanını karşılaştır.",
   "chooseLevel": "Test seviyeni seç",
   "start": "Başla",
   "levels": {
@@ -375,7 +375,7 @@
       "desc": "Ön ve arka uç birlikte: tarayıcıdan veritabanına",
       "h1": "Gerçek full-stack mülakat sorularıyla kendini test et",
       "seoTitle": "Full-stack Mülakat Soruları — Ücretsiz Seviye Testi",
-      "seoDesc": "Ön ve arka ucu birleştiren gerçek full-stack mülakat soruları: JavaScript, React, Node.js, veritabanları ve API’ler. Ücretsiz, kayıt yok.",
+      "seoDesc": "Ön ve arka ucu birleştiren full-stack mülakat soruları: JavaScript, React, Node.js, veritabanları ve API’ler. Ücretsiz, kayıt yok.",
       "extraTitle": "Framework’ler ve diller"
     }
   },
@@ -406,5 +406,9 @@
     "close": "Kapat",
     "thanks": "Teşekkürler!",
     "thanksText": "Bildirimini aldık; soruyu inceleyip düzelteceğiz."
+  },
+  "howto": {
+    "title": "Test nasıl çalışır?",
+    "desc": "Adımlar bir dakikada: alan seçiminden sonucunu ve her sorunun açıklamasını okumaya kadar."
   }
 }
