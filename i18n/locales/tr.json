@@ -229,12 +229,12 @@
   "mainSite": "Ana sayfa",
   "seo": {
     "title": "Frontend, Backend ve Full-stack Mülakat Soruları — Ücretsiz Seviye Testi",
-    "description": "Gerçek Frontend, Backend ve Full-stack mülakat sorularıyla pratik yap: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP ve .NET. Ücretsiz, kayıt yok.",
+    "description": "Frontend, Backend ve Full-stack mülakat sorularıyla pratik yap: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP ve .NET. Ücretsiz, kayıt yok.",
     "levelTitle": "{level} {track} Mülakat Soruları — Ücretsiz Test",
-    "levelDescription": "Gerçek sorularla ücretsiz {level} {track} mülakat testi. {desc} Puanını gör ve karşılaştır.",
+    "levelDescription": "Ücretsiz {level} {track} mülakat testi. {desc} Puanını gör ve karşılaştır.",
     "resultTitle": "{level} testinde {total} sorudan {score} doğru yaptım",
     "resultDescription": "Frontend mülakat soruları testini dene ve puanını karşılaştır.",
-    "h1": "Gerçek frontend mülakat sorularıyla kendini test et",
+    "h1": "Frontend mülakat sorularıyla kendini test et",
     "topicsTitle": "Sorular neleri kapsıyor",
     "faqTitle": "Sık sorulan sorular",
     "faq": [
@@ -357,7 +357,7 @@
     "frontend": {
       "name": "Frontend",
       "desc": "JavaScript, CSS, HTML, React, Vue, Angular ve TypeScript",
-      "h1": "Gerçek frontend mülakat sorularıyla kendini test et",
+      "h1": "Frontend mülakat sorularıyla kendini test et",
       "seoTitle": "Yazılımcı Mülakat Testleri: Frontend, Backend ve Full-stack",
       "seoDesc": "Mülakattan önce seviyeni öğren: Junior, Mid ve Senior seviyelerinde Frontend, Backend ve Full-stack testleri ya da seviyeni bulan açık test, her cevap için açıklamayla. Ücretsiz, kayıt yok.",
       "extraTitle": ""
@@ -365,15 +365,15 @@
     "backend": {
       "name": "Backend",
       "desc": "Veritabanları, API’ler, mimari ve güvenlik; ayrıca Node.js, Python, PHP ve .NET",
-      "h1": "Gerçek backend mülakat sorularıyla kendini test et",
+      "h1": "Backend mülakat sorularıyla kendini test et",
       "seoTitle": "Backend Mülakat Soruları — Ücretsiz Seviye Testi",
-      "seoDesc": "Gerçek backend mülakat soruları: SQL ve veritabanları, API’ler, mimari ve güvenlik; ayrıca Node.js, Python, PHP/Laravel ve C#/.NET. Ücretsiz, kayıt yok.",
+      "seoDesc": "Backend mülakat soruları: SQL ve veritabanları, API’ler, mimari ve güvenlik; ayrıca Node.js, Python, PHP/Laravel ve C#/.NET. Ücretsiz, kayıt yok.",
       "extraTitle": "Dilin veya framework’ün"
     },
     "fullstack": {
       "name": "Full-stack",
       "desc": "Ön ve arka uç birlikte: tarayıcıdan veritabanına",
-      "h1": "Gerçek full-stack mülakat sorularıyla kendini test et",
+      "h1": "Full-stack mülakat sorularıyla kendini test et",
       "seoTitle": "Full-stack Mülakat Soruları — Ücretsiz Seviye Testi",
       "seoDesc": "Ön ve arka ucu birleştiren full-stack mülakat soruları: JavaScript, React, Node.js, veritabanları ve API’ler. Ücretsiz, kayıt yok.",
       "extraTitle": "Framework’ler ve diller"
