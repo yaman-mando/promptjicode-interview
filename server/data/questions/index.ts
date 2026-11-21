@@ -21,10 +21,11 @@ import { ARCHITECTURE_2 } from './backend/architecture-2'
 import { SERVER_SECURITY_2 } from './backend/server-security-2'
 import { HTML_2 } from './extra/html-2'
 import { ASYNC_2 } from './extra/async-2'
+import { REACT_2 } from './extra/react-2'
 
 /**
  * Question bank. Server-only: answers never reach the browser before the test is submitted.
  * Arabic is neutral written Arabic (not dialect), matching the channel's on-screen text.
  * Run `npm run verify` after adding questions.
  */
-export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB, ...DB_API, ...ARCH_SECURITY, ...NODE_PYTHON, ...PHP_DOTNET, ...PHP_2, ...PYTHON_2, ...NODE_2, ...DOTNET_2, ...DATABASES_2, ...API_2, ...ARCHITECTURE_2, ...SERVER_SECURITY_2, ...HTML_2, ...ASYNC_2]
+export const QUESTIONS: Question[] = [...LEGACY, ...JUNIOR, ...MID, ...SENIOR, ...ANGULAR, ...VUE_REACT, ...TS_HTML_CSS, ...WEB, ...DB_API, ...ARCH_SECURITY, ...NODE_PYTHON, ...PHP_DOTNET, ...PHP_2, ...PYTHON_2, ...NODE_2, ...DOTNET_2, ...DATABASES_2, ...API_2, ...ARCHITECTURE_2, ...SERVER_SECURITY_2, ...HTML_2, ...ASYNC_2, ...REACT_2]
