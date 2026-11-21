@@ -169,7 +169,8 @@ async function start() {
   const seconds = timeMinutes.value * 60
   try {
     if (isOpen) {
-      step.value = await $fetch<OpenStep>('/api/quiz/open/start', { method: 'POST', body: { locale: locale.value, time: seconds, track } })
+      step.value = await $fetch<OpenStep>('/api/quiz/open/start', { method: 'POST', body: { locale: locale.value, time: seconds, track, seen: seenParam() } })
+      rememberSeen([step.value.question.id])
       openChosen.value = null
       openLog.value = []
       index.value = 0
@@ -184,8 +185,10 @@ async function start() {
           topics: allTopics.value ? undefined : chosenTopics.value.join(','),
           count: count.value,
           time: seconds,
+          seen: seenParam() || undefined,
         },
       })
+      rememberSeen(test.value.questions.map(q => q.id))
       answers.value = test.value.questions.map(() => null)
       index.value = 0
       maxIndex.value = 0
@@ -274,11 +277,12 @@ async function sendOpenAnswer(finish: boolean) {
   try {
     const res = await $fetch<OpenStep | { id: string }>('/api/quiz/open/answer', {
       method: 'POST',
-      body: { state: step.value.state, token: step.value.token, locale: locale.value, answer: openChosen.value, finish, name: cleanName() },
+      body: { state: step.value.state, token: step.value.token, locale: locale.value, answer: openChosen.value, finish, name: cleanName(), seen: seenParam() },
     })
     if ('id' in res) return await finished(res.id)
     openLog.value.push(openChosen.value)
     step.value = res
+    rememberSeen([res.question.id])
     index.value = res.index
     maxIndex.value = res.index
     openChosen.value = null

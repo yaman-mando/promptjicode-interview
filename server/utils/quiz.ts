@@ -1,3 +1,4 @@
+import { seenKey } from '#shared/seen'
 /// <reference types="@cloudflare/workers-types" />
 import type { H3Event } from 'h3'
 import { QUESTIONS } from '../data/questions'
@@ -94,9 +95,12 @@ function shuffle<T>(list: T[]): T[] {
  * Random pick of questions for one level, optionally limited to some topics.
  * With several topics, questions are spread across them as evenly as the bank allows.
  */
-export function pickQuestions(level: Level, count = QUESTIONS_PER_TEST, topics: Topic[] = []): Question[] {
-  const pool = shuffle(QUESTIONS.filter(q => q.level === level && (!topics.length || topics.includes(q.topic))))
-  if (topics.length < 2) return pool.slice(0, count)
+export function pickQuestions(level: Level, count = QUESTIONS_PER_TEST, topics: Topic[] = [], seen: Set<string> = new Set()): Question[] {
+  const all = shuffle(QUESTIONS.filter(q => q.level === level && (!topics.length || topics.includes(q.topic))))
+  // Questions this visitor has not seen go last, so pop() and slice(-n) reach them first
+  const isNew = (q: Question) => !seen.has(seenKey(q.id))
+  const pool = [...all.filter(q => !isNew(q)), ...all.filter(isNew)]
+  if (topics.length < 2) return shuffle(pool.slice(-count))
   // Round-robin over topics so one big topic does not crowd out the others
   const byTopic = topics.map(t => pool.filter(q => q.topic === t)).filter(l => l.length)
   const picked: Question[] = []
@@ -122,7 +126,7 @@ export function nextOpenLevel(state: OpenState): Level {
 }
 
 /** A question at that level not asked yet, preferring a topic different from the last few. */
-export function pickOpenQuestion(level: Level, askedIds: string[], topics: Topic[]): Question | undefined {
+export function pickOpenQuestion(level: Level, askedIds: string[], topics: Topic[], seen: Set<string> = new Set()): Question | undefined {
   const asked = new Set(askedIds)
   const recentTopics = askedIds.slice(-3).map(id => getQuestion(id)?.topic)
   const fresh = (l: Level) => shuffle(QUESTIONS.filter(q => q.level === l && !asked.has(q.id) && topics.includes(q.topic)))
@@ -130,7 +134,10 @@ export function pickOpenQuestion(level: Level, askedIds: string[], topics: Topic
   const order = [level, ...LEVELS.filter(l => l !== level).sort((a, b) =>
     Math.abs(LEVELS.indexOf(a) - LEVELS.indexOf(level)) - Math.abs(LEVELS.indexOf(b) - LEVELS.indexOf(level)))]
   for (const l of order) {
-    const pool = fresh(l)
+    const all = fresh(l)
+    // Prefer questions this visitor has not seen in earlier tests
+    const unseen = all.filter(q => !seen.has(seenKey(q.id)))
+    const pool = unseen.length ? unseen : all
     if (pool.length) return pool.find(q => !recentTopics.includes(q.topic)) ?? pool[0]
   }
   return undefined
