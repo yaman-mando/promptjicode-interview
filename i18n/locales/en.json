@@ -1,6 +1,6 @@
 {
   "brand": "PromptjiCode Interview",
-  "tagline": "Real interview questions for developers. Test yourself and compare your score.",
+  "tagline": "Interview-style questions for developers, with an explanation for every answer. Test yourself and compare your score.",
   "chooseLevel": "Choose your test level",
   "start": "Start",
   "levels": {
@@ -229,12 +229,12 @@
   "mainSite": "PromptjiCode home",
   "seo": {
     "title": "Frontend, Backend & Full-stack Interview Questions — Free Level Test",
-    "description": "Practise real Frontend, Backend and Full-stack interview questions: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP and .NET. Free, no sign-up.",
+    "description": "Practise Frontend, Backend and Full-stack interview questions: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP and .NET. Free, no sign-up.",
     "levelTitle": "{level} {track} Interview Questions — Free Test",
-    "levelDescription": "Free {level} {track} interview test with real questions. {desc} See your score and how you compare.",
+    "levelDescription": "Free {level} {track} interview test. {desc} See your score and how you compare.",
     "resultTitle": "I scored {score}/{total} on the {level} test",
     "resultDescription": "Try the frontend interview questions test and compare your score.",
-    "h1": "Test yourself on real frontend interview questions",
+    "h1": "Test yourself on frontend interview questions",
     "topicsTitle": "What the questions cover",
     "faqTitle": "FAQ",
     "faq": [
@@ -357,7 +357,7 @@
     "frontend": {
       "name": "Frontend",
       "desc": "JavaScript, CSS, HTML, React, Vue, Angular and TypeScript",
-      "h1": "Test yourself on real frontend interview questions",
+      "h1": "Test yourself on frontend interview questions",
       "seoTitle": "Developer Interview Tests: Frontend, Backend and Full-stack",
       "seoDesc": "Check your level before the interview: Frontend, Backend and Full-stack tests at Junior, Mid and Senior level, or an open test that finds your level, with an explanation for every answer. Free, no sign-up.",
       "extraTitle": ""
@@ -365,17 +365,17 @@
     "backend": {
       "name": "Backend",
       "desc": "Databases, APIs, architecture and security, plus Node.js, Python, PHP and .NET",
-      "h1": "Test yourself on real backend interview questions",
+      "h1": "Test yourself on backend interview questions",
       "seoTitle": "Backend Interview Questions — Free Level Test",
-      "seoDesc": "Practise real backend interview questions: SQL and databases, APIs, architecture and security, plus Node.js, Python, PHP/Laravel and C#/.NET. Free, no sign-up.",
+      "seoDesc": "Practise backend interview questions: SQL and databases, APIs, architecture and security, plus Node.js, Python, PHP/Laravel and C#/.NET. Free, no sign-up.",
       "extraTitle": "Your language or framework"
     },
     "fullstack": {
       "name": "Full-stack",
       "desc": "Front and back together: from the browser to the database",
-      "h1": "Test yourself on real full-stack interview questions",
+      "h1": "Test yourself on full-stack interview questions",
       "seoTitle": "Full-stack Interview Questions — Free Level Test",
-      "seoDesc": "Practise real full-stack interview questions across front and back end: JavaScript, React, Node.js, databases and APIs. Free, no sign-up.",
+      "seoDesc": "Practise full-stack interview questions across front and back end: JavaScript, React, Node.js, databases and APIs. Free, no sign-up.",
       "extraTitle": "Frameworks and languages"
     }
   },
@@ -406,5 +406,9 @@
     "close": "Close",
     "thanks": "Thank you!",
     "thanksText": "We got your report and will review and fix the question."
+  },
+  "howto": {
+    "title": "How does the test work?",
+    "desc": "One minute through the steps: from picking a track to reading your result and the explanation for each question."
   }
 }

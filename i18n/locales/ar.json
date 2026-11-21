@@ -1,6 +1,6 @@
 {
   "brand": "PromptjiCode Interview",
-  "tagline": "أسئلة مقابلات حقيقية للمطوّرين. اختبر نفسك، وقارن نتيجتك بغيرك.",
+  "tagline": "أسئلة بأسلوب المقابلات للمطوّرين، مع شرح لكل إجابة. اختبر نفسك، وقارن نتيجتك بغيرك.",
   "chooseLevel": "اختر مستوى الاختبار",
   "start": "ابدأ",
   "levels": {
@@ -229,12 +229,12 @@
   "mainSite": "الصفحة الرئيسية",
   "seo": {
     "title": "أسئلة مقابلات Frontend وBackend وFull-stack واختبار مستوى مجاني",
-    "description": "اختبر نفسك بأسئلة مقابلات حقيقية في Frontend وBackend وFull-stack: JavaScript وReact وVue وAngular وSQL وNode.js وPython وPHP و.NET. مجاني وبدون تسجيل.",
+    "description": "اختبر نفسك بأسئلة مقابلات في Frontend وBackend وFull-stack: JavaScript وReact وVue وAngular وSQL وNode.js وPython وPHP و.NET. مجاني وبدون تسجيل.",
     "levelTitle": "أسئلة مقابلات {track} لمستوى {level}",
-    "levelDescription": "اختبار {level} مجاني بأسئلة مقابلات {track} حقيقية: {desc} شاهد نتيجتك وقارنها بغيرك.",
+    "levelDescription": "اختبار {level} مجاني بأسئلة مقابلات {track}: {desc} شاهد نتيجتك وقارنها بغيرك.",
     "resultTitle": "نتيجتي {score}/{total} في اختبار {level}",
     "resultDescription": "جرّب اختبار أسئلة مقابلات Front-end وقارن نتيجتك.",
-    "h1": "اختبر نفسك بأسئلة مقابلات Front-end حقيقية",
+    "h1": "اختبر نفسك بأسئلة مقابلات Front-end",
     "topicsTitle": "ماذا تغطي الأسئلة",
     "faqTitle": "أسئلة شائعة",
     "faq": [
@@ -357,7 +357,7 @@
     "frontend": {
       "name": "Frontend",
       "desc": "JavaScript وCSS وHTML وReact وVue وAngular وTypeScript",
-      "h1": "اختبر نفسك بأسئلة مقابلات Front-end حقيقية",
+      "h1": "اختبر نفسك بأسئلة مقابلات Front-end",
       "seoTitle": "اختبارات مقابلات للمبرمجين: Frontend وBackend وFull-stack",
       "seoDesc": "اختبر مستواك قبل المقابلة: Frontend وBackend وFull-stack بمستويات Junior وMid وSenior، أو اختبار مفتوح يحدد مستواك، مع شرح لكل إجابة. مجاني وبدون تسجيل.",
       "extraTitle": ""
@@ -365,17 +365,17 @@
     "backend": {
       "name": "Backend",
       "desc": "قواعد البيانات والـ APIs والمعمارية والأمان، مع Node.js وPython وPHP و.NET",
-      "h1": "اختبر نفسك بأسئلة مقابلات Back-end حقيقية",
+      "h1": "اختبر نفسك بأسئلة مقابلات Back-end",
       "seoTitle": "أسئلة مقابلات Back-end واختبار مستوى مجاني",
-      "seoDesc": "اختبر نفسك بأسئلة مقابلات Back-end حقيقية: SQL وقواعد البيانات والـ APIs والمعمارية والأمان، مع Node.js وPython وPHP/Laravel وC#/.NET. مجاني وبدون تسجيل.",
+      "seoDesc": "اختبر نفسك بأسئلة مقابلات Back-end: SQL وقواعد البيانات والـ APIs والمعمارية والأمان، مع Node.js وPython وPHP/Laravel وC#/.NET. مجاني وبدون تسجيل.",
       "extraTitle": "لغتك أو إطار العمل"
     },
     "fullstack": {
       "name": "Full-stack",
       "desc": "الواجهة والخادم معًا: من المتصفح حتى قاعدة البيانات",
-      "h1": "اختبر نفسك بأسئلة مقابلات Full-stack حقيقية",
+      "h1": "اختبر نفسك بأسئلة مقابلات Full-stack",
       "seoTitle": "أسئلة مقابلات Full-stack واختبار مستوى مجاني",
-      "seoDesc": "اختبر نفسك بأسئلة مقابلات Full-stack حقيقية تجمع الواجهة والخادم: JavaScript وReact وNode.js وقواعد البيانات والـ APIs. مجاني وبدون تسجيل.",
+      "seoDesc": "اختبر نفسك بأسئلة مقابلات Full-stack تجمع الواجهة والخادم: JavaScript وReact وNode.js وقواعد البيانات والـ APIs. مجاني وبدون تسجيل.",
       "extraTitle": "الأطر واللغات"
     }
   },
@@ -406,5 +406,9 @@
     "close": "إغلاق",
     "thanks": "شكرًا لك!",
     "thanksText": "وصلنا البلاغ، وسنراجع السؤال ونصحّحه."
+  },
+  "howto": {
+    "title": "كيف يعمل الاختبار؟",
+    "desc": "دقيقة واحدة تشرح الخطوات: من اختيار المسار حتى قراءة النتيجة وشرح كل سؤال."
   }
 }
