@@ -227,6 +227,11 @@
     }
   },
   "mainSite": "Ana sayfa",
+  "pwa": {
+    "install": "Uygulamayı yükle",
+    "iosHint": "iPhone'a yüklemek için Safari'de Paylaş ⬆︎ düğmesine, ardından “Ana Ekrana Ekle”ye dokunun.",
+    "close": "Kapat"
+  },
   "seo": {
     "title": "Frontend, Backend ve Full-stack Mülakat Soruları — Ücretsiz Seviye Testi",
     "description": "Frontend, Backend ve Full-stack mülakat sorularıyla pratik yap: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP ve .NET. Ücretsiz, kayıt yok.",

@@ -227,6 +227,11 @@
     }
   },
   "mainSite": "الصفحة الرئيسية",
+  "pwa": {
+    "install": "ثبّت التطبيق",
+    "iosHint": "لتثبيت التطبيق على iPhone: اضغط زر المشاركة ⬆︎ في Safari، ثم «إضافة إلى الشاشة الرئيسية».",
+    "close": "إغلاق"
+  },
   "seo": {
     "title": "أسئلة مقابلات Frontend وBackend وFull-stack واختبار مستوى مجاني",
     "description": "اختبر نفسك بأسئلة مقابلات في Frontend وBackend وFull-stack: JavaScript وReact وVue وAngular وSQL وNode.js وPython وPHP و.NET. مجاني وبدون تسجيل.",

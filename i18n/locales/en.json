@@ -227,6 +227,11 @@
     }
   },
   "mainSite": "PromptjiCode home",
+  "pwa": {
+    "install": "Install app",
+    "iosHint": "To install on iPhone: tap the Share button ⬆︎ in Safari, then “Add to Home Screen”.",
+    "close": "Close"
+  },
   "seo": {
     "title": "Frontend, Backend & Full-stack Interview Questions — Free Level Test",
     "description": "Practise Frontend, Backend and Full-stack interview questions: JavaScript, React, Vue, Angular, SQL, Node.js, Python, PHP and .NET. Free, no sign-up.",
