@@ -14,6 +14,9 @@ const sample = join(root, 'server/data/sample')
 
 export function ensureQuestions() {
   if (existsSync(join(dest, 'index.ts'))) return
+  // `nuxt prepare` (npm postinstall) only generates types and never reads the bank.
+  // On CI it can run before build secrets are available, so leave the fetch to the build.
+  if (process.argv.includes('prepare')) return
 
   const token = process.env.QUESTIONS_TOKEN
   const repo = process.env.QUESTIONS_REPO || 'yaman-mando/promptjicode-questions'
