@@ -220,13 +220,13 @@ const dateText = computed(() => result.value
             <dl class="grid gap-2 text-[15px]">
               <div v-if="!q.correct" class="flex flex-wrap gap-2">
                 <dt class="text-sand">{{ t('result.yourAnswer') }}:</dt>
-                <dd class="font-semibold text-bad" :class="q.chosen !== null && isCode(q.options[q.chosen]!) ? 'ltr font-mono' : ''">
+                <dd class="min-w-0 font-semibold text-bad [overflow-wrap:anywhere]" :class="q.chosen !== null && isCode(q.options[q.chosen]!) ? 'ltr font-mono' : ''">
                   <template v-if="q.chosen === null">{{ t('result.skipped') }}</template><BidiText v-else :text="q.options[q.chosen]!" />
                 </dd>
               </div>
               <div class="flex flex-wrap gap-2">
                 <dt class="text-sand">{{ t('result.correctAnswer') }}:</dt>
-                <dd class="font-semibold text-good" :class="isCode(q.options[q.answer]!) ? 'ltr font-mono' : ''"><BidiText :text="q.options[q.answer]!" /></dd>
+                <dd class="min-w-0 font-semibold text-good [overflow-wrap:anywhere]" :class="isCode(q.options[q.answer]!) ? 'ltr font-mono' : ''"><BidiText :text="q.options[q.answer]!" /></dd>
               </div>
             </dl>
 

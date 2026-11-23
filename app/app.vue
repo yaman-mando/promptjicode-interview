@@ -28,7 +28,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="mx-auto flex min-h-dvh max-w-3xl flex-col px-5">
+  <div class="mx-auto flex min-h-dvh w-full max-w-3xl flex-col overflow-x-clip px-5">
     <AppHeader />
     <main class="flex-1 pb-16">
       <NuxtPage />

@@ -576,7 +576,7 @@ const segBtn = (on: boolean) => on
 
           <CodeBlock v-if="question.code" :code="question.code" :lang="question.codeLang" class="mb-5" />
 
-          <fieldset class="grid gap-3" :class="question.options.length > 2 && question.options.every(o => o.length < 18) ? 'sm:grid-cols-2' : ''">
+          <fieldset class="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3" :class="question.options.length > 2 && question.options.every(o => o.length < 18) ? 'sm:grid-cols-[repeat(2,minmax(0,1fr))]' : ''">
             <legend class="sr-only">{{ question.prompt }}</legend>
             <button
               v-for="(opt, i) in question.options"
@@ -595,7 +595,7 @@ const segBtn = (on: boolean) => on
                 class="grid size-7 shrink-0 place-items-center rounded-full font-mono text-sm font-bold"
                 :class="chosen === i ? 'pop bg-caramel text-ink' : 'bg-white/10 text-sand'"
               >{{ 'ABCD'[i] }}</span>
-              <span class="min-w-0" :class="/^[\x00-\x7F]*$/.test(opt) ? 'ltr font-mono text-[15px]' : 'text-[16px]'"><BidiText :text="opt" /></span>
+              <span class="min-w-0 [overflow-wrap:anywhere]" :class="/^[\x00-\x7F]*$/.test(opt) ? 'ltr font-mono text-[15px]' : 'text-[16px]'"><BidiText :text="opt" /></span>
             </button>
           </fieldset>
           <div class="mt-3 flex justify-end">
