@@ -5,6 +5,7 @@ import { parseSeen } from '#shared/seen'
 /** Starts an open (adaptive) test with one Mid question from the track's core topics. */
 export default defineEventHandler(async (event): Promise<OpenStep> => {
   const body = await readBody<{ locale?: string, time?: number, track?: string, seen?: string }>(event).catch(() => ({}))
+  await limitQuestions(event, OPEN_TEST_LENGTH)
   const locale = toLocale(body?.locale)
   const track = isTrack(body?.track) ? body.track : 'frontend'
   const q = pickOpenQuestion('mid', [], TRACKS[track].core, parseSeen(body?.seen))!

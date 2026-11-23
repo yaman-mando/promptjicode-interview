@@ -29,6 +29,7 @@
     "skip": "Skip",
     "submitting": "Calculating your result…",
     "error": "Something went wrong. Please try again.",
+    "limited": "You've started a lot of tests in a short time. Take a short break and try again a little later.",
     "retry": "Try again",
     "leave": "You will lose your progress and the result will not be saved.",
     "timeLeft": "Time left",

@@ -69,7 +69,7 @@ const fmtLimit = (min: number) => (min ? t('setup.min', { n: min }) : t('setup.n
 
 const phase = ref<'setup' | 'test'>('setup')
 const starting = ref(false)
-const loadError = ref(false)
+const loadError = ref<false | 'error' | 'limit'>(false)
 const submitting = ref(false)
 const submitError = ref(false)
 const timeUp = ref(false)
@@ -199,8 +199,9 @@ async function start() {
     window.scrollTo({ top: 0 })
     $track('quiz_start', { level: trackLevel, total: total.value })
   }
-  catch {
-    loadError.value = true
+  catch (e) {
+    // 429: this device started too many tests in a short time (see server/utils/limit.ts)
+    loadError.value = (e as { statusCode?: number })?.statusCode === 429 ? 'limit' : 'error'
   }
   finally {
     starting.value = false
@@ -496,7 +497,7 @@ const segBtn = (on: boolean) => on
             {{ starting ? t('quiz.loading') : t('setup.start') }}
           </button>
         </div>
-        <p v-if="loadError" class="text-center text-sm text-bad" role="alert">{{ t('quiz.error') }}</p>
+        <p v-if="loadError" class="text-center text-sm text-bad" role="alert">{{ loadError === 'limit' ? t('quiz.limited') : t('quiz.error') }}</p>
       </div>
     </section>
 

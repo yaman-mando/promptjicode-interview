@@ -21,6 +21,7 @@ export default defineEventHandler(async (event): Promise<StartResponse> => {
 
   const picked = pickQuestions(level, count, topics.length ? topics : core, parseSeen(query.seen))
   if (!picked.length) throw createError({ statusCode: 400, statusMessage: 'No questions for these topics' })
+  await limitQuestions(event, picked.length)
 
   // A test is "custom" when the person changed the topics or the length
   const mode: Mode = topics.length || count !== QUESTIONS_PER_TEST ? 'custom' : 'level'

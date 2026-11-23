@@ -29,6 +29,7 @@
     "skip": "Atla",
     "submitting": "Sonucun hesaplanıyor…",
     "error": "Bir hata oluştu. Lütfen tekrar dene.",
+    "limited": "Kısa sürede çok fazla test başlattınız. Kısa bir mola verip biraz sonra tekrar deneyin.",
     "retry": "Tekrar dene",
     "leave": "İlerlemen kaybolacak ve sonuç kaydedilmeyecek.",
     "timeLeft": "Kalan süre",
