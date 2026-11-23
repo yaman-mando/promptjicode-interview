@@ -7,3 +7,6 @@ dist
 .env
 .dev.vars
 *.log
+
+# Private question bank (fetched at build time, see scripts/ensure-questions.mjs)
+server/data/questions/

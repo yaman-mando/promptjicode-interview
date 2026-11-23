@@ -1,3 +1,8 @@
+import { ensureQuestions } from './scripts/ensure-questions.mjs'
+
+// The full question bank is private; fetch it (or use the sample) before Nuxt reads the server code
+ensureQuestions()
+
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
