@@ -55,7 +55,7 @@ export function toPublic(q: Question, locale: Locale, order?: number[]): PublicQ
     id: q.id,
     topic: q.topic,
     codeLang: q.codeLang,
-    code: q.code,
+    code: q.text[locale].code ?? q.code,
     prompt: q.text[locale].prompt,
     options: order ? order.map(i => options[i]!) : options,
   }

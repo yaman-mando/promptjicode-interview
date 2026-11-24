@@ -85,7 +85,7 @@ useHead({ title: () => `${t('admin.questions')} · PromptjiCode Interview`, meta
         </button>
 
         <div v-if="open === q.id" class="border-t border-white/10 p-4">
-          <CodeBlock v-if="q.code" :code="q.code" :lang="q.codeLang" class="mb-4" />
+          <CodeBlock v-if="q.code" :code="q.text[loc].code ?? q.code" :lang="q.codeLang" class="mb-4" />
 
           <p class="mb-2 text-sm font-semibold text-sand">{{ t('admin.picks') }}</p>
           <ol class="mb-4 grid gap-1.5">

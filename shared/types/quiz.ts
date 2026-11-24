@@ -52,6 +52,8 @@ export interface QuestionText {
   prompt: string
   explanation: string
   options?: string[]
+  /** This language's version of the code, when the code contains words people read (labels, messages). */
+  code?: string
 }
 
 /** Full question, server-only: it contains the answer. */
