@@ -13,13 +13,15 @@ export default defineEventHandler(async (event) => {
   const todayStart = Math.floor((now + TZ_OFFSET) / 86400_000) * 86400_000 - TZ_OFFSET
   const from = todayStart - (days - 1) * 86400_000
 
-  // Which site to show: this app, promptjicode.com, or only sessions that opened Yaman's page
-  const scope = q.scope === 'main' || q.scope === 'yaman' ? q.scope : 'interview'
+  // Which site to show: this app, promptjicode.com, only sessions that opened Yaman's page, or the menu calculator
+  const scope = q.scope === 'main' || q.scope === 'yaman' || q.scope === 'menu' ? q.scope : 'interview'
   const S = scope === 'interview'
     ? `site = 'interview'`
     : scope === 'main'
       ? `site = 'main'`
-      : `site = 'main' AND id IN (SELECT session FROM events WHERE type = 'pageview' AND path LIKE '%/yaman%')`
+      : scope === 'menu'
+        ? `site = 'menu'`
+        : `site = 'main' AND id IN (SELECT session FROM events WHERE type = 'pageview' AND path LIKE '%/yaman%')`
   const inScope = `session IN (SELECT id FROM sessions WHERE ${S})`
 
   const group = (col: string, limit = 12) =>

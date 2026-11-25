@@ -4,7 +4,7 @@ definePageMeta({ middleware: 'admin' })
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const days = ref(7)
-const scope = ref<'interview' | 'main' | 'yaman'>('interview')
+const scope = ref<'interview' | 'main' | 'yaman' | 'menu'>('interview')
 const isQuizSite = computed(() => scope.value === 'interview')
 const { data: a, refresh, pending } = await useFetch('/api/admin/analytics', {
   query: { days, scope },
@@ -27,12 +27,13 @@ const countryName = (cc: string | null) => {
   try { return regionNames.value?.of(cc) ?? cc }
   catch { return cc }
 }
-// Click labels sent by promptjicode.com: email, whatsapp, phone, linkedin, github, service:<id>, banner…
+// Click labels sent by promptjicode.com and the menu calculator: email, whatsapp, service:<id>, calc:save, card:tr…
+const has = (key: string) => t(key) !== key
 const clickLabel = (k: string) => {
-  const [kind, id] = k.split(':')
-  if (kind === 'service' && id) return `${t('admin.clickKinds.service')}: ${id}`
-  const key = `admin.clickKinds.${kind}`
-  return t(key) === key ? k : t(key)
+  const [kind = '', id] = k.split(':')
+  if (id && has(`admin.clickKinds.${kind}_${id}`)) return t(`admin.clickKinds.${kind}_${id}`)
+  const name = has(`admin.clickKinds.${kind}`) ? t(`admin.clickKinds.${kind}`) : kind
+  return id ? `${name}: ${id}` : name
 }
 const pct = (x: number, y: number) => (y ? Math.round((x / y) * 100) : 0)
 const fmtDur = (sec: number) => {
@@ -84,7 +85,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
     <!-- Which site -->
     <div class="mb-3 inline-flex flex-wrap gap-1 rounded-xl bg-white/5 p-1">
       <button
-        v-for="sc in (['interview', 'main', 'yaman'] as const)" :key="sc" type="button"
+        v-for="sc in (['interview', 'main', 'yaman', 'menu'] as const)" :key="sc" type="button"
         class="rounded-lg px-3 py-1.5 text-sm font-semibold transition"
         :class="scope === sc ? 'bg-cream text-ink' : 'text-sand hover:text-cream'"
         @click="scope = sc"
@@ -127,9 +128,9 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
       <section v-if="!isQuizSite" class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
         <h2 class="mb-3 font-bold">{{ t('admin.clicksTitle') }}</h2>
         <p v-if="!a.clicks.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
-        <ul class="grid gap-2">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-2">
           <li v-for="c in a.clicks" :key="c.key" class="text-sm">
-            <div class="mb-1 flex justify-between gap-2"><span>{{ clickLabel(c.key) }}</span><span class="font-mono text-sand">{{ c.count }}</span></div>
+            <div class="mb-1 flex justify-between gap-2"><span class="min-w-0 [overflow-wrap:anywhere]">{{ clickLabel(c.key) }}</span><span class="shrink-0 font-mono text-sand">{{ c.count }}</span></div>
             <div class="h-1.5 overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full bg-caramel/70" :style="{ width: `${(c.count / Math.max(1, a.clicks[0]!.count)) * 100}%` }" /></div>
           </li>
         </ul>
@@ -158,7 +159,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
           <div>
             <h3 class="mb-2 text-sm font-bold text-sand">{{ t('admin.perLevel') }}</h3>
             <p v-if="!Object.keys(a.quiz.levels).length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
-            <ul class="grid gap-1.5 text-sm">
+            <ul class="grid grid-cols-[minmax(0,1fr)] gap-1.5 text-sm">
               <li v-for="(v, l) in a.quiz.levels" :key="l" class="flex justify-between gap-2">
                 <span>{{ ['junior', 'mid', 'senior', 'open'].includes(String(l)) ? t(`levels.${l}.name`) : l }}</span>
                 <span class="text-sand">{{ t('admin.levelLine', { started: v.started, done: v.done, left: v.left }) }}</span>
@@ -167,7 +168,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
           </div>
           <div>
             <h3 class="mb-2 text-sm font-bold text-sand">{{ t('admin.stops') }}</h3>
-            <ul class="grid gap-1.5 text-sm">
+            <ul class="grid grid-cols-[minmax(0,1fr)] gap-1.5 text-sm">
               <li v-for="(n, i) in stopBuckets" :key="i" class="flex items-center gap-2">
                 <span class="w-28 shrink-0 text-sand">{{ t(`admin.stop${i}`) }}</span>
                 <span class="h-2 flex-1 overflow-hidden rounded-full bg-white/10"><span class="block h-full rounded-full bg-bad/70" :style="{ width: `${(n / stopMax) * 100}%` }" /></span>
@@ -240,39 +241,39 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
       </section>
 
       <!-- Breakdowns -->
-      <div class="mt-6 grid gap-4 sm:grid-cols-2">
-        <section v-for="sec in sections" :key="sec.title" class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <div class="mt-6 grid items-start gap-4 sm:grid-cols-2">
+        <section v-for="sec in sections" :key="sec.title" class="min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <h2 class="mb-3 font-bold">{{ sec.title }}</h2>
           <p v-if="!sec.rows.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
-          <ul class="grid gap-2">
+          <ul class="grid grid-cols-[minmax(0,1fr)] gap-2">
             <li v-for="r in sec.rows" :key="r.key" class="text-sm">
-              <div class="mb-1 flex justify-between"><span>{{ sec.label(r.key) }}</span><span class="font-mono text-sand">{{ r.visitors }}</span></div>
+              <div class="mb-1 flex justify-between gap-2"><span class="min-w-0 truncate">{{ sec.label(r.key) }}</span><span class="font-mono text-sand">{{ r.visitors }}</span></div>
               <div class="h-1.5 overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full bg-caramel/70" :style="{ width: `${pct(r.sessions, a.summary.sessions)}%` }" /></div>
             </li>
           </ul>
         </section>
 
-        <section class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+        <section class="min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <h2 class="mb-3 font-bold">{{ t('admin.sources') }}</h2>
-          <ul class="grid gap-1.5 text-sm">
+          <ul class="grid grid-cols-[minmax(0,1fr)] gap-1.5 text-sm">
             <li v-for="r in a.referrers" :key="r.key" class="flex justify-between gap-2">
-              <span class="truncate" dir="ltr">{{ r.key || t('admin.direct') }}</span><span class="font-mono text-sand">{{ r.visitors }}</span>
+              <span class="min-w-0 truncate" dir="ltr" :title="r.key || undefined">{{ r.key || t('admin.direct') }}</span><span class="shrink-0 font-mono text-sand">{{ r.visitors }}</span>
             </li>
           </ul>
           <template v-if="a.utm.some(u => u.key)">
             <h3 class="mt-3 mb-1.5 text-sm font-bold text-sand">utm_source</h3>
-            <ul class="grid gap-1.5 text-sm">
-              <li v-for="r in a.utm.filter(u => u.key)" :key="r.key" class="flex justify-between"><span dir="ltr">{{ r.key }}</span><span class="font-mono text-sand">{{ r.visitors }}</span></li>
+            <ul class="grid grid-cols-[minmax(0,1fr)] gap-1.5 text-sm">
+              <li v-for="r in a.utm.filter(u => u.key)" :key="r.key" class="flex justify-between gap-2"><span class="min-w-0 truncate" dir="ltr">{{ r.key }}</span><span class="shrink-0 font-mono text-sand">{{ r.visitors }}</span></li>
             </ul>
           </template>
         </section>
 
-        <section class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+        <section class="min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <h2 class="mb-3 font-bold">{{ t('admin.pages') }}</h2>
           <p v-if="!a.pages.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
-          <ul class="grid gap-1.5 text-sm">
+          <ul class="grid grid-cols-[minmax(0,1fr)] gap-1.5 text-sm">
             <li v-for="p in a.pages" :key="p.key" class="flex justify-between gap-2">
-              <span class="truncate font-mono text-xs" dir="ltr">{{ p.key }}</span><span class="font-mono text-sand">{{ p.count }}</span>
+              <span class="min-w-0 truncate font-mono text-xs" dir="ltr" :title="p.key">{{ p.key }}</span><span class="shrink-0 font-mono text-sand">{{ p.count }}</span>
             </li>
           </ul>
         </section>
@@ -282,7 +283,31 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
       <section class="mt-6">
         <h2 class="mb-3 font-bold">{{ t('admin.recentVisits') }}</h2>
         <p v-if="!a.recent.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
-        <div v-else class="overflow-x-auto rounded-2xl border border-white/10">
+        <!-- Phones: one card per visit -->
+        <ul v-if="a.recent.length" class="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden">
+          <li v-for="r in a.recent" :key="r.id" class="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm">
+            <div class="flex items-start justify-between gap-3">
+              <span class="min-w-0">{{ flag(r.country) }} {{ countryName(r.country) }}<span v-if="r.city" class="text-sand"> · {{ r.city }}</span></span>
+              <span class="shrink-0 font-mono text-xs text-sand" dir="ltr">
+                <span v-if="Date.now() - r.lastTs < 120_000" class="me-1 inline-block size-2 rounded-full bg-good" />{{ fmtDate(r.firstTs) }}
+              </span>
+            </div>
+            <div class="mt-1 text-xs text-sand">
+              {{ r.isNew ? t('admin.newVisitor') : t('admin.returning') }} · {{ (r.locale || '').toUpperCase() }}
+              · {{ t(`admin.device.${r.device || 'desktop'}`) }} · <span dir="ltr">{{ r.os }} · {{ r.browser }}</span>
+            </div>
+            <div class="mt-1 flex items-center justify-between gap-3 text-xs">
+              <span class="min-w-0 truncate" dir="ltr">{{ r.referrer || t('admin.direct') }} <span class="font-mono text-sand">{{ r.landing }}</span></span>
+              <span class="shrink-0 font-mono text-sand" dir="ltr">{{ fmtDur(Math.round((r.lastTs - r.firstTs) / 1000)) }} · {{ r.pageviews }}p</span>
+            </div>
+            <div v-if="isQuizSite && r.quizStarted" class="mt-1 text-xs">
+              <span class="font-semibold" :class="r.quizDone ? 'text-good' : 'text-bad'">{{ r.quizDone ? t('admin.finished') : t('admin.stopped') }}</span>
+              <span class="text-sand"> · {{ r.quizLevel ? t(`levels.${r.quizLevel}.name`) : '' }} · <span dir="ltr">{{ r.quizAnswered }}/{{ r.quizTotal }}</span></span>
+              <NuxtLink v-if="r.attemptId" :to="localePath(`/result/${r.attemptId}`)" class="ms-1 text-caramel hover:underline">{{ t('admin.view') }}</NuxtLink>
+            </div>
+          </li>
+        </ul>
+        <div v-if="a.recent.length" class="hidden overflow-x-auto rounded-2xl border border-white/10 sm:block">
           <table class="w-full text-sm">
             <thead class="bg-white/5 text-sand">
               <tr>
@@ -303,7 +328,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap">{{ flag(r.country) }} {{ countryName(r.country) }}<div v-if="r.city" class="text-[11px] text-sand">{{ r.city }}</div></td>
                 <td class="px-3 py-2 whitespace-nowrap">{{ t(`admin.device.${r.device || 'desktop'}`) }}<div class="text-[11px] text-sand">{{ r.os }} · {{ r.browser }}</div></td>
-                <td class="px-3 py-2"><span dir="ltr">{{ r.referrer || t('admin.direct') }}</span><div class="font-mono text-[11px] text-sand" dir="ltr">{{ r.landing }}</div></td>
+                <td class="max-w-56 px-3 py-2"><span class="block truncate" dir="ltr" :title="r.referrer || undefined">{{ r.referrer || t('admin.direct') }}</span><div class="truncate font-mono text-[11px] text-sand" dir="ltr">{{ r.landing }}</div></td>
                 <td class="px-3 py-2 whitespace-nowrap font-mono" dir="ltr">{{ fmtDur(Math.round((r.lastTs - r.firstTs) / 1000)) }}<div class="text-[11px] text-sand">{{ t('admin.pageviewsCount', { n: r.pageviews }) }}</div></td>
                 <td v-if="isQuizSite" class="px-3 py-2 whitespace-nowrap">
                   <template v-if="!r.quizStarted"><span class="text-sand">—</span></template>

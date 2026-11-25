@@ -71,17 +71,21 @@ useHead({ title: () => `${t('admin.questions')} · PromptjiCode Interview`, meta
     <!-- List -->
     <ul class="grid gap-2">
       <li v-for="q in list" :key="q.id" class="min-w-0 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]">
-        <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-start hover:bg-white/[0.03]" :aria-expanded="open === q.id" @click="open = open === q.id ? null : q.id">
-          <span class="w-14 shrink-0 font-mono text-xs text-sand">{{ t(`levels.${q.level}.name`) }}</span>
-          <span class="w-24 shrink-0 font-mono text-xs text-caramel">{{ t(`topics.${q.topic}`) }}</span>
-          <span class="min-w-0 flex-1 truncate text-sm"><BidiText :text="q.text[loc].prompt" /> <span class="font-mono text-xs text-sand/60" dir="ltr">{{ q.id }}</span></span>
-          <span class="shrink-0 text-end font-mono text-xs" dir="ltr">
-            <template v-if="q.stats.shown">
-              <span :class="pct(q)! >= 70 ? 'text-good' : pct(q)! >= 40 ? 'text-caramel' : 'text-bad'">{{ pct(q) }}%</span>
-              <span class="text-sand"> · {{ q.stats.shown }}</span>
-            </template>
-            <span v-else class="text-sand/50">–</span>
+        <!-- Two lines: meta on top, the question below, so long prompts and ids never collide -->
+        <button type="button" class="grid w-full min-w-0 gap-1 px-4 py-3 text-start hover:bg-white/[0.03]" :aria-expanded="open === q.id" @click="open = open === q.id ? null : q.id">
+          <span class="flex min-w-0 items-center gap-2 font-mono text-xs">
+            <span class="shrink-0 text-sand">{{ t(`levels.${q.level}.name`) }}</span>
+            <span class="shrink-0 text-caramel">{{ t(`topics.${q.topic}`) }}</span>
+            <span class="min-w-0 truncate text-sand/60" dir="ltr">{{ q.id }}</span>
+            <span class="ms-auto shrink-0" dir="ltr">
+              <template v-if="q.stats.shown">
+                <span :class="pct(q)! >= 70 ? 'text-good' : pct(q)! >= 40 ? 'text-caramel' : 'text-bad'">{{ pct(q) }}%</span>
+                <span class="text-sand"> · {{ q.stats.shown }}</span>
+              </template>
+              <span v-else class="text-sand/50">–</span>
+            </span>
           </span>
+          <span class="line-clamp-2 min-w-0 overflow-hidden text-sm leading-relaxed [overflow-wrap:anywhere]"><BidiText :text="q.text[loc].prompt" /></span>
         </button>
 
         <div v-if="open === q.id" class="border-t border-white/10 p-4">

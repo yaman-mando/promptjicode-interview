@@ -1,8 +1,8 @@
 import { LEVELS } from '#shared/types/quiz'
 
 const TYPES = new Set(['pageview', 'heartbeat', 'quiz_start', 'quiz_progress', 'quiz_done', 'quiz_leave', 'click'])
-// interview = this app; main = promptjicode.com (channel page and /yaman), which posts here too
-const SITES = new Set(['interview', 'main'])
+// interview = this app; main = promptjicode.com (channel page and /yaman); menu = menu.promptjicode.com. All post here.
+const SITES = new Set(['interview', 'main', 'menu'])
 const BOT = /bot|crawl|spider|slurp|preview|headless|lighthouse|pagespeed|facebookexternalhit|whatsapp|telegram|curl|wget|python|axios/i
 
 const str = (v: unknown, max: number) => (typeof v === 'string' && v ? v.slice(0, max) : null)
@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
     try { ref = ref ? new URL(ref).hostname.replace(/^www\./, '') : null }
     catch { ref = null }
     // Moving around inside the same site is not a "source"
-    if (ref && ((site === 'interview' && ref.startsWith('interview.')) || (site === 'main' && ref === 'promptjicode.com'))) ref = null
+    if (ref && ((site === 'interview' && ref.startsWith('interview.')) || (site === 'main' && ref === 'promptjicode.com') || (site === 'menu' && ref.startsWith('menu.')))) ref = null
 
     const stmts: D1PreparedStatement[] = [
       db.prepare(`INSERT INTO sessions (id, visitor, is_new, first_ts, last_ts, country, city, device, browser, os, referrer, utm_source, landing, locale, site)

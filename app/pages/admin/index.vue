@@ -10,7 +10,8 @@ const fmtTime = (ms: number) => {
   const sec = Math.round(ms / 1000)
   return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`
 }
-const fmtDate = (ts: number) => new Date(ts).toLocaleString(locale.value, { dateStyle: 'short', timeStyle: 'short' })
+// Fixed numeric format (Türkiye time), same in every language and never reordered by RTL
+const fmtDate = (ts: number) => new Date(ts).toLocaleString('sv-SE', { timeZone: 'Europe/Istanbul' }).slice(5, 16)
 
 useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{ name: 'robots', content: 'noindex' }] })
 </script>
@@ -37,7 +38,7 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
       <section class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
         <h2 class="mb-4 font-bold">{{ t('admin.last14') }}</h2>
         <div class="flex h-32 items-end gap-1.5" dir="ltr">
-          <div v-for="d in s.daily" :key="d.date" class="group relative flex flex-1 flex-col items-center justify-end">
+          <div v-for="d in s.daily" :key="d.date" class="group relative flex h-full flex-1 flex-col items-center justify-end">
             <span class="mb-1 font-mono text-[10px] text-sand opacity-0 group-hover:opacity-100">{{ d.count }}</span>
             <div class="w-full rounded-t bg-caramel/80" :style="{ height: `${(d.count / maxDaily) * 100}%`, minHeight: d.count ? '4px' : '1px' }" :title="`${d.date}: ${d.count}`" />
           </div>
@@ -48,14 +49,14 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
       </section>
 
       <!-- By level / language -->
-      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <div class="mt-6 grid items-start gap-4 sm:grid-cols-2">
         <section class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <h2 class="mb-3 font-bold">{{ t('admin.perLevel') }}</h2>
           <p v-if="!s.byLevel.length" class="text-sm text-sand">{{ t('admin.noData') }}</p>
           <ul class="grid gap-2">
             <li v-for="l in s.byLevel" :key="`${l.track}-${l.level}`" class="flex items-center justify-between gap-3 text-sm">
-              <span class="font-mono">{{ t(`tracks.${l.track}.name`) }} · {{ t(`levels.${l.level}.name`) }}</span>
-              <span class="text-sand">{{ t('admin.attempts', { n: l.count }) }} · <span dir="ltr" class="font-mono text-cream">{{ l.avgPct }}%</span></span>
+              <span class="min-w-0"><bdi>{{ t(`tracks.${l.track}.name`) }}</bdi> · <bdi>{{ t(`levels.${l.level}.name`) }}</bdi></span>
+              <span class="shrink-0 whitespace-nowrap text-sand">{{ t('admin.attempts', { n: l.count }) }} · <span dir="ltr" class="font-mono text-cream">{{ l.avgPct }}%</span></span>
             </li>
           </ul>
         </section>
@@ -79,7 +80,7 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
           <table class="w-full text-sm">
             <thead class="bg-white/5 text-sand">
               <tr>
-                <th class="px-3 py-2 text-start font-semibold">{{ t('admin.when') }}</th>
+                <th class="px-3 py-2 text-start font-semibold whitespace-nowrap">{{ t('admin.when') }}</th>
                 <th class="px-3 py-2 text-start font-semibold">{{ t('admin.level') }}</th>
                 <th class="px-3 py-2 text-start font-semibold">{{ t('admin.lang') }}</th>
                 <th class="px-3 py-2 text-start font-semibold">{{ t('admin.score') }}</th>
@@ -89,12 +90,15 @@ useHead({ title: () => `${t('admin.title')} · PromptjiCode Interview`, meta: [{
             </thead>
             <tbody>
               <tr v-for="r in s.recent" :key="r.id" class="border-t border-white/5">
-                <td class="px-3 py-2 whitespace-nowrap text-sand">{{ fmtDate(r.created_at) }}</td>
-                <td class="px-3 py-2 font-mono">
-                  <span class="text-sand">{{ t(`tracks.${r.track}.name`) }} ·</span>
-                  {{ r.mode === 'open' ? `${t('levels.open.name')} → ${t(`levels.${r.level}.name`)}` : t(`levels.${r.level}.name`) }}
-                  <span v-if="r.mode === 'custom'" class="ms-1 rounded bg-white/10 px-1.5 text-[11px] text-sand">{{ t('setup.custom') }}</span>
-                  <span v-if="r.time_limit" class="ms-1 text-[11px] text-sand">⏱ {{ r.time_limit / 60 }}m</span>
+                <td class="px-3 py-2 whitespace-nowrap font-mono text-sand" dir="ltr">{{ fmtDate(r.created_at) }}</td>
+                <td class="px-3 py-2">
+                  <div class="flex flex-wrap items-center gap-1.5 whitespace-nowrap">
+                    <span class="text-sand">{{ t(`tracks.${r.track}.name`) }}</span>
+                    <span class="font-semibold">{{ t(`levels.${r.level}.name`) }}</span>
+                    <span v-if="r.mode === 'open'" class="rounded bg-caramel/15 px-1.5 text-[11px] text-caramel">{{ t('levels.open.name') }}</span>
+                    <span v-if="r.mode === 'custom'" class="rounded bg-white/10 px-1.5 text-[11px] text-sand">{{ t('setup.custom') }}</span>
+                    <span v-if="r.time_limit" class="text-[11px] text-sand" dir="ltr">⏱ {{ r.time_limit / 60 }}m</span>
+                  </div>
                 </td>
                 <td class="px-3 py-2 font-mono uppercase">{{ r.locale }}</td>
                 <td class="px-3 py-2 font-mono" dir="ltr">{{ r.score }}/{{ r.total }}</td>

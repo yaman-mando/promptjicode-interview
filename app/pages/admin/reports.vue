@@ -47,9 +47,9 @@ useHead({ title: () => `${t('admin.reports')} · PromptjiCode Interview`, meta: 
           <span class="ms-auto font-mono text-sand/70" dir="ltr">{{ fmtDate(r.createdAt) }} · {{ (r.locale || '').toUpperCase() }}</span>
         </div>
         <p v-if="r.prompt" class="mb-2 font-semibold"><BidiText :text="r.prompt" /></p>
-        <p v-if="r.note" class="mb-2 rounded-xl bg-white/[0.04] px-3.5 py-2.5 text-[15px] whitespace-pre-line text-cream/90">{{ r.note }}</p>
+        <p v-if="r.note" dir="auto" class="mb-2 rounded-xl bg-white/[0.04] px-3.5 py-2.5 text-start text-[15px] whitespace-pre-line text-cream/90 [overflow-wrap:anywhere]">{{ r.note }}</p>
         <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
-          <span class="text-sand">{{ r.name || t('admin.anonymous') }}</span>
+          <span class="min-w-0 text-sand [overflow-wrap:anywhere]" dir="auto">{{ r.name || t('admin.anonymous') }}</span>
           <div class="flex gap-2">
             <NuxtLink :to="localePath({ path: '/admin/questions', query: { q: r.questionId } })" class="rounded-lg px-3 py-1.5 text-caramel hover:bg-white/5">{{ t('admin.openQuestion') }}</NuxtLink>
             <button

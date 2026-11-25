@@ -208,7 +208,8 @@
     "scope": {
       "interview": "Mülakat sitesi",
       "main": "Ana site",
-      "yaman": "Kişisel sayfam"
+      "yaman": "Kişisel sayfam",
+      "menu": "Menü hesaplayıcı"
     },
     "clicks": "Tıklamalar",
     "clicksSub": "E-posta, WhatsApp, hizmetler…",
@@ -224,7 +225,17 @@
       "banner": "Hizmet şeridi e-postası",
       "project": "Proje bağlantısı",
       "social": "Kanal sosyal bağlantısı",
-      "interview": "Mülakat sitesi bağlantısı"
+      "interview": "Mülakat sitesi bağlantısı",
+      "calc_example": "Hesaplayıcı: “Örneği doldur”",
+      "calc_save": "Hesaplayıcı: yemek kaydedildi",
+      "calc_copy": "Hesaplayıcı: kart kopyalandı",
+      "calc_copyall": "Hesaplayıcı: tüm menü kopyalandı",
+      "calc_print": "Hesaplayıcı: yazdır",
+      "cta_email": "“Bilgi almak istiyorum” (QR menü)",
+      "card": "Kart dili",
+      "lang": "Sayfa dili değişimi",
+      "promptjicode": "PromptjiCode bağlantısı",
+      "menu": "Menü hesaplayıcı"
     }
   },
   "mainSite": "Ana sayfa",
