@@ -235,7 +235,9 @@
       "card": "Card language",
       "lang": "Page language switch",
       "promptjicode": "PromptjiCode link",
-      "menu": "Menu calculator"
+      "menu": "Menu calculator",
+      "pwa_install": "“Install the app” button",
+      "pwa_installed": "App actually installed"
     }
   },
   "mainSite": "PromptjiCode home",

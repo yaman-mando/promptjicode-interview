@@ -235,7 +235,9 @@
       "card": "Kart dili",
       "lang": "Sayfa dili değişimi",
       "promptjicode": "PromptjiCode bağlantısı",
-      "menu": "Menü hesaplayıcı"
+      "menu": "Menü hesaplayıcı",
+      "pwa_install": "“Uygulamayı yükle” düğmesi",
+      "pwa_installed": "Uygulama yüklendi"
     }
   },
   "mainSite": "Ana sayfa",
