@@ -237,7 +237,10 @@
       "promptjicode": "PromptjiCode link",
       "menu": "Menu calculator",
       "pwa_install": "“Install the app” button",
-      "pwa_installed": "App actually installed"
+      "pwa_installed": "App actually installed",
+      "qr_copy": "QR notice: copy",
+      "qr_print": "QR notice: print",
+      "source": "Ministry source link"
     }
   },
   "mainSite": "PromptjiCode home",

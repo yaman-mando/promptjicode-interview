@@ -237,7 +237,10 @@
       "promptjicode": "PromptjiCode bağlantısı",
       "menu": "Menü hesaplayıcı",
       "pwa_install": "“Uygulamayı yükle” düğmesi",
-      "pwa_installed": "Uygulama yüklendi"
+      "pwa_installed": "Uygulama yüklendi",
+      "qr_copy": "QR yazısı: kopyala",
+      "qr_print": "QR yazısı: yazdır",
+      "source": "Bakanlık kaynak bağlantısı"
     }
   },
   "mainSite": "Ana sayfa",
