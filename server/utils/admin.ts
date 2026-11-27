@@ -30,6 +30,11 @@ export async function checkPassword(event: H3Event, given: string) {
   return safeEqual(a, b)
 }
 
+/** On promptjicode.com, share the sign-in between admin.promptjicode.com and interview.promptjicode.com. */
+function cookieDomain(event: H3Event) {
+  return getRequestURL(event).hostname.endsWith('promptjicode.com') ? '.promptjicode.com' : undefined
+}
+
 /** The session is signed with the password, so changing the password logs everyone out. */
 export async function startSession(event: H3Event) {
   const exp = Date.now() + SESSION_DAYS * 86400_000
@@ -39,12 +44,14 @@ export async function startSession(event: H3Event) {
     secure: !getRequestURL(event).hostname.match(/^(localhost|127\.0\.0\.1)$/),
     sameSite: 'strict',
     path: '/',
+    domain: cookieDomain(event),
     maxAge: SESSION_DAYS * 86400,
   })
 }
 
 export function endSession(event: H3Event) {
-  deleteCookie(event, COOKIE, { path: '/' })
+  deleteCookie(event, COOKIE, { path: '/', domain: cookieDomain(event) })
+  deleteCookie(event, COOKIE, { path: '/' }) // older host-only cookie
 }
 
 export async function isAdmin(event: H3Event) {
