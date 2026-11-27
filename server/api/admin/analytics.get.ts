@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   // Which site to show: this app, promptjicode.com, only sessions that opened Yaman's page, the menu calculator,
   // or the GitHub demo pages
-  const scope = q.scope === 'main' || q.scope === 'yaman' || q.scope === 'menu' || q.scope === 'github' ? q.scope : 'interview'
+  const scope = q.scope === 'main' || q.scope === 'yaman' || q.scope === 'menu' || q.scope === 'github' || q.scope === 'services' ? q.scope : 'interview'
   const S = scope === 'interview'
     ? `site = 'interview'`
     : scope === 'main'
@@ -24,7 +24,9 @@ export default defineEventHandler(async (event) => {
         ? `site = 'menu'`
         : scope === 'github'
           ? `site = 'github'`
-        : `site = 'main' AND id IN (SELECT session FROM events WHERE type = 'pageview' AND path LIKE '%/yaman%')`
+        : scope === 'services'
+          ? `site = 'main' AND id IN (SELECT session FROM events WHERE type = 'pageview' AND (path LIKE '%/services%' OR path LIKE '%/web'))`
+          : `site = 'main' AND id IN (SELECT session FROM events WHERE type = 'pageview' AND path LIKE '%/yaman%')`
   const inScope = `session IN (SELECT id FROM sessions WHERE ${S})`
 
   const group = (col: string, limit = 12) =>

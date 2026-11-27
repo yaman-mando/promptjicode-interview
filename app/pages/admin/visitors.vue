@@ -4,7 +4,7 @@ definePageMeta({ middleware: 'admin' })
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const days = ref(7)
-const scope = ref<'interview' | 'main' | 'yaman' | 'menu' | 'github'>('interview')
+const scope = ref<'interview' | 'main' | 'yaman' | 'services' | 'menu' | 'github'>('interview')
 const isQuizSite = computed(() => scope.value === 'interview')
 const { data: a, refresh, pending } = await useFetch('/api/admin/analytics', {
   query: { days, scope },
@@ -85,7 +85,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
     <!-- Which site -->
     <div class="mb-3 inline-flex flex-wrap gap-1 rounded-xl bg-white/5 p-1">
       <button
-        v-for="sc in (['interview', 'main', 'yaman', 'menu', 'github'] as const)" :key="sc" type="button"
+        v-for="sc in (['interview', 'main', 'yaman', 'services', 'menu', 'github'] as const)" :key="sc" type="button"
         class="rounded-lg px-3 py-1.5 text-sm font-semibold transition"
         :class="scope === sc ? 'bg-cream text-ink' : 'text-sand hover:text-cream'"
         @click="scope = sc"
