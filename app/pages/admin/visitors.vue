@@ -4,7 +4,7 @@ definePageMeta({ middleware: 'admin' })
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const days = ref(7)
-const scope = ref<'interview' | 'main' | 'yaman' | 'menu'>('interview')
+const scope = ref<'interview' | 'main' | 'yaman' | 'menu' | 'github'>('interview')
 const isQuizSite = computed(() => scope.value === 'interview')
 const { data: a, refresh, pending } = await useFetch('/api/admin/analytics', {
   query: { days, scope },
@@ -27,7 +27,7 @@ const countryName = (cc: string | null) => {
   try { return regionNames.value?.of(cc) ?? cc }
   catch { return cc }
 }
-// Click labels sent by promptjicode.com and the menu calculator: email, whatsapp, service:<id>, calc:save, card:tr…
+// Click labels sent by promptjicode.com, the menu calculator and the GitHub pages: email, whatsapp, service:<id>, calc:save, btn:<text>…
 const has = (key: string) => t(key) !== key
 const clickLabel = (k: string) => {
   const [kind = '', id] = k.split(':')
@@ -85,7 +85,7 @@ useHead({ title: () => `${t('admin.visitors')} · PromptjiCode Interview`, meta:
     <!-- Which site -->
     <div class="mb-3 inline-flex flex-wrap gap-1 rounded-xl bg-white/5 p-1">
       <button
-        v-for="sc in (['interview', 'main', 'yaman', 'menu'] as const)" :key="sc" type="button"
+        v-for="sc in (['interview', 'main', 'yaman', 'menu', 'github'] as const)" :key="sc" type="button"
         class="rounded-lg px-3 py-1.5 text-sm font-semibold transition"
         :class="scope === sc ? 'bg-cream text-ink' : 'text-sand hover:text-cream'"
         @click="scope = sc"

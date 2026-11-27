@@ -209,7 +209,8 @@
       "interview": "Interview site",
       "main": "Main site",
       "yaman": "My page",
-      "menu": "Menu calculator"
+      "menu": "Menu calculator",
+      "github": "GitHub pages"
     },
     "clicks": "Clicks",
     "clicksSub": "Email, WhatsApp, services…",
@@ -240,7 +241,9 @@
       "pwa_installed": "App actually installed",
       "qr_copy": "QR notice: copy",
       "qr_print": "QR notice: print",
-      "source": "Ministry source link"
+      "source": "Ministry source link",
+      "btn": "Button",
+      "link": "Link"
     }
   },
   "mainSite": "PromptjiCode home",

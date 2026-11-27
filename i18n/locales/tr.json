@@ -209,7 +209,8 @@
       "interview": "Mülakat sitesi",
       "main": "Ana site",
       "yaman": "Kişisel sayfam",
-      "menu": "Menü hesaplayıcı"
+      "menu": "Menü hesaplayıcı",
+      "github": "GitHub sayfaları"
     },
     "clicks": "Tıklamalar",
     "clicksSub": "E-posta, WhatsApp, hizmetler…",
@@ -240,7 +241,9 @@
       "pwa_installed": "Uygulama yüklendi",
       "qr_copy": "QR yazısı: kopyala",
       "qr_print": "QR yazısı: yazdır",
-      "source": "Bakanlık kaynak bağlantısı"
+      "source": "Bakanlık kaynak bağlantısı",
+      "btn": "Buton",
+      "link": "Bağlantı"
     }
   },
   "mainSite": "Ana sayfa",
